@@ -1,0 +1,13 @@
+{
+    "version": 1,
+
+    "project": "dvc",
+    "project_url": "https://dvc.org/",
+    "repo": "https://github.com/iterative/dvc",
+
+    "dvcs": "git",
+
+    "environment_type": "virtualenv",
+    "pythons": ["3.7"],
+    "env_dir": "envs"
+}

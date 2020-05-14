@@ -1,0 +1,6 @@
+*.pyc
+envs/
+dvc/
+/hashes.txt
+/results
+html/

@@ -1,0 +1,21 @@
+stages:
+  convert_tags:
+    cmd: python tags_to_sha.py
+    deps:
+    - tags.txt
+    - tags_to_sha.py
+    - dvc/
+    outs:
+    - hashes.txt
+  run_benchmarks:
+    cmd: asv run HASHFILE:hashes.txt
+    deps:
+    - hashes.txt
+    - envs/
+    outs_no_cache:
+    - results
+  setup_asv:
+    cmd: asv check
+    outs_no_cache:
+    - dvc/
+    - envs/

@@ -1,0 +1,15 @@
+md5: 5daa6d4abe24d02482a56aef651d9857
+cmd: asv run HASHFILE:hashes.txt
+deps:
+- md5: 1323776f82f24256194503a8550ad5fa
+  path: hashes.txt
+- md5: 8d7d6cc14ebe6891d56193356a83abd9.dir
+  path: dvc
+- md5: d751713988987e9331980363e24189ce.dir
+  path: envs
+outs:
+- md5: e7c043c9b2433e2a475b742fca578327.dir
+  path: results
+  cache: false
+  metric: false
+  persist: false

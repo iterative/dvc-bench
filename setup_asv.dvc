@@ -1,0 +1,13 @@
+md5: 1f045e3f1b600ff2d1d6f55d3bf6c2bc
+cmd: asv check
+outs:
+- md5: fe93dd827e9fdfdcdf8266457e0291b9.dir
+  path: dvc
+  cache: false
+  metric: false
+  persist: false
+- md5: d751713988987e9331980363e24189ce.dir
+  path: envs
+  cache: false
+  metric: false
+  persist: false

@@ -1,0 +1,15 @@
+md5: e3938a24c3dd479ddaf5e9446c7f16d9
+cmd: python tags_to_sha.py
+deps:
+- md5: fe93dd827e9fdfdcdf8266457e0291b9.dir
+  path: dvc
+- md5: d43eb47816675d0544cb3b981aae5f29
+  path: tags.txt
+- md5: ea06de751595dd9ddfab43fdf269f5d2
+  path: tags_to_sha.py
+outs:
+- md5: 1323776f82f24256194503a8550ad5fa
+  path: hashes.txt
+  cache: true
+  metric: false
+  persist: false

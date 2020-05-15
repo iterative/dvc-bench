@@ -1,0 +1,20 @@
+name: A workflow for running dvc benchmarks
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Run benchmarks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-python@v1
+      - name: run benchmark
+        run: |
+             pip install -r requirements.txt
+             asv machine --yes
+             dvc repro run_benchmarks.dvc
+             asv publish
+      - uses: actions/upload-artifact@v2
+        with:
+          name: benchmark-results
+          path: html

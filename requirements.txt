@@ -1,3 +1,4 @@
 virtualenv==16.7.10
 asv==0.4.1
 gitpython
+dvc==0.94.0

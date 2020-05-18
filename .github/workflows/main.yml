@@ -14,7 +14,14 @@ jobs:
              asv machine --yes
              dvc repro run_benchmarks.dvc
              asv publish
-      - uses: actions/upload-artifact@v2
+      - name: upload benchmark results
+        uses: actions/upload-artifact@v2
         with:
           name: benchmark-results
           path: html
+      - name: deploy new benchmarks to github pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: html

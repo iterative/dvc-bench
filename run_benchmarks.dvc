@@ -1,5 +1,5 @@
 md5: 5daa6d4abe24d02482a56aef651d9857
-cmd: asv run HASHFILE:hashes.txt
+cmd: asv run HASHFILE:hashes.txt --profile
 deps:
 - md5: 1323776f82f24256194503a8550ad5fa
   path: hashes.txt

@@ -19,10 +19,10 @@ class Add_100_1M_copy(BaseBench):
 class Add_100_1M_symlink(Add_100_1M_copy):
     def setup(self):
         super().setup()
-        main(["config", "cache.type", "symlink"])
+        assert main(["config", "cache.type", "symlink"]) == 0
 
 
 class Add_100_1M_hardlink(Add_100_1M_copy):
     def setup(self):
         super().setup()
-        main(["config", "cache.type", "hardlink"])
+        assert main(["config", "cache.type", "hardlink"]) == 0

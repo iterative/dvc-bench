@@ -1,7 +1,7 @@
-md5: e3938a24c3dd479ddaf5e9446c7f16d9
+md5: a747fe6012faef2f1287e7493e7f8093
 cmd: python tags_to_sha.py
 deps:
-- md5: fe93dd827e9fdfdcdf8266457e0291b9.dir
+- md5: 7db6b78d549c440659748a1775a8b6f6.dir
   path: dvc
 - md5: d43eb47816675d0544cb3b981aae5f29
   path: tags.txt

@@ -4,23 +4,35 @@ on: [push, pull_request]
 jobs:
   build:
     name: Run benchmarks
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-python@v1
-      - name: run benchmark
-        run: |
-             pip install -r requirements.txt
-             asv machine --yes
-             dvc repro run_benchmarks.dvc
-             asv publish
-      - name: upload benchmark results
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+            python-version: 3.7
+      - name: install requirements
+        run: pip install -r requirements.txt
+      - name: setup asv machine
+        run: asv machine --yes
+      - name: run benchmarks
+        run: dvc repro run_benchmarks.dvc
+      - name: convert results to static website
+        run: asv publish
+      - name: upload html
         uses: actions/upload-artifact@v2
         with:
-          name: benchmark-results
+          name: html-${{ matrix.os }}
           path: html
+      - name: upload raw results
+        uses: actions/upload-artifact@v2
+        with:
+          name: results-${{ matrix.os }}
+          path: results
       - name: deploy new benchmarks to github pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && matrix.os == 'ubuntu-latest'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

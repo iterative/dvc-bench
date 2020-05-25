@@ -8,6 +8,5 @@
     "dvcs": "git",
 
     "environment_type": "virtualenv",
-    "pythons": ["3.7"],
     "env_dir": "envs"
 }

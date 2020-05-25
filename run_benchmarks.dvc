@@ -1,14 +1,14 @@
-md5: 5daa6d4abe24d02482a56aef651d9857
-cmd: asv run HASHFILE:hashes.txt --profile
+md5: 14267ca8e0770c6290e878383ab37b5a
+cmd: asv run HASHFILE:hashes.txt --profile --show-stderr
 deps:
 - md5: 1323776f82f24256194503a8550ad5fa
   path: hashes.txt
-- md5: 8d7d6cc14ebe6891d56193356a83abd9.dir
+- md5: 341abc22ffdfc7f205473c8e43dee57f.dir
   path: dvc
 - md5: d751713988987e9331980363e24189ce.dir
   path: envs
 outs:
-- md5: e7c043c9b2433e2a475b742fca578327.dir
+- md5: 2cf92a529e797c01db9b5191445cc391.dir
   path: results
   cache: false
   metric: false

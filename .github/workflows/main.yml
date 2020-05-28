@@ -9,12 +9,14 @@ jobs:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
     steps:
-      - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
             python-version: 3.7
+      - uses: actions/checkout@v2
       - name: install requirements
         run: pip install -r requirements.txt
+      - name: check project styling
+        run: pre-commit run --all-files
       - name: setup asv machine
         run: asv machine --yes
       - name: run benchmarks

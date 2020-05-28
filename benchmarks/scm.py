@@ -1,6 +1,5 @@
-from dvc.main import main
-
 from benchmarks.base import BaseBench, init_git
+from dvc.main import main
 
 
 class InitNoScmBench(BaseBench):

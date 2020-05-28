@@ -1,8 +1,7 @@
 import shutil
 
-from dvc.main import main
-
 from benchmarks.base import BaseBench, init_dvc, random_data_dir
+from dvc.main import main
 
 
 class Add_100_1M_copy(BaseBench):

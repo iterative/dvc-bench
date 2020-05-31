@@ -17,21 +17,22 @@ class DVCIgnoreEmpty(BaseBench):
     def setup(self):
         super().setup()
         self.repo = init_dvc(self.test_directory.name)
-        dataset_path = random_data_dir(40000, 10)
+        dataset_path = random_data_dir(10000, 10)
         shutil.copytree(dataset_path, "data")
+        assert main(["config", "cache.type", "symlink"]) == 0
         assert main(["add", "data"]) == 0
 
     def time_status(self):
-        assert main(["status"]) == 0
+        assert main(["status", "--quiet"]) == 0
 
 
-class DVCIgnore10Rules(DVCIgnoreEmpty):
+class DVCIgnore3Rules(DVCIgnoreEmpty):
     def setup(self):
         super().setup()
-        self.add_ignore_rules(10)
+        self.add_ignore_rules(3)
 
 
-class DVCIgnore100Rules(DVCIgnoreEmpty):
+class DVCIgnore20Rules(DVCIgnoreEmpty):
     def setup(self):
         super().setup()
-        self.add_ignore_rules(100)
+        self.add_ignore_rules(20)

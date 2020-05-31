@@ -6,12 +6,9 @@ from dvc.ignore import DvcIgnore
 from dvc.main import main
 
 
-class DVCIgnore(BaseBench):
-    def add_ignore_rules(self, number):
-        with open(
-            os.path.join(self.test_directory.name, DvcIgnore.DVCIGNORE_FILE),
-            "w",
-        ) as f_w:
+class DVCIgnoreEmpty(BaseBench):
+    def add_ignore_rules(self, path, number):
+        with open(os.path.join(path, DvcIgnore.DVCIGNORE_FILE), "w",) as f_w:
             for i in range(number):
                 f_w.write("{}\n".format(i))
 
@@ -27,14 +24,36 @@ class DVCIgnore(BaseBench):
         # calculating md5
         assert main(["status", "--quiet"]) == 1
 
-    def time_status_empty(self):
-        self.add_ignore_rules(0)
+    def time_status(self):
         assert main(["status", "--quiet"]) == 1
 
-    def time_status_3_rules(self):
-        self.add_ignore_rules(3)
+
+class DVCIgnore3Rules(DVCIgnoreEmpty):
+    def setup(self):
+        super().setup()
+        self.add_ignore_rules(self.test_directory.name, 3)
+
+    def time_status(self):
         assert main(["status", "--quiet"]) == 1
 
-    def time_status_20_rules(self):
-        self.add_ignore_rules(20)
+
+class DVCIgnore30Rules(DVCIgnoreEmpty):
+    def setup(self):
+        super().setup()
+        self.add_ignore_rules(self.test_directory.name, 30)
+
+    def time_status(self):
+        assert main(["status", "--quiet"]) == 1
+
+
+class DVCIgnore3x10Rules(DVCIgnoreEmpty):
+    def setup(self):
+        super().setup()
+        data_path = os.path.join(self.test_directory.name, "data")
+        data_data_path = os.path.join(data_path, "data")
+        self.add_ignore_rules(self.test_directory.name, 10)
+        self.add_ignore_rules(data_path, 10)
+        self.add_ignore_rules(data_data_path, 10)
+
+    def time_status(self):
         assert main(["status", "--quiet"]) == 1

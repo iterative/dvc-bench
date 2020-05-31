@@ -1,8 +1,9 @@
-import shutil
 import os
+import shutil
+
 from benchmarks.base import BaseBench, init_dvc, random_data_dir
-from dvc.main import main
 from dvc.ignore import DvcIgnore
+from dvc.main import main
 
 
 class DVCIgnoreEmpty(BaseBench):

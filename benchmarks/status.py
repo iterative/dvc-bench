@@ -19,7 +19,9 @@ class DVCIgnore(BaseBench):
         super().setup()
         self.repo = init_dvc(self.test_directory.name)
         dataset_path = random_data_dir(10000, 10)
-        os.makedirs(os.path.join(self.test_directory.name, 'data'), exist_ok=True)
+        os.makedirs(
+            os.path.join(self.test_directory.name, "data"), exist_ok=True
+        )
         assert main(["add", "data", "--quiet"]) == 0
         shutil.copytree(dataset_path, "data/data")
         # calculating md5
@@ -36,4 +38,3 @@ class DVCIgnore(BaseBench):
     def time_status_20_rules(self):
         self.add_ignore_rules(20)
         assert main(["status", "--quiet"]) == 1
-

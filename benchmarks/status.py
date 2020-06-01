@@ -44,16 +44,3 @@ class DVCIgnore30Rules(DVCIgnoreEmpty):
 
     def time_status(self):
         assert main(["status", "--quiet"]) == 1
-
-
-class DVCIgnore3x10Rules(DVCIgnoreEmpty):
-    def setup(self):
-        super().setup()
-        data_path = os.path.join(self.test_directory.name, "data")
-        data_data_path = os.path.join(data_path, "data")
-        self.add_ignore_rules(self.test_directory.name, 10)
-        self.add_ignore_rules(data_path, 10)
-        self.add_ignore_rules(data_data_path, 10)
-
-    def time_status(self):
-        assert main(["status", "--quiet"]) == 1

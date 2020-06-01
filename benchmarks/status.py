@@ -7,6 +7,10 @@ from dvc.main import main
 
 
 class DVCIgnoreEmpty(BaseBench):
+    repeat = (1, 1, 60.0)
+    number = 10
+    warmup_time = 0
+
     def add_ignore_rules(self, path, number):
         with open(os.path.join(path, DvcIgnore.DVCIGNORE_FILE), "w",) as f_w:
             for i in range(number):
@@ -33,14 +37,8 @@ class DVCIgnore3Rules(DVCIgnoreEmpty):
         super().setup()
         self.add_ignore_rules(self.test_directory.name, 3)
 
-    def time_status(self):
-        assert main(["status", "--quiet"]) == 1
-
 
 class DVCIgnore30Rules(DVCIgnoreEmpty):
     def setup(self):
         super().setup()
         self.add_ignore_rules(self.test_directory.name, 30)
-
-    def time_status(self):
-        assert main(["status", "--quiet"]) == 1

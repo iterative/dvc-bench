@@ -15,4 +15,5 @@ def convert_to_sha(tags_filename="tags.txt", hashes_filename="hashes.txt"):
         fobj.writelines(hashes)
 
 
-convert_to_sha()
+if __name__ == "__main__":
+    convert_to_sha()

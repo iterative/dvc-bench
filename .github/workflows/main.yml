@@ -1,9 +1,9 @@
-name: A workflow for running dvc benchmarks
+name: DVC benchmarks
 on: [push, pull_request]
 
 jobs:
-  build:
-    name: Run benchmarks
+  verify:
+    name: tests and styling check
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -16,9 +16,26 @@ jobs:
       - name: install requirements
         run: pip install -r requirements.txt
       - name: check project styling
+        if: matrix.os == 'ubuntu-latest'
         run: pre-commit run --all-files
+      - name: run tests
+        run: python -m py.test
+  build:
+    name: benchmarks
+    needs: verify
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+            python-version: 3.7
+      - uses: actions/checkout@v2
+      - name: install requirements
+        run: pip install -r requirements.txt
       - name: setup asv machine
-        run: asv machine --yes
+        run: python write_asv_machine.py
       - name: run benchmarks
         run: dvc repro run_benchmarks.dvc
       - name: convert results to static website

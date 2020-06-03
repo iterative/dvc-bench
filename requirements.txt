@@ -3,3 +3,5 @@ asv==0.4.1
 gitpython
 dvc==0.94.0
 pre-commit
+pytest
+pytest-mock

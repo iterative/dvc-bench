@@ -12,6 +12,11 @@ def sources_dir():
 
 
 class BaseBench:
+    warmup_time = 0
+    number = 1
+    repeat = (3, 5, 60.0)
+    processes = max(2, cpu_count() - 1)
+
     def setup(self):
         self.cwd = os.getcwd()
         self.test_directory = TemporaryDirectory(prefix="DVCBenchmark")

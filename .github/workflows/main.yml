@@ -38,20 +38,49 @@ jobs:
         run: python write_asv_machine.py
       - name: run benchmarks
         run: dvc repro run_benchmarks.dvc
-      - name: convert results to static website
-        run: asv publish
-      - name: upload html
-        uses: actions/upload-artifact@v2
-        with:
-          name: html-${{ matrix.os }}
-          path: html
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:
           name: results-${{ matrix.os }}
           path: results
+  publish:
+    name: join results and publish
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - uses: actions/checkout@v2
+      - name: install requirements
+        run: pip install -r requirements.txt
+      - name: download ubuntu results
+        uses: actions/download-artifact@v1
+        with:
+          name: results-ubuntu-latest
+      - name: download macos results
+        uses: actions/download-artifact@v1
+        with:
+          name: results-macos-latest
+      - name: download windows results
+        uses: actions/download-artifact@v1
+        with:
+          name: results-windows-latest
+      - name: join results
+        run: |
+          mkdir results
+          cp -r results-macos-latest/* results/
+          cp -r results-windows-latest/* results/
+          cp -r results-ubuntu-latest/* results/
+      - name: create static html
+        run: asv publish
+      - name: upload joined
+        uses: actions/upload-artifact@v2
+        with:
+          name: html-all
+          path: html
       - name: deploy new benchmarks to github pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && matrix.os == 'ubuntu-latest'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

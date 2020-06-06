@@ -6,15 +6,10 @@ from dvc.ignore import DvcIgnore
 from dvc.main import main
 
 
-class DVCIgnoreEmpty(BaseBench):
+class DVCStatusBench(BaseBench):
     repeat = (1, 1, 60.0)
     number = 10
     warmup_time = 0
-
-    def add_ignore_rules(self, path, number):
-        with open(os.path.join(path, DvcIgnore.DVCIGNORE_FILE), "w",) as f_w:
-            for i in range(number):
-                f_w.write("{}\n".format(i))
 
     def setup(self):
         super().setup()
@@ -32,13 +27,13 @@ class DVCIgnoreEmpty(BaseBench):
         assert main(["status", "--quiet"]) == 1
 
 
-class DVCIgnore3Rules(DVCIgnoreEmpty):
-    def setup(self):
-        super().setup()
-        self.add_ignore_rules(self.test_directory.name, 3)
+class DVCIgnoreBench(DVCStatusBench):
+    @staticmethod
+    def add_ignore_rules(path, number):
+        with open(os.path.join(path, DvcIgnore.DVCIGNORE_FILE), "w",) as f_w:
+            for i in range(number):
+                f_w.write("{}\n".format(i))
 
-
-class DVCIgnore30Rules(DVCIgnoreEmpty):
     def setup(self):
         super().setup()
         self.add_ignore_rules(self.test_directory.name, 30)

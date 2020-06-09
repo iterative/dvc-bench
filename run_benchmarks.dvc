@@ -12,4 +12,4 @@ outs:
   path: results
   cache: false
   metric: false
-  persist: false
+  persist: true

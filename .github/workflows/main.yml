@@ -7,7 +7,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+        os: [ubuntu-latest]
     steps:
       - uses: actions/setup-python@v2
         with:
@@ -26,7 +26,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+        os: [ubuntu-latest]
     steps:
       - uses: actions/setup-python@v2
         with:
@@ -36,6 +36,8 @@ jobs:
         run: pip install -r requirements.txt
       - name: setup asv machine
         run: python write_asv_machine.py
+      - name: download existing results
+        run: dvc import https://github.com/iterative/dvc-bench-registry.git results -o results
       - name: run benchmarks
         run: dvc repro run_benchmarks.dvc
       - name: upload raw results

@@ -23,7 +23,7 @@ class DVCStatusBench(BaseBench):
         # calculating md5
         assert main(["status", "--quiet"]) == 1
 
-    def time_status(self):
+    def status(self):
         assert main(["status", "--quiet"]) == 1
 
 

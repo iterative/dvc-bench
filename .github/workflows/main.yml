@@ -37,7 +37,7 @@ jobs:
       - name: setup asv machine
         run: python write_asv_machine.py
       - name: download existing results
-        run: dvc get https://github.com/iterative/dvc-bench-registry.git results -o results
+        run: dvc get https://github.com/iterative/dvc-bench-registry.git results -o existing_results && mv existing_results results
       - name: run benchmarks
         run: dvc repro run_benchmarks.dvc
       - name: upload raw results

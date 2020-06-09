@@ -2,6 +2,7 @@ import copy
 import hashlib
 import json
 import os
+import sys
 
 from asv.machine import Machine, MachineCollection
 
@@ -25,9 +26,9 @@ def write_machine_info():
     del machine_marker["machine"]
 
     marker_str = json.dumps(machine_marker, sort_keys=True)
-    suffix = hashlib.md5(marker_str.encode("utf-8")).hexdigest()[:5]
+    suffix = hashlib.md5(marker_str.encode("utf-8")).hexdigest()[:7]
 
-    machine_name = "machine_{}".format(suffix)
+    machine_name = "{}_{}".format(sys.platform, suffix)
     machine_info["machine"] = machine_name
 
     MachineCollection.save(machine_name, machine_info)

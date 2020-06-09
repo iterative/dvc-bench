@@ -1,5 +1,6 @@
 import hashlib
 import json
+import sys
 
 import pytest
 from asv.machine import Machine, MachineCollection
@@ -19,13 +20,14 @@ def test_write_asv_machine(mocker, ram, expected_ram):
         },
     )
 
-    expected_name = "machine_{}".format(
+    expected_name = "{}_{}".format(
+        sys.platform,
         hashlib.md5(
             json.dumps(
                 {"ram": expected_ram, "other_info": "other_info"},
                 sort_keys=True,
             ).encode("utf-8")
-        ).hexdigest()[:5]
+        ).hexdigest()[:7],
     )
 
     save_mock = mocker.patch.object(MachineCollection, "save")

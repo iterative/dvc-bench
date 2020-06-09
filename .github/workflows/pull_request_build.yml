@@ -1,0 +1,26 @@
+name: pull request build
+on: [pull_request]
+
+jobs:
+  verify:
+    name: run tests an check project styling
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - uses: actions/checkout@v2
+      - name: install requirements
+        run: pip install -r requirements.txt
+      - name: check project styling
+        if: matrix.os == 'ubuntu-latest'
+        run: pre-commit run --all-files
+      - name: run tests
+        run: python -m py.test
+      - name: setup asv
+        run: python write_asv_machine.py && asv check
+      - name: quick asv build of HEAD
+        run: asv run --quick

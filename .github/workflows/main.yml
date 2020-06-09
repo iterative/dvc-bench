@@ -1,13 +1,18 @@
-name: DVC benchmarks
-on: [push, pull_request]
+name: master build
+on:
+  pull_request:
+    types: [closed]
+#    branches:
+#      - master
 
 jobs:
-  verify:
-    name: tests and styling check
+  build:
+    if: github.event.pull_request.merged && github.event.head_commit.author.name != 'github-actions[bot]'
+    name: run benchmarks
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+        os: [ubuntu-latest]
     steps:
       - uses: actions/setup-python@v2
         with:
@@ -20,30 +25,25 @@ jobs:
         run: pre-commit run --all-files
       - name: run tests
         run: python -m py.test
-  build:
-    name: benchmarks
-    needs: verify
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
-    steps:
-      - uses: actions/setup-python@v2
+      - name: setup asv
+        run: python write_asv_machine.py && asv check
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-            python-version: 3.7
-      - uses: actions/checkout@v2
-      - name: install requirements
-        run: pip install -r requirements.txt
-      - name: setup asv machine
-        run: python write_asv_machine.py
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+      - name: download existing results
+        run: dvc pull
       - name: run benchmarks
-        run: dvc repro run_benchmarks.dvc
+        run: dvc repro -f run_benchmarks.dvc
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:
           name: results-${{ matrix.os }}
           path: results
   publish:
+    if: github.event.pull_request.merged && github.event.head_commit.author.name != 'github-actions[bot]'
     name: join results and publish
     needs: build
     runs-on: ubuntu-latest
@@ -55,32 +55,51 @@ jobs:
       - name: install requirements
         run: pip install -r requirements.txt
       - name: download ubuntu results
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
           name: results-ubuntu-latest
-      - name: download macos results
-        uses: actions/download-artifact@v1
+          path: /tmp/results-ubuntu
+#      - name: download macos results
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: results-macos-latest
+#          path: /tmp/results-macos
+#      - name: download windows results
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: results-windows-latest
+#          path: /tmp/results-windows
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          name: results-macos-latest
-      - name: download windows results
-        uses: actions/download-artifact@v1
-        with:
-          name: results-windows-latest
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+      - name: dvc pull existing
+        run: dvc pull
       - name: join results
         run: |
-          mkdir results
-          cp -r results-macos-latest/* results/
-          cp -r results-windows-latest/* results/
-          cp -r results-ubuntu-latest/* results/
-      - name: create static html
-        run: asv publish
-      - name: upload joined
+          cp -r /tmp/results-ubuntu/* results/
+          cp -r /tmp/results-windows/* results/
+          cp -r /tmp/results-macos/* results/
+      - name: commit results to dvc
+        run: dvc commit -f run_benchmarks.dvc && dvc push
+      - name: create PR for results
+        uses: peter-evans/create-pull-request@v2
+        with:
+          title: Update results
+          reviewers: pared
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: upload joined results
         uses: actions/upload-artifact@v2
         with:
-          name: html-all
-          path: html
+          name: results-all
+          path: results
+      - name: create static html
+        run: asv publish
+      - name: exit
+        run: exit 1
       - name: deploy new benchmarks to github pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

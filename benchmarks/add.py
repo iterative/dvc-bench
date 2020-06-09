@@ -11,7 +11,7 @@ class Add_100_1M_copy(BaseBench):
         dataset_path = random_data_dir(100, 1024 * 1024)
         shutil.copytree(dataset_path, "data")
 
-    def time_add(self):
+    def add(self):
         assert main(["add", "data"]) == 0
 
 

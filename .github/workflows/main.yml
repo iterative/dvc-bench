@@ -68,7 +68,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: iterative/dvc-bench-registry
-          path: dvc-bench-registry
+          path: /tmp/dvc-bench-registry
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -76,13 +76,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
       - name: pull
-        working-directory: dvc-bench-registry
+        working-directory: /tmp/dvc-bench-registry
         run: dvc pull
       - name: download ubuntu results
         uses: actions/download-artifact@v2
         with:
           name: results-ubuntu-latest
-          path: ~/results-ubuntu-latest
+          path: /tmp/results-ubuntu-latest
 #      - name: download macos results
 #        uses: actions/download-artifact@v1
 #        with:
@@ -94,7 +94,7 @@ jobs:
       - name: join results
         working-directory: ~/
         run: |
-          cp -r ~/results-ubuntu-latest/* dvc-bench-registry/results/
+          cp -r /tmp/results-ubuntu-latest/* /tmp/dvc-bench-registry/results/
       - name: stop execution
         run: exit 1
       - name: create static html

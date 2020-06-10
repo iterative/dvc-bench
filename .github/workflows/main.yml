@@ -45,7 +45,7 @@ jobs:
       - name: download existing results
         run: dvc pull
       - name: run benchmarks
-        run: dvc repro run_benchmarks.dvc
+        run: dvc repro -f run_benchmarks.dvc
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:

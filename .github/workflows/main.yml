@@ -73,6 +73,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: results-ubuntu-latest
+          path: results-ubuntu-latest
 #      - name: download macos results
 #        uses: actions/download-artifact@v1
 #        with:
@@ -82,9 +83,10 @@ jobs:
 #        with:
 #          name: results-windows-latest
       - name: join results
+        working-directory: ~/
         run: |
           mkdir results
-          cp -r results-ubuntu-latest/* results/
+          cp -r results-ubuntu-latest/* dvc-bench-registry/results/
       - name: stop execution
         run: exit 1
       - name: create static html

@@ -46,8 +46,6 @@ jobs:
         run: dvc get https://github.com/iterative/dvc-bench-registry.git results -o results
       - name: run benchmarks
         run: dvc repro run_benchmarks.dvc
-      - name: stop build
-        run: exit 1
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:
@@ -62,26 +60,35 @@ jobs:
         with:
           python-version: 3.7
       - uses: actions/checkout@v2
+        with:
+          path: dvc-bench
       - name: install requirements
+        working-directory: dvc-bench
         run: pip install -r requirements.txt
+      - uses: actions/checkout@v2
+        with:
+          repository: iterative/dvc-bench-registry
+          path: dvc-bench-registry
       - name: download ubuntu results
         uses: actions/download-artifact@v1
         with:
           name: results-ubuntu-latest
-      - name: download macos results
-        uses: actions/download-artifact@v1
-        with:
-          name: results-macos-latest
-      - name: download windows results
-        uses: actions/download-artifact@v1
-        with:
-          name: results-windows-latest
+#      - name: download macos results
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: results-macos-latest
+#      - name: download windows results
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: results-windows-latest
       - name: join results
         run: |
           mkdir results
-          cp -r results-macos-latest/* results/
-          cp -r results-windows-latest/* results/
+#          cp -r results-macos-latest/* results/
+#          cp -r results-windows-latest/* results/
           cp -r results-ubuntu-latest/* results/
+      - name: stop execution
+        run: exit 1
       - name: create static html
         run: asv publish
       - name: upload joined

@@ -69,8 +69,11 @@ jobs:
         with:
           repository: iterative/dvc-bench-registry
           path: dvc-bench-registry
+      - name: pull
+        working-directory: dvc-bench-registry
+        run: dvc pull
       - name: download ubuntu results
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
           name: results-ubuntu-latest
           path: results-ubuntu-latest
@@ -85,7 +88,6 @@ jobs:
       - name: join results
         working-directory: ~/
         run: |
-          mkdir results
           cp -r results-ubuntu-latest/* dvc-bench-registry/results/
       - name: stop execution
         run: exit 1

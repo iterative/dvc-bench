@@ -46,6 +46,8 @@ jobs:
         run: dvc get https://github.com/iterative/dvc-bench-registry.git results -o results
       - name: run benchmarks
         run: dvc repro run_benchmarks.dvc
+      - name: stop build
+        run: exit 1
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:

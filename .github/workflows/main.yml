@@ -91,6 +91,16 @@ jobs:
       - name: join results
         run: |
           cp -r results-ubuntu-latest/* dvc-bench-registry/results/
+      - name: commit results to dvc
+        working-directoru: dvc-bench-registry
+        run: dvc commit -f results.dvc
+      - name: create PR to registry
+        uses: peter-evans/create-pull-request@v2
+        with:
+          path: dvc-bench-registry
+          commit-message: test message
+          title: title
+          reviewers: [pared]
       - name: stop execution
         run: exit 1
       - name: create static html

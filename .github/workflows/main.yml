@@ -101,6 +101,7 @@ jobs:
           commit-message: test message
           title: title
           reviewers: pared
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: stop execution
         run: exit 1
       - name: create static html

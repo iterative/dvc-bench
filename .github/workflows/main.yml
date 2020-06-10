@@ -36,6 +36,12 @@ jobs:
         run: pip install -r requirements.txt
       - name: setup asv machine
         run: python write_asv_machine.py
+      - name: configure aws
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: us-east-2
       - name: download existing results
         run: dvc get https://github.com/iterative/dvc-bench-registry.git results -o existing_results && mv existing_results results
       - name: run benchmarks

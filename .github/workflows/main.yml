@@ -87,7 +87,7 @@ jobs:
         run: dvc commit -f results.dvc
       - name: create PR to results
         uses: peter-evans/create-pull-request@v2
-        if: github.event.pusher.name != "pr-bot"
+        if: github.actor != 'pr-bot'
         with:
           author: pr-bot
           commiter: pr-bot

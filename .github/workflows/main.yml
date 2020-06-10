@@ -61,7 +61,6 @@ jobs:
           python-version: 3.7
       - uses: actions/checkout@v2
       - name: install requirements
-        working-directory: dvc-bench
         run: pip install -r requirements.txt
       - uses: actions/checkout@v2
         with:
@@ -89,7 +88,6 @@ jobs:
 #        with:
 #          name: results-windows-latest
       - name: join results
-        working-directory: ~/
         run: |
           cp -r results-ubuntu-latest/* dvc-bench-registry/results/
       - name: stop execution

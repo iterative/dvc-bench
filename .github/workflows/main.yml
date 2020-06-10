@@ -62,6 +62,18 @@ jobs:
       - uses: actions/checkout@v2
       - name: install requirements
         run: pip install -r requirements.txt
+      - name: download ubuntu results
+        uses: actions/download-artifact@v2
+        with:
+          name: results-ubuntu-latest
+#      - name: download macos results
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: results-macos-latest
+#      - name: download windows results
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: results-windows-latest
       - uses: actions/checkout@v2
         with:
           repository: iterative/dvc-bench-registry
@@ -75,18 +87,6 @@ jobs:
       - name: pull
         working-directory: dvc-bench-registry
         run: dvc pull
-      - name: download ubuntu results
-        uses: actions/download-artifact@v2
-        with:
-          name: results-ubuntu-latest
-#      - name: download macos results
-#        uses: actions/download-artifact@v1
-#        with:
-#          name: results-macos-latest
-#      - name: download windows results
-#        uses: actions/download-artifact@v1
-#        with:
-#          name: results-windows-latest
       - name: join results
         run: |
           cp -r results-ubuntu-latest/* dvc-bench-registry/results/

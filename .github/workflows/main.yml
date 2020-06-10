@@ -66,6 +66,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: results-ubuntu-latest
+          path: results-ubuntu-latest
 #      - name: download macos results
 #        uses: actions/download-artifact@v1
 #        with:

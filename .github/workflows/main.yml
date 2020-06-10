@@ -101,7 +101,6 @@ jobs:
           commit-message: test message
           title: title
           reviewers: pared
-          request-to-parent: true
       - name: stop execution
         run: exit 1
       - name: create static html

@@ -2,6 +2,7 @@ name: DVC benchmarks
 on: [push, pull_request]
 
 jobs:
+  if: github.event.pusher.name != "GitHub Actions"
   verify:
     name: tests and styling check
     runs-on: ${{ matrix.os }}
@@ -43,7 +44,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
       - name: download existing results
-        run: dvc get https://github.com/iterative/dvc-bench-registry.git results -o results
+        run: dvc pull
       - name: run benchmarks
         run: dvc repro run_benchmarks.dvc
       - name: upload raw results
@@ -66,7 +67,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: results-ubuntu-latest
-          path: results-ubuntu-latest
 #      - name: download macos results
 #        uses: actions/download-artifact@v1
 #        with:
@@ -75,29 +75,20 @@ jobs:
 #        uses: actions/download-artifact@v1
 #        with:
 #          name: results-windows-latest
-      - uses: actions/checkout@v2
-        with:
-          repository: iterative/dvc-bench-registry
-          path: dvc-bench-registry
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
-      - name: pull
-        working-directory: dvc-bench-registry
-        run: dvc pull
       - name: join results
         run: |
-          cp -r results-ubuntu-latest/* dvc-bench-registry/results/
+          cp -r results-ubuntu-latest/* results/
       - name: commit results to dvc
-        working-directory: dvc-bench-registry
         run: dvc commit -f results.dvc
-      - name: create PR to registry
+      - name: create PR to results
         uses: peter-evans/create-pull-request@v2
         with:
-          path: dvc-bench-registry
           commit-message: test message
           title: title
           reviewers: pared

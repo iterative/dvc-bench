@@ -84,8 +84,6 @@ jobs:
       - name: join results
         run: |
           mkdir results
-#          cp -r results-macos-latest/* results/
-#          cp -r results-windows-latest/* results/
           cp -r results-ubuntu-latest/* results/
       - name: stop execution
         run: exit 1

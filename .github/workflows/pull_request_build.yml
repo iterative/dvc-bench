@@ -20,3 +20,7 @@ jobs:
         run: pre-commit run --all-files
       - name: run tests
         run: python -m py.test
+      - name: setup asv
+        run: python write_asv_machine.py && asv check
+      - name: quick asv build of HEAD
+        run: asv run --quick

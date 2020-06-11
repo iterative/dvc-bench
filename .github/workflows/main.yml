@@ -2,8 +2,8 @@ name: master build
 on:
   pull_request:
     types: [closed]
-    branches:
-      - master
+#    branches:
+#      - master
 
 jobs:
   build:

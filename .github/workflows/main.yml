@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    if: github.event.pull_request.merged && github.event.head_commit.author.name != 'github-actions[bot]'
+    if: github.event.head_commit.author.name != 'github-actions[bot]'
     name: run benchmarks
     runs-on: ${{ matrix.os }}
     strategy:
@@ -42,7 +42,7 @@ jobs:
           name: results-${{ matrix.os }}
           path: results
   publish:
-    if: github.event.pull_request.merged && github.event.head_commit.author.name != 'github-actions[bot]'
+    if: github.event.head_commit.author.name != 'github-actions[bot]'
     name: join results and publish
     needs: build
     runs-on: ubuntu-latest

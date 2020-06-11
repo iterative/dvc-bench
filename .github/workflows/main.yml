@@ -85,7 +85,7 @@ jobs:
           mkdir results
           cp -r results-ubuntu-latest/* results/
       - name: commit results to dvc
-        run: dvc commit -f results.dvc
+        run: dvc commit -f run_benchmarks.dvc
       - name: create PR to results
         uses: peter-evans/create-pull-request@v2
         if: github.actor != 'pr-bot'

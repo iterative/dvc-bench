@@ -4,7 +4,7 @@ on: [push, pull_request]
 jobs:
   build:
     if: github.actor != 'pr-bot'
-    name: benchmarks
+    name: run benchmarks
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -78,8 +78,8 @@ jobs:
       - name: create PR to results
         uses: peter-evans/create-pull-request@v2
         with:
-          author: pr-bot
-          commiter: pr-bot
+          author: pr-bot <nomail@plsdontsentemail.com>
+          commiter: pr-bot <nomail@plsdontsentemail.com>
           commit-message: test message
           title: title
           reviewers: pared

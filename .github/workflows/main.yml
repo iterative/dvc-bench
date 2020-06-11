@@ -5,7 +5,6 @@ jobs:
   build:
     if: github.actor != 'pr-bot'
     name: benchmarks
-    needs: verify
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:

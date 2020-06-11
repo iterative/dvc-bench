@@ -80,11 +80,10 @@ jobs:
 #          cp -r /tmp/results-macos/* results/
       - name: commit results to dvc
         run: dvc commit -f run_benchmarks.dvc && dvc push
-      - uses: hmarr/debug-action@v1.0.0
-      - name: create PR to results
+      - name: create PR for results
+#        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: peter-evans/create-pull-request@v2
         with:
-          commit-message: Update results
           title: Update results
           reviewers: pared
           token: ${{ secrets.GITHUB_TOKEN }}

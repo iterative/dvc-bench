@@ -8,4 +8,3 @@ deps:
 outs:
 - md5: 9531dcc1c1aa3feb29c21b152f2b4a5c
   path: hashes.txt
-  cache: false

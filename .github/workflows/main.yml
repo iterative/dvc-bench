@@ -2,8 +2,10 @@ name: DVC benchmarks
 on: [push, pull_request]
 
 jobs:
-  verify:
-    name: tests and styling check
+  build:
+    if: github.actor != 'pr-bot'
+    name: benchmarks
+    needs: verify
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -20,20 +22,6 @@ jobs:
         run: pre-commit run --all-files
       - name: run tests
         run: python -m py.test
-  build:
-    name: benchmarks
-    needs: verify
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-    steps:
-      - uses: actions/setup-python@v2
-        with:
-            python-version: 3.7
-      - uses: actions/checkout@v2
-      - name: install requirements
-        run: pip install -r requirements.txt
       - name: setup asv
         run: python write_asv_machine.py && asv check
       - name: configure aws credentials
@@ -52,6 +40,7 @@ jobs:
           name: results-${{ matrix.os }}
           path: results
   publish:
+    if: github.actor != 'pr-bot'
     name: join results and publish
     needs: build
     runs-on: ubuntu-latest
@@ -80,15 +69,15 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
+      - name: dvc pull existing
+        run: dvc pull
       - name: join results
         run: |
-          mkdir results
           cp -r results-ubuntu-latest/* results/
       - name: commit results to dvc
         run: dvc commit -f run_benchmarks.dvc
       - name: create PR to results
         uses: peter-evans/create-pull-request@v2
-        if: github.actor != 'pr-bot'
         with:
           author: pr-bot
           commiter: pr-bot

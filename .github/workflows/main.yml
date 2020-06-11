@@ -1,5 +1,7 @@
-name: DVC benchmarks
-on: [push, pull_request]
+name: DVC benchmarks build
+on: [push]
+#    branches:
+#      - master
 
 jobs:
   build:
@@ -81,7 +83,6 @@ jobs:
       - name: commit results to dvc
         run: dvc commit -f run_benchmarks.dvc && dvc push
       - name: create PR for results
-#        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: peter-evans/create-pull-request@v2
         with:
           title: Update results
@@ -95,7 +96,6 @@ jobs:
           name: html-all
           path: html
       - name: deploy new benchmarks to github pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,4 +1,4 @@
-name: DVC benchmarks build
+name: master build
 on: [push]
 #    branches:
 #      - master

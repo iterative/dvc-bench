@@ -1,9 +1,14 @@
-name: DVC benchmarks
-on: [push, pull_request]
+name: master build
+on:
+  push:
+    branches:
+      - master
 
 jobs:
-  verify:
-    name: tests and styling check
+  build:
+    # Prevent results update PR from triggering the workflow
+    if: github.event.head_commit.author.name != 'github-actions[bot]'
+    name: run benchmarks
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -20,30 +25,26 @@ jobs:
         run: pre-commit run --all-files
       - name: run tests
         run: python -m py.test
-  build:
-    name: benchmarks
-    needs: verify
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
-    steps:
-      - uses: actions/setup-python@v2
+      - name: setup asv
+        run: python write_asv_machine.py && asv check
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-            python-version: 3.7
-      - uses: actions/checkout@v2
-      - name: install requirements
-        run: pip install -r requirements.txt
-      - name: setup asv machine
-        run: python write_asv_machine.py
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+      - name: download existing results
+        run: dvc pull
       - name: run benchmarks
-        run: dvc repro run_benchmarks.dvc
+        run: dvc repro -f run_benchmarks.dvc
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:
           name: results-${{ matrix.os }}
           path: results
   publish:
+    # Prevent results update PR from triggering the workflow
+    if: github.event.head_commit.author.name != 'github-actions[bot]'
     name: join results and publish
     needs: build
     runs-on: ubuntu-latest
@@ -55,32 +56,44 @@ jobs:
       - name: install requirements
         run: pip install -r requirements.txt
       - name: download ubuntu results
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
           name: results-ubuntu-latest
+          path: /tmp/results-ubuntu
       - name: download macos results
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
           name: results-macos-latest
+          path: /tmp/results-macos
       - name: download windows results
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
           name: results-windows-latest
+          path: /tmp/results-windows
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+      - name: dvc pull existing
+        run: dvc pull
       - name: join results
         run: |
-          mkdir results
-          cp -r results-macos-latest/* results/
-          cp -r results-windows-latest/* results/
-          cp -r results-ubuntu-latest/* results/
+          cp -r /tmp/results-windows/* results/
+          cp -r /tmp/results-macos/* results/
+          cp -r /tmp/results-ubuntu/* results/
+      - name: commit results to dvc
+        run: dvc commit -f run_benchmarks.dvc && dvc push
+      - name: create PR for results
+        uses: peter-evans/create-pull-request@v2
+        with:
+          title: Update results
+          reviewers: pared
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: create static html
         run: asv publish
-      - name: upload joined
-        uses: actions/upload-artifact@v2
-        with:
-          name: html-all
-          path: html
       - name: deploy new benchmarks to github pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -78,10 +78,11 @@ jobs:
           cp -r /tmp/results-ubuntu/* results/
       - name: commit results to dvc
         run: dvc commit -f run_benchmarks.dvc && dvc push
+      - uses: hmarr/debug-action
       - name: create PR to results
         uses: peter-evans/create-pull-request@v2
         with:
-          commit-message: Automated results update for ${{ github.head_ref }}
+          commit-message: Update results
           title: Update results
           reviewers: pared
           token: ${{ secrets.GITHUB_TOKEN }}

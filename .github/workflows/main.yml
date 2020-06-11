@@ -78,7 +78,7 @@ jobs:
           cp -r /tmp/results-ubuntu/* results/
       - name: commit results to dvc
         run: dvc commit -f run_benchmarks.dvc && dvc push
-      - uses: hmarr/debug-action@v1
+      - uses: hmarr/debug-action@v1.0.0
       - name: create PR to results
         uses: peter-evans/create-pull-request@v2
         with:

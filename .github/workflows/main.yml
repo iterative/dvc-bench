@@ -63,7 +63,7 @@ jobs:
       - name: install requirements
         run: pip install -r requirements.txt
       - name: download ubuntu results
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v1
         with:
           name: results-ubuntu-latest
 #      - name: download macos results

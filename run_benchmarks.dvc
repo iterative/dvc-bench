@@ -1,9 +1,11 @@
-md5: 3cbd61a7c310c11e9d102c5064533fed
+md5: 74515f4dcde922115ef7f78b6d08f553
 cmd: asv run HASHFILE:hashes.txt -k --profile --show-stderr
 deps:
 - md5: 9531dcc1c1aa3feb29c21b152f2b4a5c
   path: hashes.txt
 outs:
-- md5: d751713988987e9331980363e24189ce.dir
+- md5: e3f0512a0bd95719b7e168953a25d0c4.dir
   path: results
   persist: true
+  cache: true
+  metric: false

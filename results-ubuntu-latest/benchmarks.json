@@ -1,0 +1,48 @@
+{
+    "init.InitNoScmBench.time_init": {
+        "code": "class InitNoScmBench:\n    def time_init(self):\n        assert main([\"init\", \"--no-scm\"]) == 0\n\nclass BaseBench:\n    def setup(self):\n        self.cwd = os.getcwd()\n        self.test_directory = TemporaryDirectory(prefix=\"DVCBenchmark\")\n        os.chdir(self.test_directory.name)",
+        "min_run_count": 2,
+        "name": "init.InitNoScmBench.time_init",
+        "number": 1,
+        "param_names": [],
+        "params": [],
+        "processes": 2,
+        "sample_time": 0.01,
+        "timeout": 60.0,
+        "type": "time",
+        "unit": "seconds",
+        "version": "ecdd0e7ac6a842849089fb56a2fbde9003234f55fd2a61c5fcf9976b6280ce47",
+        "warmup_time": 0
+    },
+    "init.InitScmBench.time_init": {
+        "code": "class InitScmBench:\n    def time_init(self):\n        assert main([\"init\"]) == 0\n\n    def setup(self):\n        super().setup()\n        init_git(self.test_directory.name)",
+        "min_run_count": 2,
+        "name": "init.InitScmBench.time_init",
+        "number": 1,
+        "param_names": [],
+        "params": [],
+        "processes": 2,
+        "sample_time": 0.01,
+        "timeout": 60.0,
+        "type": "time",
+        "unit": "seconds",
+        "version": "6ae79e0be3f8be2e6c505f0af999a28131796c2ffb510e5b28cb6f71bd2336dc",
+        "warmup_time": 0
+    },
+    "startup.StartupBench.time_startup": {
+        "code": "class StartupBench:\n    def time_startup(self):\n        proc = Popen([\"dvc\", \"--help\"], stdout=PIPE)\n        proc.communicate()\n        assert proc.returncode == 0\n\nclass BaseBench:\n    def setup(self):\n        self.cwd = os.getcwd()\n        self.test_directory = TemporaryDirectory(prefix=\"DVCBenchmark\")\n        os.chdir(self.test_directory.name)",
+        "min_run_count": 2,
+        "name": "startup.StartupBench.time_startup",
+        "number": 1,
+        "param_names": [],
+        "params": [],
+        "processes": 2,
+        "sample_time": 0.01,
+        "timeout": 60.0,
+        "type": "time",
+        "unit": "seconds",
+        "version": "e8bbbbf56a507adb73e494cfb6f93c10387711df1d4c1dfd8b6605a778bed11b",
+        "warmup_time": 0
+    },
+    "version": 2
+}

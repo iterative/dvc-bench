@@ -55,16 +55,16 @@ jobs:
         with:
           name: results-ubuntu-latest
           path: /tmp/results-ubuntu
-      - name: download macos results
-        uses: actions/download-artifact@v1
-        with:
-          name: results-macos-latest
-          path: /tmp/results-macos
-      - name: download windows results
-        uses: actions/download-artifact@v1
-        with:
-          name: results-windows-latest
-          path: /tmp/results-windows
+#      - name: download macos results
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: results-macos-latest
+#          path: /tmp/results-macos
+#      - name: download windows results
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: results-windows-latest
+#          path: /tmp/results-windows
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:

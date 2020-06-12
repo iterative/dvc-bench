@@ -1,0 +1,96 @@
+name: daily run
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  build:
+    name: run benchmarks
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+            python-version: 3.7
+      - uses: actions/checkout@v2
+      - name: install requirements
+        run: pip install -r requirements.txt
+      - name: turn off dvc's analytics
+        run: dvc config --global core.analytics false
+      - name: setup asv machine
+        run: python write_asv_machine.py && asv check
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+      - name: download existing results
+        run: dvc pull
+      # we cannot be sure that main build has been done on current machine,
+      # so we need to repro whole build
+      - name: run benchmarks
+        run: dvc repro -f run_benchmarks.dvc
+      - name: run benchmarks on latest master
+        run: asv run
+      - name: upload raw results
+        uses: actions/upload-artifact@v2
+        with:
+          name: results-${{ matrix.os }}
+          path: results
+  publish:
+    name: join results and publish
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - uses: actions/checkout@v2
+      - name: install requirements
+        run: pip install -r requirements.txt
+      - name: download ubuntu results
+        uses: actions/download-artifact@v2
+        with:
+          name: results-ubuntu-latest
+          path: /tmp/results-ubuntu
+      - name: download macos results
+        uses: actions/download-artifact@v2
+        with:
+          name: results-macos-latest
+          path: /tmp/results-macos
+      - name: download windows results
+        uses: actions/download-artifact@v2
+        with:
+          name: results-windows-latest
+          path: /tmp/results-windows
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+      - name: dvc pull existing
+        run: dvc pull
+      - name: join results
+        run: |
+          cp -r /tmp/results-windows/* results/
+          cp -r /tmp/results-macos/* results/
+          cp -r /tmp/results-ubuntu/* results/
+      - name: commit results to dvc
+        run: dvc commit -f run_benchmarks.dvc && dvc push
+      - name: create PR for results
+        uses: peter-evans/create-pull-request@v2
+        with:
+          title: Update results
+          reviewers: pared
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: create static html
+        run: asv publish
+      - name: deploy new benchmarks to github pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: html

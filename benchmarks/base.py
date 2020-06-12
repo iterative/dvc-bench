@@ -48,19 +48,14 @@ def init_git(path):
 
 def init_dvc(path, git=True):
     from dvc.repo import Repo
-    from dvc.main import main
 
     if git:
         init_git(path)
         repo = Repo.init(path)
         repo.scm.commit("Init DVC repo")
-        repo.close()
     else:
-        Repo.init(path, no_scm=True).close()
-
-    # turn off analytics with backward compatible method and reload
-    assert main(["config", "core.analytics", "false"]) == 0
-    return Repo(path)
+        repo = Repo.init(path, no_scm=True).close()
+    return repo
 
 
 def random_file(path, file_size):

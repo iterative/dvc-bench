@@ -7,9 +7,8 @@ from dvc.main import main
 
 
 class DVCStatusBench(BaseBench):
-    repeat = (1, 1, 60.0)
+    repeat = (1, 1, 300.0)
     number = 10
-    warmup_time = 0
 
     def setup(self):
         super().setup()

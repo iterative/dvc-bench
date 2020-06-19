@@ -1,7 +1,8 @@
 import os
 import shutil
 
-from benchmarks.base import BaseBench, init_dvc, random_data_dir
+from benchmarks.base import BaseBench, random_data_dir
+from benchmarks.fixtures import DVC, Git, TmpDir
 from dvc.ignore import DvcIgnore
 from dvc.main import main
 
@@ -11,13 +12,12 @@ class DVCStatusBench(BaseBench):
     number = 10
     warmup_time = 0
 
+    fixtures = [TmpDir, Git, DVC]
+
     def setup(self):
         super().setup()
-        self.repo = init_dvc(self.test_directory.name)
         dataset_path = random_data_dir(10000, 10)
-        os.makedirs(
-            os.path.join(self.test_directory.name, "data"), exist_ok=True
-        )
+        os.makedirs(os.path.join(self.params["TmpDir"], "data"))
         assert main(["add", "data", "--quiet"]) == 0
         shutil.copytree(dataset_path, "data/data")
         # calculating md5
@@ -36,4 +36,4 @@ class DVCIgnoreBench(DVCStatusBench):
 
     def setup(self):
         super().setup()
-        self.add_ignore_rules(self.test_directory.name, 30)
+        self.add_ignore_rules(self.params["TmpDir"], 30)

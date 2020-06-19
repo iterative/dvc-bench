@@ -1,8 +1,8 @@
 import os
-import stat
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import ExitStack
 from multiprocessing import cpu_count
-from tempfile import TemporaryDirectory, gettempdir
+from tempfile import gettempdir
 
 
 def sources_dir():
@@ -15,47 +15,21 @@ class BaseBench:
     warmup_time = 0
     number = 1
     repeat = (3, 5, 60.0)
-    processes = max(2, cpu_count() - 1)
+    processes = max(2, os.cpu_count() - 1)
+    timeout = 300
+
+    @property
+    def fixtures(self):
+        raise NotImplementedError
 
     def setup(self):
-        self.cwd = os.getcwd()
-        self.test_directory = TemporaryDirectory(prefix="DVCBenchmark")
-        os.chdir(self.test_directory.name)
+        self.fixture_stack = ExitStack()
+        self.params = {}
+        for fixture in self.fixtures:
+            self.fixture_stack.enter_context(fixture(self.params))
 
     def teardown(self):
-        os.chdir(self.cwd)
-
-        if hasattr(self, "repo"):
-            self.repo.close()
-
-        if os.name == "nt":
-            # Windows does not allow to remove read only files
-            for root, _, files in os.walk(self.test_directory.name):
-                for file in files:
-                    path = os.path.join(root, file)
-                    perm = os.stat(path).st_mode | stat.S_IWRITE
-                    os.chmod(path, perm)
-
-        self.test_directory.cleanup()
-
-
-def init_git(path):
-    from git import Repo
-
-    git = Repo.init(path)
-    git.close()
-
-
-def init_dvc(path, git=True):
-    from dvc.repo import Repo
-
-    if git:
-        init_git(path)
-        repo = Repo.init(path)
-        repo.scm.commit("Init DVC repo")
-    else:
-        repo = Repo.init(path, no_scm=True).close()
-    return repo
+        self.fixture_stack.close()
 
 
 def random_file(path, file_size):
@@ -64,8 +38,12 @@ def random_file(path, file_size):
 
 
 def random_data_dir(num_files, file_size):
-    dirname = "data_{}_{}".format(num_files, file_size)
-    dir_path = os.path.join(sources_dir(), dirname)
+    dir_path = os.path.join(
+        sources_dir(),
+        "random_data",
+        f"{num_files}_files",
+        f"{file_size}_bytes",
+    )
 
     if not os.path.exists(dir_path):
         os.makedirs(dir_path, exist_ok=True)

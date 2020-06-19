@@ -27,6 +27,8 @@ class DVCStatusBench(BaseBench):
 
 
 class DVCIgnoreBench(DVCStatusBench):
+    timeout = 300
+
     @staticmethod
     def add_ignore_rules(path, number):
         with open(os.path.join(path, DvcIgnore.DVCIGNORE_FILE), "w",) as f_w:

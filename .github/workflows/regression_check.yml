@@ -1,0 +1,18 @@
+name: daily regression check
+# schedule 2 hours after nightly build
+on:
+  schedule:
+    - cron: '0 2 * * *'
+
+jobs:
+  regression_feed_read:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: guilhem/rss-issues-action@0.1.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          feed: "https://iterative.github.io/dvc-bench/regressions.xml"
+          prefix: "[regression]"
+          dry-run: "false"
+          lastTime: "24h"
+          labels: "performance"

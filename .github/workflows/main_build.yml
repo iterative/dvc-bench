@@ -82,9 +82,9 @@ jobs:
         run: dvc pull
       - name: join results
         run: |
-          cp -r /tmp/results-windows/* results/
-          cp -r /tmp/results-macos/* results/
-          cp -r /tmp/results-ubuntu/* results/
+          cp -r /tmp/results-windows/win* results/
+          cp -r /tmp/results-macos/darwin* results/
+          cp -r /tmp/results-ubuntu/linux* results/
       - name: commit results to dvc
         run: dvc commit -f run_benchmarks.dvc && dvc push
       - name: create PR for results

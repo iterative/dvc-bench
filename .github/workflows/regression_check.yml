@@ -6,7 +6,7 @@ on:
 
 jobs:
   regression_feed_read:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: guilhem/rss-issues-action@0.1.0
         with:

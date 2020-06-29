@@ -14,8 +14,8 @@ def sources_dir():
 class BaseBench:
     warmup_time = 0
     number = 1
-    repeat = (3, 5, 60.0)
-    processes = max(2, cpu_count() - 1)
+    repeat = 5
+    processes = 2
     timeout = 300
 
     def setup(self):

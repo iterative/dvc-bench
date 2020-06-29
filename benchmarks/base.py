@@ -16,6 +16,7 @@ class BaseBench:
     number = 1
     repeat = (3, 5, 60.0)
     processes = max(2, cpu_count() - 1)
+    timeout = 300
 
     def setup(self):
         self.cwd = os.getcwd()

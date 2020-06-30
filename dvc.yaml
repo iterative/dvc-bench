@@ -7,7 +7,7 @@ stages:
     outs:
     - hashes.txt
   run_benchmarks:
-    cmd: asv run HASHFILE:hashes.txt --skip-existing-successful --profile --show-stderr --quick
+    cmd: asv run HASHFILE:hashes.txt --skip-existing-successful --profile --show-stderr
     deps:
     - hashes.txt
     outs:

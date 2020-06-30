@@ -1,0 +1,15 @@
+stages:
+  convert_tags:
+    cmd: python tags_to_sha.py
+    deps:
+    - tags.txt
+    - tags_to_sha.py
+    outs:
+    - hashes.txt
+  run_benchmarks:
+    cmd: asv run HASHFILE:hashes.txt --skip-existing-successful --profile --show-stderr --quick
+    deps:
+    - hashes.txt
+    outs:
+    - results:
+        persist: true

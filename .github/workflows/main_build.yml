@@ -38,7 +38,7 @@ jobs:
       - name: download existing results
         run: dvc pull
       - name: run benchmarks
-        run: dvc repro -f run_benchmarks.dvc
+        run: dvc repro -f run_benchmarks
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:
@@ -86,7 +86,7 @@ jobs:
           cp -r /tmp/results-macos/darwin* results/
           cp -r /tmp/results-ubuntu/linux* results/
       - name: commit results to dvc
-        run: dvc commit -f run_benchmarks.dvc && dvc push
+        run: dvc commit -f run_benchmarks && dvc push
       - name: create PR for results
         uses: peter-evans/create-pull-request@v2
         with:

@@ -32,7 +32,7 @@ jobs:
       # we cannot be sure that main build has been done on current machine,
       # so we need to repro whole build
       - name: run benchmarks
-        run: dvc repro -f run_benchmarks.dvc
+        run: dvc repro -f run_benchmarks
       - name: run benchmarks on latest master
         run: asv run
       - name: upload raw results
@@ -80,7 +80,7 @@ jobs:
           cp -r /tmp/results-macos/darwin* results/
           cp -r /tmp/results-ubuntu/linux* results/
       - name: commit results to dvc
-        run: dvc commit -f run_benchmarks.dvc && dvc push
+        run: dvc commit -f run_benchmarks && dvc push
       - name: create PR for results
         uses: peter-evans/create-pull-request@v2
         with:

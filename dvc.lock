@@ -1,0 +1,19 @@
+convert_tags:
+  cmd: python tags_to_sha.py
+  deps:
+  - path: tags.txt
+    md5: 88a9f4f7a2d51f85730800aacae11e99
+  - path: tags_to_sha.py
+    md5: 4a19f246eb09bb5147078af56fb8d019
+  outs:
+  - path: hashes.txt
+    md5: 2a40e5c9333cca4f9ef2bb127ebcbcfe
+run_benchmarks:
+  cmd: asv run HASHFILE:hashes.txt --skip-existing-successful --profile --show-stderr
+    --quick
+  deps:
+  - path: hashes.txt
+    md5: 2a40e5c9333cca4f9ef2bb127ebcbcfe
+  outs:
+  - path: results
+    md5: d2c620d9c2ef60452e57bdf3bde29c57.dir

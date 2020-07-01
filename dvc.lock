@@ -15,4 +15,4 @@ run_benchmarks:
     md5: 9531dcc1c1aa3feb29c21b152f2b4a5c
   outs:
   - path: results
-    md5: b43da8b8861285e678e40217e5959779.dir
+    md5: 2bdb7a487dc5c6b20f2a817d0e998534.dir

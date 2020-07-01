@@ -85,6 +85,7 @@ jobs:
           cp -r /tmp/results-windows/win* results/
           cp -r /tmp/results-macos/darwin* results/
           cp -r /tmp/results-ubuntu/linux* results/
+          cp /tmp/results-ubuntu/benchmarks.json results/benchmarks.json
       - name: commit results to dvc
         run: dvc commit -f run_benchmarks && dvc push
       - name: create PR for results

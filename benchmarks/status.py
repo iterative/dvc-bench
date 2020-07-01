@@ -7,8 +7,8 @@ from dvc.main import main
 
 
 class DVCStatusBench(BaseBench):
-    repeat = (1, 1, 300.0)
-    number = 10
+    repeat = 1
+    number = 100
 
     def setup(self):
         super().setup()

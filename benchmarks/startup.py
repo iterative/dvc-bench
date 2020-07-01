@@ -4,7 +4,7 @@ from benchmarks.base import BaseBench
 
 
 class StartupBench(BaseBench):
-    number = 50
+    number = 100
     repeat = 1
 
     def time_startup(self):

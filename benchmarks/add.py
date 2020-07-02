@@ -1,28 +1,35 @@
+import logging
+import os
 import shutil
 
-from benchmarks.base import BaseBench, init_dvc, random_data_dir
+from benchmarks.base import BaseBench, init_dvc
 from dvc.main import main
 
+logger = logging.getLogger(__name__)
 
-class Add_100_1M_copy(BaseBench):
+
+class AddCopy(BaseBench):
+    repeat = 3
+
     def setup(self):
         super().setup()
         self.repo = init_dvc(self.test_directory.name)
-        dataset_path = random_data_dir(100, 1024 * 1024)
+        dataset_path = os.path.join(
+            os.environ["ASV_CONF_DIR"], "data", "cats_dogs"
+        )
         shutil.copytree(dataset_path, "data")
 
-    # FIXME: make it more realistic use case
-    # def dont_time_add(self):
-    #     assert main(["add", "data"]) == 0
+    def time_cats_dogs(self):
+        assert main(["add", "data"]) == 0
 
 
-class Add_100_1M_symlink(Add_100_1M_copy):
+class AddSymlink(AddCopy):
     def setup(self):
         super().setup()
         assert main(["config", "cache.type", "symlink"]) == 0
 
 
-class Add_100_1M_hardlink(Add_100_1M_copy):
+class AddHardlink(AddCopy):
     def setup(self):
         super().setup()
         assert main(["config", "cache.type", "hardlink"]) == 0

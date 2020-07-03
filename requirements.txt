@@ -5,3 +5,4 @@ dvc[s3]==1.1.1
 pre-commit
 pytest
 pytest-mock
+feedparser

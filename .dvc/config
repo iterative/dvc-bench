@@ -2,3 +2,6 @@
     remote = bench_s3
 ['remote "bench_s3"']
     url = s3://dvc-bench/cache
+    profile = dvc-bench
+['remote "bench_s3_public"']
+    url = https://remote.dvc.org/dvc-bench

@@ -25,5 +25,7 @@ jobs:
         run: python -m py.test
       - name: setup asv
         run: python write_asv_machine.py && asv check
+      - name: download data
+        run: dvc pull data/cats_dogs.dvc -r bench_s3_public
       - name: quick asv build of HEAD
         run: asv run --quick

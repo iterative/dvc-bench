@@ -9,8 +9,6 @@ env:
 
 jobs:
   build:
-    # Prevent results update PR from triggering the workflow
-    if: github.event.head_commit.author.name != 'github-actions[bot]'
     name: run benchmarks
     runs-on: ${{ matrix.os }}
     strategy:
@@ -37,7 +35,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
       - name: download existing results
-        run: dvc pull
+        run: aws s3 cp --recursive s3://dvc-bench/latest_results results
       - name: run benchmarks
         run: dvc repro -f run_benchmarks
       - name: upload raw results
@@ -46,8 +44,6 @@ jobs:
           name: results-${{ matrix.os }}
           path: results
   publish:
-    # Prevent results update PR from triggering the workflow
-    if: github.event.head_commit.author.name != 'github-actions[bot]'
     name: join results and publish
     needs: build
     runs-on: ubuntu-18.04
@@ -79,24 +75,18 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
-      - name: dvc pull existing
-        run: dvc pull
+      - name: download existing results
+        run: aws s3 cp --recursive s3://dvc-bench/latest_results results
       - name: join results
         run: |
           cp -r /tmp/results-windows/win* results/
           cp -r /tmp/results-macos/darwin* results/
           cp -r /tmp/results-ubuntu/linux* results/
           cp /tmp/results-ubuntu/benchmarks.json results/benchmarks.json
-      - name: commit results to dvc
-        run: dvc commit -f run_benchmarks && dvc push
-      - name: create PR for results
-        uses: peter-evans/create-pull-request@v2
-        with:
-          title: Update results
-          reviewers: pared
-          token: ${{ secrets.GITHUB_TOKEN }}
       - name: create static html
         run: asv update && asv publish
+      - name: upload new results
+        run: aws s3 cp --recursive results s3://dvc-bench/latest_results
       - name: deploy new benchmarks to github pages
         uses: peaceiris/actions-gh-pages@v3
         with:

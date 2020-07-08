@@ -96,7 +96,7 @@ jobs:
           reviewers: pared
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: create static html
-        run: asv publish
+        run: asv update && asv publish
       - name: deploy new benchmarks to github pages
         uses: peaceiris/actions-gh-pages@v3
         with:

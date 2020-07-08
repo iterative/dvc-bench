@@ -1,5 +1,5 @@
 virtualenv==16.7.10
-asv==0.4.1
+git+https://github.com/airspeed-velocity/asv.git@160f21186e86698b5e9256587f3ccd36f7f44f37#egg=asv
 gitpython
 dvc[s3]==1.1.1
 pre-commit

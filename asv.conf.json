@@ -8,5 +8,12 @@
     "dvcs": "git",
 
     "environment_type": "virtualenv",
-    "env_dir": "envs"
+    "env_dir": "envs",
+    "regressions_thresholds":
+    {
+        ".*": 0.05,
+        "init.*": 0.25,
+        "startup.*": 0.25,
+        "status.*": 0.25
+    }
 }

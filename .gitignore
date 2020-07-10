@@ -5,3 +5,4 @@ dvc/
 /results
 html/
 /benchmarks_log
+dvc.lock

@@ -13,3 +13,4 @@ stages:
     outs:
     - results:
         persist: true
+        cache: false

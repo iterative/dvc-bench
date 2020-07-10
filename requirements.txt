@@ -2,6 +2,7 @@ virtualenv==16.7.10
 git+https://github.com/airspeed-velocity/asv.git@160f21186e86698b5e9256587f3ccd36f7f44f37#egg=asv
 gitpython
 dvc[s3]==1.1.1
+awscli>=1.16.297
 pre-commit
 pytest
 pytest-mock

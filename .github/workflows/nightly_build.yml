@@ -35,7 +35,7 @@ jobs:
       - name: run benchmarks
         run: dvc repro -f run_benchmarks
       - name: run benchmarks on latest master
-        run: asv run
+        run: asv run --show-stderr
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:

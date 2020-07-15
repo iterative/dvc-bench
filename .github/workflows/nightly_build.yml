@@ -28,6 +28,8 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
+      - name: download data
+        run: dvc pull data/cats_dogs.dvc
       - name: download existing results
         run: aws s3 cp --recursive s3://dvc-bench/latest_results results
       # we cannot be sure that main build has been done on current machine,

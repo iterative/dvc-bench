@@ -1,7 +1,9 @@
+import shutil
+
 from benchmarks.base import BaseBench
 
 
-class Add(BaseBench):
+class CheckoutBench(BaseBench):
     repeat = 3
 
     params = ["copy", "symlink", "hardlink"]
@@ -13,9 +15,11 @@ class Add(BaseBench):
         self.init_git()
         self.init_dvc()
 
-        self.gen("data", template="cats_dogs")
-
         self.dvc("config", "cache.type", link_type, "--quiet")
 
-    def time_cats_dogs(self, link_type):
+        self.gen("data", template="cats_dogs")
         self.dvc("add", "data", "--quiet")
+        shutil.rmtree("data")
+
+    def time_cats_dogs(self, link_type):
+        self.dvc("checkout", "data.dvc")

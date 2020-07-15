@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from benchmarks.base import BaseBench, random_data_dir
+from benchmarks.base import BaseBench
 from dvc.ignore import DvcIgnore
 
 
@@ -13,12 +13,12 @@ class DVCStatusBench(BaseBench):
         super().setup()
         self.init_git()
         self.init_dvc()
-        dataset_path = random_data_dir(10000, 10)
+        data_path = self.dataset_path("big")
         os.makedirs(
             os.path.join(self.test_directory.name, "data"), exist_ok=True
         )
         self.dvc("add", "data", "--quiet")
-        shutil.copytree(dataset_path, "data/data")
+        shutil.copytree(data_path, os.path.join("data", "data"))
         # calculating md5
         self.dvc("status", "--quiet", return_code=1)
 

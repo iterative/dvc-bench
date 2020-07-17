@@ -3,7 +3,6 @@ import shutil
 
 from benchmarks.base import BaseBench, init_dvc, random_data_dir
 from dvc.ignore import DvcIgnore
-from dvc.main import main
 
 
 class DVCStatusBench(BaseBench):
@@ -17,13 +16,13 @@ class DVCStatusBench(BaseBench):
         os.makedirs(
             os.path.join(self.test_directory.name, "data"), exist_ok=True
         )
-        assert main(["add", "data", "--quiet"]) == 0
+        self.dvc("add", "data", "--quiet")
         shutil.copytree(dataset_path, "data/data")
         # calculating md5
-        assert main(["status", "--quiet"]) == 1
+        self.dvc("status", "--quiet", return_code=1)
 
     def time_status(self):
-        assert main(["status", "--quiet"]) == 1
+        self.dvc("status", "--quiet", return_code=1)
 
 
 class DVCIgnoreBench(DVCStatusBench):

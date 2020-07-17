@@ -2,7 +2,10 @@ import os
 import stat
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import cpu_count
+from subprocess import PIPE, Popen
 from tempfile import TemporaryDirectory, gettempdir
+
+from dvc.main import main
 
 
 def sources_dir():
@@ -38,6 +41,14 @@ class BaseBench:
                     os.chmod(path, perm)
 
         self.test_directory.cleanup()
+
+    def dvc(self, *args, return_code=0):
+        assert main(args) == return_code
+
+    def proc_dvc(self, *args, return_code=0):
+        proc = Popen(["dvc", *args], stdout=PIPE)
+        proc.communicate()
+        assert proc.returncode == return_code
 
 
 def init_git(path):

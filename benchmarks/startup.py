@@ -6,4 +6,4 @@ class StartupBench(BaseBench):
     repeat = 1
 
     def time_startup(self):
-        self.proc_dvc("--help")
+        self.dvc("--help", proc=True)

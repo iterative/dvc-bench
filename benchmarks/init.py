@@ -1,15 +1,15 @@
-from benchmarks.base import BaseBench, init_git
+from benchmarks.base import BaseBench
 
 
 class InitNoScmBench(BaseBench):
     def time_init(self):
-        self.dvc("init", "--no-scm")
+        self.dvc("init", "--no-scm", "--quiet")
 
 
 class InitScmBench(BaseBench):
     def setup(self):
         super().setup()
-        init_git(self.test_directory.name)
+        self.init_git()
 
     def time_init(self):
         self.dvc("init", "--quiet")

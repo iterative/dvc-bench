@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from benchmarks.base import BaseBench, init_dvc, random_data_dir
+from benchmarks.base import BaseBench, random_data_dir
 from dvc.ignore import DvcIgnore
 
 
@@ -11,7 +11,8 @@ class DVCStatusBench(BaseBench):
 
     def setup(self):
         super().setup()
-        self.repo = init_dvc(self.test_directory.name)
+        self.init_git()
+        self.init_dvc()
         dataset_path = random_data_dir(10000, 10)
         os.makedirs(
             os.path.join(self.test_directory.name, "data"), exist_ok=True

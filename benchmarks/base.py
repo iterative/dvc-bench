@@ -18,12 +18,12 @@ class BaseBench:
     processes = 1
     timeout = 300
 
-    def setup(self):
+    def setup(self, *params):
         self.cwd = os.getcwd()
         self.test_directory = TemporaryDirectory(prefix="DVCBenchmark")
         os.chdir(self.test_directory.name)
 
-    def teardown(self):
+    def teardown(self, *params):
         os.chdir(self.cwd)
 
         if hasattr(self, "repo"):

@@ -2,7 +2,10 @@ import os
 import stat
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import cpu_count
+from subprocess import PIPE, Popen
 from tempfile import TemporaryDirectory, gettempdir
+
+from dvc.main import main
 
 
 def sources_dir():
@@ -18,12 +21,16 @@ class BaseBench:
     processes = 1
     timeout = 300
 
-    def setup(self):
+    def setup(self, *params):
         self.cwd = os.getcwd()
         self.test_directory = TemporaryDirectory(prefix="DVCBenchmark")
-        os.chdir(self.test_directory.name)
+        os.chdir(self.path)
 
-    def teardown(self):
+    @property
+    def path(self):
+        return self.test_directory.name
+
+    def teardown(self, *params):
         os.chdir(self.cwd)
 
         if hasattr(self, "repo"):
@@ -31,7 +38,7 @@ class BaseBench:
 
         if os.name == "nt":
             # Windows does not allow to remove read only files
-            for root, _, files in os.walk(self.test_directory.name):
+            for root, _, files in os.walk(self.path):
                 for file in files:
                     path = os.path.join(root, file)
                     perm = os.stat(path).st_mode | stat.S_IWRITE
@@ -39,24 +46,24 @@ class BaseBench:
 
         self.test_directory.cleanup()
 
+    def dvc(self, *args, return_code=0, proc=False):
+        if proc:
+            proc = Popen(["dvc", *args], stdout=PIPE)
+            proc.communicate()
+            assert proc.returncode == return_code
+        else:
+            assert main(args) == return_code
 
-def init_git(path):
-    from git import Repo
+    def init_git(self):
+        from git import Repo
 
-    git = Repo.init(path)
-    git.close()
+        Repo.init(self.path).close()
 
+    def init_dvc(self):
+        from dvc.repo import Repo
 
-def init_dvc(path, git=True):
-    from dvc.repo import Repo
-
-    if git:
-        init_git(path)
-        repo = Repo.init(path)
-        repo.scm.commit("Init DVC repo")
-    else:
-        repo = Repo.init(path, no_scm=True).close()
-    return repo
+        no_scm = not os.path.exists(".git")
+        Repo.init(self.path, no_scm=no_scm).close()
 
 
 def random_file(path, file_size):

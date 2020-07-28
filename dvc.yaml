@@ -1,6 +1,6 @@
 stages:
   convert_tags:
-    cmd: python tags_to_sha.py
+    cmd: asv check && python tags_to_sha.py
     deps:
     - tags.txt
     - tags_to_sha.py

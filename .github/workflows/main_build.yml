@@ -27,7 +27,7 @@ jobs:
       - name: run tests
         run: python -m py.test
       - name: setup asv
-        run: python write_asv_machine.py && asv check
+        run: python write_asv_machine.py
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:

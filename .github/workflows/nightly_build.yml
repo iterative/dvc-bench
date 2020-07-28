@@ -21,7 +21,7 @@ jobs:
       - name: install requirements
         run: pip install -r requirements.txt
       - name: setup asv machine
-        run: python write_asv_machine.py && asv check
+        run: python write_asv_machine.py
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:

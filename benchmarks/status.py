@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from benchmarks.base import BaseBench
+from benchmarks.base import DATA_TEMPLATES, BaseBench
 from dvc.ignore import DvcIgnore
 
 
@@ -13,7 +13,7 @@ class DVCStatusBench(BaseBench):
         super().setup()
         self.init_git()
         self.init_dvc()
-        data_path = self.dataset_path("big")
+        data_path = DATA_TEMPLATES["large"]
         os.makedirs(
             os.path.join(self.test_directory.name, "data"), exist_ok=True
         )

@@ -61,16 +61,6 @@ jobs:
         with:
           name: results-ubuntu-18.04
           path: /tmp/results-ubuntu
-      - name: download macos results
-        uses: actions/download-artifact@v2
-        with:
-          name: results-macos-10.15
-          path: /tmp/results-macos
-      - name: download windows results
-        uses: actions/download-artifact@v2
-        with:
-          name: results-windows-2019
-          path: /tmp/results-windows
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -81,8 +71,6 @@ jobs:
         run: aws s3 cp --recursive s3://dvc-bench/latest_results results
       - name: join results
         run: |
-          cp -r /tmp/results-windows/win* results/
-          cp -r /tmp/results-macos/darwin* results/
           cp -r /tmp/results-ubuntu/linux* results/
           cp /tmp/results-ubuntu/benchmarks.json results/benchmarks.json
       - name: create static html

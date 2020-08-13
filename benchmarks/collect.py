@@ -3,7 +3,7 @@ from benchmarks.base import BaseBench
 
 class CollectBench(BaseBench):
     repeat = 1
-    number = 3
+    number = 30
 
     def setup(self):
         super().setup()

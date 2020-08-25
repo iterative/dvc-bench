@@ -73,7 +73,7 @@ resource "null_resource" "gha_runner_setup" {
     inline = [
       "apt-get update",
       "chmod +x /tmp/setup.sh",
-      "/tmp/setup.sh ${var.github_token}",
+      "/tmp/setup.sh ${var.actions_runner_version} ${var.github_token}",
       "nohup ~/actions-runner/run.sh &",
       "sleep 1"
     ]

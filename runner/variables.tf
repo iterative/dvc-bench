@@ -19,3 +19,6 @@ variable "ssh_user" {
 variable "region" {
   description = "Region of our instance"
 }
+variable "actions_runner_version" {
+  description = "Latest version of actions runner from https://github.com/actions/runner/releases/latest (omit 'v')"
+}

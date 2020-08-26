@@ -9,10 +9,7 @@ env:
 jobs:
   build:
     name: run benchmarks
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-18.04]
+    runs-on: dvc-runner
     steps:
       - uses: actions/setup-python@v2
         with:
@@ -32,17 +29,16 @@ jobs:
         run: dvc pull data/cats_dogs.dvc
       - name: download existing results
         run: aws s3 cp --recursive s3://dvc-bench/latest_results results
-      # we cannot be sure that main build has been done on current machine,
-      # so we need to repro whole build
-      - name: run benchmarks
-        run: dvc repro -f run_benchmarks
       - name: run benchmarks on latest master
         run: asv run --show-stderr
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:
-          name: results-${{ matrix.os }}
+          name: results-aws-runner
           path: results
+      # FIXME some benchmarks don't clean up properly
+      - name: cleanupt tmp
+        run: rm -rf /tmp*
   publish:
     name: join results and publish
     needs: build
@@ -57,7 +53,7 @@ jobs:
       - name: download ubuntu results
         uses: actions/download-artifact@v2
         with:
-          name: results-ubuntu-18.04
+          name: results-aws-runner
           path: /tmp/results-ubuntu
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1

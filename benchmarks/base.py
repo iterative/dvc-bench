@@ -50,6 +50,8 @@ class BaseBench:
     timeout = 300
 
     def setup(self, *params):
+        # workaround for gha not using teardown
+        self._cleanup_tmp()
         self.cwd = os.getcwd()
         self.test_directory = TemporaryDirectory(
             prefix="benchmark_{}_".format(self.__class__.__name__)
@@ -97,3 +99,12 @@ class BaseBench:
 
     def gen(self, repo_path, template):
         shutil.copytree(DATA_TEMPLATES[template], repo_path)
+
+    def _cleanup_tmp(self):
+        assert self.processes == 1
+
+        tmp = gettempdir()
+        tmp_ls = os.listdir(tmp)
+        for path in tmp_ls:
+            if path.startswith("benchmark_") and os.path.isdir(path):
+                shutil.rmtree(os.path.join(tmp, path))

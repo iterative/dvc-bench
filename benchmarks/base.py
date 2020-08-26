@@ -51,7 +51,9 @@ class BaseBench:
 
     def setup(self, *params):
         self.cwd = os.getcwd()
-        self.test_directory = TemporaryDirectory(prefix="DVCBenchmark")
+        self.test_directory = TemporaryDirectory(
+            prefix="benchmark_{}_".format(self.__class__.__name__)
+        )
         os.chdir(self.path)
 
     @property

@@ -8,6 +8,7 @@ env:
 
 jobs:
   build:
+    timeout-minutes: 4320
     name: run benchmarks
     runs-on: dvc-runner
     steps:

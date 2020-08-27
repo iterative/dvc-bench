@@ -108,3 +108,5 @@ class BaseBench:
         for path in tmp_ls:
             if path.startswith("benchmark_") and os.path.isdir(path):
                 shutil.rmtree(os.path.join(tmp, path))
+            elif path.startswith("tmp") and os.path.isfile(path):
+                os.remove(os.path.join(tmp, path))

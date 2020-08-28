@@ -37,9 +37,6 @@ jobs:
         with:
           name: results-aws-runner
           path: results
-      # FIXME some benchmarks don't clean up properly
-      - name: cleanupt tmp
-        run: rm -rf /tmp*
   publish:
     name: join results and publish
     needs: build

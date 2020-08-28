@@ -38,7 +38,7 @@ resource "aws_security_group" "ip_ssh" {
 
 resource "aws_instance" "runner" {
   ami                    = "ami-0bbe28eb2173f6167"
-  instance_type          = "t3.large"
+  instance_type          = "t3a.large"
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.ip_ssh.id]
   root_block_device {

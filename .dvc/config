@@ -1,5 +1,5 @@
 [core]
-    remote = bench_s3
+    remote = bench_s3_public
 ['remote "bench_s3"']
     url = s3://dvc-bench/cache
 ['remote "bench_s3_public"']

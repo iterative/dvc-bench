@@ -52,6 +52,7 @@ class BaseBench:
     def setup(self, *params):
         # workaround for gha not using teardown
         self._cleanup_tmp()
+        self.project_dir = os.environ["ASV_CONF_DIR"]
         self.cwd = os.getcwd()
         self.test_directory = TemporaryDirectory(
             prefix="benchmark_{}_".format(self.__class__.__name__)

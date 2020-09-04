@@ -5,7 +5,7 @@ from benchmarks.base import BaseBench
 
 class PushBench(BaseBench):
     repeat = 1
-    timeout = 1000
+    timeout = 12000
 
     def setup(self):
         super().setup()

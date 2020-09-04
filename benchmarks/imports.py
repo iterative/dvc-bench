@@ -3,7 +3,7 @@ from benchmarks.base import BaseBench
 
 class ImportBench(BaseBench):
     repeat = 1
-    timeout = 6000
+    timeout = 12000
 
     def setup(self):
         super().setup()

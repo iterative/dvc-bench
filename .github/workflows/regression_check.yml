@@ -23,16 +23,17 @@ jobs:
         uses: andstor/file-existence-action@v1
         with:
             files: ".github/ISSUE_TEMPLATE.md"
-      - name: create issue
-        if: steps.check_files.outputs.files_exists == 'true'
-        id: create-issue
-        run: echo 'GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}' >> $GITHUB_ENV
-        uses: JasonEtco/create-an-issue@v2.4.0
-      - name: ping slack
-        if: steps.check_files.outputs.files_exists == 'true'
-        uses: rtCamp/action-slack-notify@v2.0.2
+      - name: set up environment variables
         run: |
+          echo 'GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}' >> $GITHUB_ENV
           echo 'SLACK_WEBHOOK=${{ secrets.SLACK_WEBHOOK }}' >> $GITHUB_ENV
           echo 'SLACK_MESSAGE=${{ steps.create-issue.outputs.url }}' >> $GITHUB_ENV
           echo 'SLACK_ICON=https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png' >> $GITHUB_ENV
           echo 'SLACK_USERNAME=regressionBot' >> $GITHUB_ENV
+      - name: create issue
+        if: steps.check_files.outputs.files_exists == 'true'
+        id: create-issue
+        uses: JasonEtco/create-an-issue@v2.4.0
+      - name: ping slack
+        if: steps.check_files.outputs.files_exists == 'true'
+        uses: rtCamp/action-slack-notify@v2.0.2

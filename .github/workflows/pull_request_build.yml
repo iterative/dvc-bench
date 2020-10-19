@@ -1,6 +1,9 @@
 name: pull request build
 on: [pull_request]
 
+env:
+  DVC_TEST: "true"
+
 jobs:
   verify:
     name: tests, styling and quick asv run
@@ -9,8 +12,6 @@ jobs:
       matrix:
         os: [windows-2019, macos-10.15, ubuntu-18.04]
     steps:
-      - name: set up environment variables
-        run: echo 'DVC_TEST=true' >> $GITHUB_ENV
       - uses: actions/setup-python@v2
         with:
           python-version: 3.7

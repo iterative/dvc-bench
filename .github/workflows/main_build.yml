@@ -4,14 +4,15 @@ on:
     branches:
       - master
 
+env:
+  DVC_TEST: "true"
+
 jobs:
   build:
     timeout-minutes: 4320
     name: run benchmarks
     runs-on: dvc-runner
     steps:
-      - name: set up environment variables
-        run: echo 'DVC_TEST=true' >> $GITHUB_ENV
       - uses: actions/setup-python@v2
         with:
             python-version: 3.7

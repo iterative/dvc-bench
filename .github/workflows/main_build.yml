@@ -32,7 +32,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
       - name: download data
-        run: dvc pull data/cats_dogs.dvc
+        run: dvc pull data/cats_dogs.dvc --jobs 4
       - name: download existing results
         run: aws s3 cp --recursive s3://dvc-bench/latest_results results
       - name: run benchmarks

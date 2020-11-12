@@ -14,7 +14,7 @@ class PushBench(BaseBench):
         self.init_dvc()
 
         self.remote_url = (
-            f"s3://dvc-temp/tmp-benchmarks-cache-{shortuuid.uuid()}"
+            f"s3://dvc-temp/dvc-bench/tmp-benchmarks-cache-{shortuuid.uuid()}"
         )
         self.dvc("remote", "add", "-d", "storage", self.remote_url)
 

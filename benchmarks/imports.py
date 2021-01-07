@@ -14,4 +14,4 @@ class ImportBench(BaseBench):
     def time_imports(self):
         repo = f"file://{self.project_dir}"
         path = "data/cats_dogs"
-        self.dvc("import", repo, path)
+        self.dvc("import", repo, path, proc=True)

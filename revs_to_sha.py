@@ -12,13 +12,15 @@ def dvc_git_repo():
     repo.close()
 
 
-def convert_to_sha(tags_filename="tags.txt", hashes_filename="hashes.txt"):
-    tags = []
+def convert_to_sha(
+    tags_filename="revisions.txt", hashes_filename="hashes.txt"
+):
+    revs = []
     with open(tags_filename, "r") as fobj:
-        tags.extend([l.strip() for l in fobj.readlines()])
+        revs.extend([l.strip() for l in fobj.readlines()])
 
     with dvc_git_repo() as repo:
-        hashes = [repo.commit(t).hexsha + os.linesep for t in tags]
+        hashes = [repo.commit(r).hexsha + os.linesep for r in revs]
 
     with open(hashes_filename, "w") as fobj:
         fobj.writelines(hashes)

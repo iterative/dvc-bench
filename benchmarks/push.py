@@ -22,4 +22,4 @@ class PushBench(BaseBench):
         self.dvc("add", "data", "--quiet")
 
     def time_cats_dogs(self):
-        self.dvc("push", "-j", "2")
+        self.dvc("push", "-j", "2", proc=True)

@@ -22,4 +22,4 @@ class CheckoutBench(BaseBench):
         shutil.rmtree("data")
 
     def time_cats_dogs(self, link_type):
-        self.dvc("checkout", "data.dvc")
+        self.dvc("checkout", "data.dvc", proc=True)

@@ -5,7 +5,7 @@ import time
 
 import feedparser
 
-from tags_to_sha import dvc_git_repo
+from revs_to_sha import dvc_git_repo
 
 
 def get_commits_from_link(link):

@@ -18,4 +18,4 @@ class Add(BaseBench):
         self.dvc("config", "cache.type", link_type, "--quiet")
 
     def time_cats_dogs(self, link_type):
-        self.dvc("add", "data", "--quiet")
+        self.dvc("add", "data", "--quiet", proc=True)

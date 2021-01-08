@@ -49,6 +49,9 @@ class BaseBench:
     processes = 1
     timeout = 300
 
+    def __init__(self):
+        os.environ["DVC_TEST"] = "1"
+
     def setup(self, *params):
         # workaround for gha not using teardown
         self._cleanup_tmp()
@@ -81,7 +84,7 @@ class BaseBench:
 
     def dvc(self, *args, return_code=0, proc=False):
         if proc:
-            proc = Popen(["dvc", *args], stdout=PIPE)
+            proc = Popen(["dvc", *args], stdout=PIPE, env=os.environ)
             proc.communicate()
             assert proc.returncode == return_code
         else:

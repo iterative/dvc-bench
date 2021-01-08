@@ -16,4 +16,4 @@ class CollectBench(BaseBench):
         self.dvc("status", "--quiet")
 
     def time_stages_collection(self):
-        self.dvc("status", "--quiet")
+        self.dvc("status", "--quiet", proc=True)

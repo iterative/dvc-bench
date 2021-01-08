@@ -23,7 +23,7 @@ class DVCStatusBench(BaseBench):
         self.dvc("status", "--quiet", return_code=1)
 
     def time_status(self):
-        self.dvc("status", "--quiet", return_code=1)
+        self.dvc("status", "--quiet", return_code=1, proc=True)
 
 
 class DVCIgnoreBench(DVCStatusBench):

@@ -1,9 +1,9 @@
 stages:
   convert_tags:
-    cmd: asv check && python tags_to_sha.py
+    cmd: asv check && python revs_to_sha.py
     deps:
-    - tags.txt
-    - tags_to_sha.py
+    - revisions.txt
+    - revs_to_sha.py
     outs:
     - hashes.txt
   run_benchmarks:

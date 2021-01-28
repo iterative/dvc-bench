@@ -84,11 +84,14 @@ class BaseBench:
 
     def dvc(self, *args, return_code=0, proc=False):
         if proc:
-            proc = Popen(["dvc", *args], stdout=PIPE, env=os.environ)
-            proc.communicate()
-            assert proc.returncode == return_code
+            self.proc(*["dvc", *args], return_code=return_code)
         else:
             assert main(args) == return_code
+
+    def proc(self, *args, return_code=0):
+        p = Popen(args, stdout=PIPE, env=os.environ)
+        p.communicate()
+        assert p.returncode == return_code
 
     def init_git(self):
         from git import Repo

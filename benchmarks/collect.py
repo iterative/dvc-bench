@@ -1,5 +1,4 @@
 from benchmarks.base import BaseBench
-from dvc.repo import Repo
 
 
 class CollectBench(BaseBench):
@@ -22,7 +21,7 @@ class CollectBench(BaseBench):
 
 class TraverseGitRepoBench(BaseBench):
     repeat = 1
-    number = 3
+    number = 10
     timeout = 1200
 
     def clone(self, url, tag):
@@ -31,10 +30,7 @@ class TraverseGitRepoBench(BaseBench):
 
     def setup(self):
         super().setup()
-        self.clone("https://github.com/iterative/dvc.git", tag="1.10.0")
-
-        # 6024 commits + workspace
-        assert len(list(Repo().brancher(all_commits=True))) == 6025
+        self.clone("https://github.com/iterative/dvc.git", tag="0.10.0")
 
     def time_repo_traversing(self):
         # DVC has no metrics, hence return_code==1

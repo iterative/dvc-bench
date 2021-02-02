@@ -12,12 +12,12 @@ class CheckoutBench(BaseBench):
     def setup(self, link_type):
         super().setup()
 
-        self.init_git()
-        self.init_dvc()
+        self.directory.init_git()
+        self.directory.init_dvc()
 
         self.dvc("config", "cache.type", link_type, "--quiet")
 
-        self.gen("data", template="cats_dogs")
+        self.directory.gen("data", template="cats_dogs")
         self.dvc("add", "data", "--quiet")
         shutil.rmtree("data")
 

@@ -9,7 +9,7 @@ class InitNoScmBench(BaseBench):
 class InitScmBench(BaseBench):
     def setup(self):
         super().setup()
-        self.init_git()
+        self.directory.init_git()
 
     def time_init(self):
         self.dvc("init", "--quiet", proc=True)

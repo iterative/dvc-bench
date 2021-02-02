@@ -8,9 +8,9 @@ class CollectBench(BaseBench):
     def setup(self):
         super().setup()
 
-        self.init_dvc()
+        self.directory.init_dvc()
 
-        self.gen("data", template="small")
+        self.directory.gen("data", template="small")
         self.dvc("add", "-R", "data", "--quiet")
 
         self.dvc("status", "--quiet")

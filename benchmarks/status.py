@@ -11,12 +11,10 @@ class DVCStatusBench(BaseBench):
 
     def setup(self):
         super().setup()
-        self.init_git()
-        self.init_dvc()
+        self.directory.init_git()
+        self.directory.init_dvc()
         data_path = DATA_TEMPLATES["large"]
-        os.makedirs(
-            os.path.join(self.test_directory.name, "data"), exist_ok=True
-        )
+        os.makedirs(os.path.join(self.directory.path, "data"), exist_ok=True)
         self.dvc("add", "data", "--quiet")
         shutil.copytree(data_path, os.path.join("data", "data"))
         # calculating md5
@@ -35,4 +33,4 @@ class DVCIgnoreBench(DVCStatusBench):
 
     def setup(self):
         super().setup()
-        self.add_ignore_rules(self.test_directory.name, 30)
+        self.add_ignore_rules(self.directory.path, 30)

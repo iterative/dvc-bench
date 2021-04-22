@@ -125,7 +125,8 @@ class BaseBench:
 
 class BaseRemoteBench(BaseBench):
 
-    _remote_prefix = "dvc-temp/dvc-bench"
+    _remote_prefix = "s3://"
+    _remote_dir = "dvc-temp/dvc-bench"
 
     def setup(self):
         super().setup()
@@ -134,12 +135,14 @@ class BaseRemoteBench(BaseBench):
         self.init_dvc()
 
         remote_url = (
-            self._remote_prefix + f"/temp-benchmarks-cache-{shortuuid.uuid()}"
+            self._remote_prefix
+            + self._remote_dir
+            + f"/temp-benchmarks-cache-{shortuuid.uuid()}"
         )
-        self.dvc("remote", "add", "-d", "storage", f"s3://{remote_url}")
+        self.dvc("remote", "add", "-d", "storage", remote_url)
 
     def setup_data(self, template):
-        data_url = self._remote_prefix + f"/tmp-benchmarks-data/{template}"
+        data_url = self._remote_dir + f"/tmp-benchmarks-data/{template}"
         if self.fs.exists(data_url):
             return data_url
 

@@ -25,14 +25,10 @@ jobs:
         run: python -m py.test
       - name: setup asv
         run: python write_asv_machine.py
-      - name: cache data
-        id: cache-data
-        uses: actions/cache@v2
-        with:
-          path: data/cats_dogs
-          key: ${{ hashFiles('data/cats_dogs.dvc') }}
       - name: download data
         if: steps.cache-data.outputs.cache-hit != 'true'
-        run: dvc pull data/cats_dogs.dvc
+        run: dvc fetch data/cats_dogs.dvc
+      - name: checkout data
+        run: dvc checkout data/cats_dogs.dvc
       - name: quick asv build of HEAD
         run: asv run --quick

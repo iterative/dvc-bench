@@ -25,6 +25,12 @@ jobs:
         run: python -m py.test
       - name: setup asv
         run: python write_asv_machine.py
+      - name: cache data
+        id: cache-data
+        uses: actions/cache@v2
+        with:
+          path: .dvc/cache
+          key: ${{ hashFiles('**/*.dvc') }}
       - name: download data
         if: steps.cache-data.outputs.cache-hit != 'true'
         run: dvc fetch data/cats_dogs.dvc

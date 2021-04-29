@@ -14,7 +14,7 @@ Benchmarking [dvc](https://github.com/iterative/dvc) with Airspeed Velocity.
 ### Running benchmarks
 ```console
 $ dvc pull data/cats_dogs.dvc
-$ dvc repro run_benchmarks.dvc
+$ dvc repro run_benchmarks
 ```
 
 ### Visualizing results

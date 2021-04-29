@@ -30,7 +30,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .dvc/cache
-          key: ${{ hashFiles('**/*.dvc') }}
+          key: ${{ runner.os }}-data-${{ hashFiles('**/*.dvc') }}
       - name: download data
         if: steps.cache-data.outputs.cache-hit != 'true'
         run: dvc fetch data/cats_dogs.dvc

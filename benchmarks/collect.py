@@ -1,5 +1,6 @@
 from benchmarks.base import BaseBench
 
+# random test to check cache actions
 
 class CollectBench(BaseBench):
     repeat = 1

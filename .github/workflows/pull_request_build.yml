@@ -11,6 +11,9 @@ jobs:
     strategy:
       matrix:
         os: [windows-2019]
+        include:
+          - os: windows-2019
+            cache_path: .dvc\cache
     steps:
       - uses: actions/setup-python@v2
         with:
@@ -29,7 +32,7 @@ jobs:
         id: cache-data
         uses: actions/cache@v2
         with:
-          path: .dvc\cache
+          path: ${{matrix.cache_path}}
           key: ${{ runner.os }}-data-${{ hashFiles('**/*.dvc') }}
       - name: download data
         if: steps.cache-data.outputs.cache-hit != 'true'

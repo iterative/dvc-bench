@@ -1,4 +1,4 @@
-from benchmarks.base import BaseBench
+from benchmarks.base import BaseBench, BaseRemoteBench
 
 
 class Add(BaseBench):
@@ -19,3 +19,12 @@ class Add(BaseBench):
 
     def time_cats_dogs(self, link_type):
         self.dvc("add", "data", "--quiet", proc=True)
+
+
+class AddToCache(BaseRemoteBench):
+    def setup(self):
+        super().setup()
+        self.data_url = self._remote_prefix + self.setup_data("mini")
+
+    def time_add_to_cache(self):
+        self.dvc("add", self.data_url, "-o", "mini", proc=True)

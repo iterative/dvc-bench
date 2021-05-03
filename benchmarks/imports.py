@@ -1,4 +1,4 @@
-from benchmarks.base import BaseBench
+from benchmarks.base import BaseBench, BaseRemoteBench
 
 
 class ImportBench(BaseBench):
@@ -15,3 +15,27 @@ class ImportBench(BaseBench):
         repo = f"file://{self.project_dir}"
         path = "data/cats_dogs"
         self.dvc("import", repo, path, proc=True)
+
+
+class ImportUrlBench(BaseRemoteBench):
+    repeat = 1
+    timeout = 12000
+
+    def setup(self):
+        super().setup()
+        self.data_url = self._remote_prefix + self.setup_data("mini")
+
+    def time_import_url(self):
+        self.dvc("Import-url", self.data_url, proc=True)
+
+
+class ImportUrlToRemoteBench(BaseRemoteBench):
+    repeat = 1
+    timeout = 12000
+
+    def setup(self):
+        super().setup()
+        self.data_url = self._remote_prefix + self.setup_data("mini")
+
+    def time_import_url_to_remote(self):
+        self.dvc("import-url", self.data_url, "--to-remote", proc=True)

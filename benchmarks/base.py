@@ -6,6 +6,9 @@ from multiprocessing import cpu_count
 from subprocess import PIPE, Popen
 from tempfile import TemporaryDirectory, gettempdir
 
+import shortuuid
+from funcy import cached_property
+
 from dvc.main import main
 
 
@@ -36,6 +39,7 @@ def random_data_dir(num_files, file_size):
 
 
 DATA_TEMPLATES = {
+    "mini": random_data_dir(100, 1024),
     "small": random_data_dir(2000, 1024),
     "large": random_data_dir(10000, 1024),
     "cats_dogs": os.path.join(os.environ["ASV_CONF_DIR"], "data", "cats_dogs"),
@@ -117,3 +121,40 @@ class BaseBench:
                 shutil.rmtree(os.path.join(tmp, path))
             elif path.startswith("tmp") and os.path.isfile(path):
                 os.remove(os.path.join(tmp, path))
+
+
+class BaseRemoteBench(BaseBench):
+
+    _remote_prefix = "s3://"
+    _remote_dir = "dvc-temp/dvc-bench"
+
+    def setup(self):
+        super().setup()
+
+        self.init_git()
+        self.init_dvc()
+
+        remote_url = (
+            self._remote_prefix
+            + self._remote_dir
+            + f"/temp-benchmarks-cache-{shortuuid.uuid()}"
+        )
+        self.dvc("remote", "add", "-d", "storage", remote_url)
+
+    def setup_data(self, template):
+        data_url = self._remote_dir + f"/tmp-benchmarks-data/{template}"
+        if self.fs.exists(data_url):
+            return data_url
+
+        local_url = f"_tmp_data_{template}"
+        self.gen(local_url, template)
+
+        self.fs.put(local_url, data_url, recursive=True)
+        shutil.rmtree(local_url)
+        return data_url
+
+    @cached_property
+    def fs(self):
+        from s3fs import S3FileSystem
+
+        return S3FileSystem()

@@ -17,6 +17,18 @@ class ImportBench(BaseBench):
         self.dvc("import", repo, path, proc=True)
 
 
+class ImportUrlBench(BaseRemoteBench):
+    repeat = 1
+    timeout = 12000
+
+    def setup(self):
+        super().setup()
+        self.data_url = self._remote_prefix + self.setup_data("mini")
+
+    def time_import_url_to_remote(self):
+        self.dvc("Import-url", self.data_url, proc=True)
+
+
 class ImportUrlToRemoteBench(BaseRemoteBench):
     repeat = 1
     timeout = 12000

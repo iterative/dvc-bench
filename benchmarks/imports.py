@@ -26,4 +26,4 @@ class ImportUrlToRemoteBench(BaseRemoteBench):
         self.data_url = self._remote_prefix + self.setup_data("mini")
 
     def time_import_url_to_remote(self):
-        self.dvc("import-url", self.data_url, "--to-remote")
+        self.dvc("import-url", self.data_url, "--to-remote", proc=True)

@@ -31,7 +31,7 @@ jobs:
         with:
           path: .dvc/cache
           key: ${{ runner.os }}-data-${{ hashFiles('**/*.dvc') }}
-      - name: checkout data
+      - name: pull data
         run: dvc pull data/cats_dogs.dvc
       - name: quick asv build of HEAD
         run: asv run --quick

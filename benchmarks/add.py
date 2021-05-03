@@ -1,4 +1,4 @@
-from benchmarks.base import BaseBench
+from benchmarks.base import BaseBench, BaseRemoteBench
 
 
 class Add(BaseBench):
@@ -21,7 +21,7 @@ class Add(BaseBench):
         self.dvc("add", "data", "--quiet", proc=True)
 
 
-class AddToCache(BaseBench):
+class AddToCache(BaseRemoteBench):
     def setup(self):
         super().setup()
         self.data_url = self._remote_prefix + self.setup_data("mini")

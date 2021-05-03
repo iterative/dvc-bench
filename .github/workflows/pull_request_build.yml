@@ -26,13 +26,12 @@ jobs:
       - name: setup asv
         run: python write_asv_machine.py
       - name: cache data
-        id: cache-data
+        if: matrix.os != 'windows-2019'
         uses: actions/cache@v2
         with:
-          path: data/cats_dogs
-          key: ${{ hashFiles('data/cats_dogs.dvc') }}
-      - name: download data
-        if: steps.cache-data.outputs.cache-hit != 'true'
+          path: .dvc/cache
+          key: ${{ runner.os }}-data-${{ hashFiles('**/*.dvc') }}
+      - name: pull data
         run: dvc pull data/cats_dogs.dvc
       - name: quick asv build of HEAD
         run: asv run --quick

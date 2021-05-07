@@ -39,7 +39,8 @@ def random_data_dir(num_files, file_size):
 
 
 DATA_TEMPLATES = {
-    "mini": random_data_dir(100, 1024),
+    "100x1024": random_data_dir(100, 1024),
+    "200x1024": random_data_dir(200, 1024),
     "small": random_data_dir(2000, 1024),
     "large": random_data_dir(10000, 1024),
     "cats_dogs": os.path.join(os.environ["ASV_CONF_DIR"], "data", "cats_dogs"),
@@ -141,8 +142,13 @@ class BaseRemoteBench(BaseBench):
         )
         self.dvc("remote", "add", "-d", "storage", remote_url)
 
-    def setup_data(self, template):
-        data_url = self._remote_dir + f"/tmp-benchmarks-data/{template}"
+    def setup_data(self, template, name=None):
+        if name is None:
+            name = template
+        else:
+            name = f"data-{name}-{shortuuid.uuid()}"
+
+        data_url = self._remote_dir + f"/tmp-benchmarks-data/{name}"
         if self.fs.exists(data_url):
             return data_url
 

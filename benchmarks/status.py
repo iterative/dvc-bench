@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from benchmarks.base import DATA_TEMPLATES, BaseBench
+from benchmarks.base import DATA_TEMPLATES, BaseBench, BaseRemoteBench
 from dvc.ignore import DvcIgnore
 
 
@@ -24,6 +24,34 @@ class DVCStatusBench(BaseBench):
 
     def time_status(self):
         self.dvc("status", "--quiet", return_code=1, proc=True)
+
+
+class StatusCloudBench(BaseRemoteBench):
+    repeat = 1
+    timeout = 1200
+
+    def setup(self):
+        super().setup()
+
+        self.gen("data", "medium")
+        self.dvc("add", "data", "--quiet")
+        self.dvc("push", "data", "--quiet")
+
+    def time_status_c(self):
+        self.dvc("status", "data", "--quiet", "-c", proc=True)
+
+
+class StatusCloudMissingFilesBench(StatusCloudBench):
+    repeat = 1
+    timeout = 1200
+
+    def setup(self):
+        super().setup()
+        self.gen("data", "large")
+        self.dvc("add", "data", "--quiet")
+
+    def time_status_c_with_missing(self):
+        self.dvc("status", "data", "--quiet", "-c", proc=True)
 
 
 class DVCIgnoreBench(DVCStatusBench):

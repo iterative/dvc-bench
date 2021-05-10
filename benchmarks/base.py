@@ -42,6 +42,7 @@ DATA_TEMPLATES = {
     "100x1024": random_data_dir(100, 1024),
     "200x1024": random_data_dir(200, 1024),
     "small": random_data_dir(2000, 1024),
+    "medium": random_data_dir(5000, 1024),
     "large": random_data_dir(10000, 1024),
     "cats_dogs": os.path.join(os.environ["ASV_CONF_DIR"], "data", "cats_dogs"),
 }

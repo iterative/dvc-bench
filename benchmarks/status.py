@@ -47,7 +47,7 @@ class StatusCloudMissingFilesBench(StatusCloudBench):
 
     def setup(self):
         super().setup()
-        self.gen("data", "large")
+        self.gen("data", "large", exist_ok=True)
         self.dvc("add", "data", "--quiet")
 
     def time_status_c_with_missing(self):

@@ -2,6 +2,7 @@ import os
 import shutil
 import stat
 from concurrent.futures import ThreadPoolExecutor
+from functools import lru_cache
 from multiprocessing import cpu_count
 from subprocess import PIPE, Popen
 from tempfile import TemporaryDirectory, gettempdir
@@ -18,9 +19,19 @@ def sources_dir():
     return path
 
 
+@lru_cache(None)
+def get_data_for_file(path, file_size):
+    # This function will generate the same data for the same path,
+    # which would allow to make datasets grow on top of the existing
+    # ones. The `path` is a key to this function's caching system, and
+    # even if it is not used, it needs to be present in the signature to
+    # allow cache lookups.
+    return os.urandom(file_size)
+
+
 def random_file(path, file_size):
     with open(path, "wb") as fobj:
-        fobj.write(os.urandom(file_size))
+        fobj.write(get_data_for_file(path, file_size))
 
 
 def random_data_dir(num_files, file_size):
@@ -110,8 +121,10 @@ class BaseBench:
         no_scm = not os.path.exists(".git")
         Repo.init(self.path, no_scm=no_scm).close()
 
-    def gen(self, repo_path, template):
-        shutil.copytree(DATA_TEMPLATES[template], repo_path)
+    def gen(self, repo_path, template, exist_ok=False):
+        shutil.copytree(
+            DATA_TEMPLATES[template], repo_path, dir_exist_ok=exist_ok
+        )
 
     def _cleanup_tmp(self):
         assert self.processes == 1
@@ -154,7 +167,7 @@ class BaseRemoteBench(BaseBench):
             return data_url
 
         local_url = f"_tmp_data_{template}"
-        self.gen(local_url, template)
+        self.gen(local_url, template, exist_ok=True)
 
         self.fs.put(local_url, data_url, recursive=True)
         shutil.rmtree(local_url)

@@ -21,6 +21,11 @@ def sources_dir():
 
 @lru_cache(None)
 def get_data_for_file(path, file_size):
+    # This function will generate the same data for the same path,
+    # which would allow to make datasets grow on top of the existing
+    # ones. The `path` is a key to this function's caching system, and
+    # even if it is not used, it needs to be present in the signature to
+    # allow cache lookups.
     return os.urandom(file_size)
 
 

@@ -34,4 +34,4 @@ jobs:
       - name: pull data
         run: dvc pull data/cats_dogs.dvc
       - name: quick asv build of HEAD
-        run: asv run --quick
+        run: asv run --quick -e

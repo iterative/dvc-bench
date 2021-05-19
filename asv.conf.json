@@ -17,5 +17,5 @@
         "startup.*": 0.25,
         "status.*": 0.25
     },
-    "install_command": ["in-dir={env_dir} python -mpip install s3fs {wheel_file}[all]"]
+    "install_command": ["in-dir={env_dir} python -mpip install {wheel_file}[all]"]
 }

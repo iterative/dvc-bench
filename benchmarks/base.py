@@ -123,7 +123,7 @@ class BaseBench:
 
     def gen(self, repo_path, template, exist_ok=False):
         shutil.copytree(
-            DATA_TEMPLATES[template], repo_path, dir_exist_ok=exist_ok
+            DATA_TEMPLATES[template], repo_path, dirs_exist_ok=exist_ok
         )
 
     def _cleanup_tmp(self):

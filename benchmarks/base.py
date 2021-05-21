@@ -130,9 +130,10 @@ class BaseBench:
         Repo.init(self.path, no_scm=no_scm).close()
 
     def gen(self, repo_path, template, exist_ok=False):
-        shutil.copytree(
-            DATA_TEMPLATES[template], repo_path, dirs_exist_ok=exist_ok
-        )
+        if exist_ok and os.path.exists(repo_path):
+            shutil.rmtree(repo_path)
+
+        shutil.copytree(DATA_TEMPLATES[template], repo_path)
 
     def _cleanup_tmp(self):
         assert self.processes == 1

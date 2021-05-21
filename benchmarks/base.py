@@ -13,9 +13,7 @@ import shortuuid
 from dvc.main import main
 
 _default_config = os.path.abspath(
-    os.path.join(
-        os.path.dirname(os.path.dirname(__file__)), "config.json"
-    )
+    os.path.join(os.path.dirname(os.path.dirname(__file__)), "config.json")
 )
 with open(os.getenv("DVC_BENCH_CONFIG", _default_config)) as stream:
     config = json.load(stream)
@@ -198,7 +196,7 @@ class BaseRemoteBench(BaseBench):
 
     def wrap(self, url):
         """Wrap the normal URL in the form of azure://{url}/{something}
-           to remote://{remote}/{something}"""
+        to remote://{remote}/{something}"""
         from fsspec.utils import infer_storage_options
 
         url_params = infer_storage_options(url)

@@ -26,10 +26,20 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
+      - name: configure gcloud credentials
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
       - name: download data
         run: dvc pull data/cats_dogs.dvc
       - name: download existing results
         run: aws s3 cp --recursive s3://dvc-bench/latest_results results
+      - name: configure dvc-bench
+        env:
+          CONFIG_JSON: ${{ secrets.CONFIG_JSON }}
+        run: echo "$CONFIG_JSON" > config.json
       - name: run benchmarks on latest master
         run: asv run --show-stderr
       - name: upload raw results

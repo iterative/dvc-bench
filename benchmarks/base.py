@@ -14,7 +14,7 @@ from dvc.main import main
 
 _default_config = os.path.abspath(
     os.path.join(
-        os.path.dirname(os.path.dirname(__file__)), "default_config.json"
+        os.path.dirname(os.path.dirname(__file__)), "config.json"
     )
 )
 with open(os.getenv("DVC_BENCH_CONFIG", _default_config)) as stream:

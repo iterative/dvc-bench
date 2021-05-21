@@ -1,3 +1,4 @@
+import json
 import os
 import shutil
 import stat
@@ -8,9 +9,16 @@ from subprocess import PIPE, Popen
 from tempfile import TemporaryDirectory, gettempdir
 
 import shortuuid
-from funcy import cached_property
 
 from dvc.main import main
+
+_default_config = os.path.abspath(
+    os.path.join(
+        os.path.dirname(os.path.dirname(__file__)), "default_config.json"
+    )
+)
+with open(os.getenv("DVC_BENCH_CONFIG", _default_config)) as stream:
+    config = json.load(stream)
 
 
 def sources_dir():
@@ -138,43 +146,77 @@ class BaseBench:
                 os.remove(os.path.join(tmp, path))
 
 
+ALIASES = {"azure": "az"}
+
+
+@lru_cache(32)
+def get_fs(filesystem, **kwargs):
+    import fsspec
+
+    try:
+        return fsspec.filesystem(ALIASES.get(filesystem, filesystem), **kwargs)
+    except ImportError as exc:
+        raise NotImplementedError from exc
+
+
 class BaseRemoteBench(BaseBench):
 
-    _remote_prefix = "s3://"
-    _remote_dir = "dvc-temp/dvc-bench"
+    params = config["remotes"].keys()
 
-    def setup(self):
+    DEFAULT_REMOTE = "storage"
+
+    def setup(self, remote_type):
         super().setup()
-
         self.init_git()
         self.init_dvc()
 
-        remote_url = (
-            self._remote_prefix
-            + self._remote_dir
-            + f"/temp-benchmarks-cache-{shortuuid.uuid()}"
+        self.remote_type = remote_type
+        self.remote_options = self.setup_remote(remote_type)
+
+    def setup_remote(self, remote):
+        # If setup raises a NotImplementedError, the
+        # benchmark is marked as skipped.
+        if remote not in config["remotes"]:
+            raise NotImplementedError
+
+        remote_map = {}
+        remote_map["config"] = config["remotes"][remote].copy()
+        remote_map["base"] = (
+            f"{remote}://{remote_map['config'].pop('url')}"
+            f"/temp-benchmarks-storage-{shortuuid.uuid()}"
         )
-        self.dvc("remote", "add", "-d", "storage", remote_url)
+        remote_map["data"] = f"{remote_map['base']}/data"
 
-    def setup_data(self, template, name=None):
-        if name is None:
-            name = template
+        self.dvc(
+            "remote", "add", "-d", self.DEFAULT_REMOTE, remote_map["base"]
+        )
+        for key, value in remote_map["config"].items():
+            self.dvc("remote", "modify", "storage", key, value)
+
+        return remote_map
+
+    def wrap(self, url):
+        """Wrap the normal URL in the form of azure://{url}/{something}
+           to remote://{remote}/{something}"""
+        from fsspec.utils import infer_storage_options
+
+        url_params = infer_storage_options(url)
+        remote_url_params = infer_storage_options(self.remote_options["base"])
+
+        url = url_params["host"] + url_params["path"]
+        remote_url = remote_url_params["host"] + remote_url_params["path"]
+
+        if url.startswith(remote_url):
+            return f"remote://{self.DEFAULT_REMOTE}/{url[len(remote_url):]}"
         else:
-            name = f"data-{name}-{shortuuid.uuid()}"
+            raise ValueError(f"url {url!r} doesn't match with {remote_url!r}")
 
-        data_url = self._remote_dir + f"/tmp-benchmarks-data/{name}"
-        if self.fs.exists(data_url):
-            return data_url
+    def setup_data(self, template, url=None):
+        fs = get_fs(self.remote_type, **self.remote_options["config"])
+        if url is None:
+            url = (
+                f"{self.remote_options['data']}/{template}-{shortuuid.uuid()}"
+            )
 
-        local_url = f"_tmp_data_{template}"
-        self.gen(local_url, template, exist_ok=True)
-
-        self.fs.put(local_url, data_url, recursive=True)
-        shutil.rmtree(local_url)
-        return data_url
-
-    @cached_property
-    def fs(self):
-        from s3fs import S3FileSystem
-
-        return S3FileSystem()
+        fs.put(DATA_TEMPLATES[template], url, recursive=True)
+        return self.wrap(url)

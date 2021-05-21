@@ -22,9 +22,9 @@ class Add(BaseBench):
 
 
 class AddToCache(BaseRemoteBench):
-    def setup(self):
-        super().setup()
-        self.data_url = self._remote_prefix + self.setup_data("100x1024")
+    def setup(self, remote):
+        super().setup(remote)
+        self.data_url = self.setup_data("100x1024")
 
-    def time_add_to_cache(self):
+    def time_add_to_cache(self, _):
         self.dvc("add", self.data_url, "-o", "mini", proc=True)

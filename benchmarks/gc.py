@@ -1,7 +1,7 @@
-from benchmarks.base import BaseRemoteBench
+from benchmarks.base import BaseBench, BaseRemoteBench
 
 
-class GCBench(BaseRemoteBench):
+class GCBench(BaseBench):
     repeat = 1
     timeout = 12000
 
@@ -24,8 +24,8 @@ class CloudGCBench(BaseRemoteBench):
     repeat = 1
     timeout = 12000
 
-    def setup(self):
-        super().setup()
+    def setup(self, remote):
+        super().setup(remote)
 
         self.gen("data", "large")
         self.dvc("add", "data", "--quiet")
@@ -35,5 +35,5 @@ class CloudGCBench(BaseRemoteBench):
         self.dvc("remove", "data")
         self.dvc("gc", "-w")
 
-    def time_gc_cloud(self):
+    def time_gc_cloud(self, _):
         self.dvc("gc", "-c", "-f", "-w", proc=True)

@@ -1,4 +1,3 @@
-import json
 import os
 import shutil
 import stat
@@ -10,13 +9,8 @@ from tempfile import TemporaryDirectory, gettempdir
 
 import shortuuid
 
+from benchmarks.config import config
 from dvc.main import main
-
-_default_config = os.path.abspath(
-    os.path.join(os.path.dirname(os.path.dirname(__file__)), "config.json")
-)
-with open(os.getenv("DVC_BENCH_CONFIG", _default_config)) as stream:
-    config = json.load(stream)
 
 
 def sources_dir():

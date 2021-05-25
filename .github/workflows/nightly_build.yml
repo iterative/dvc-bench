@@ -36,12 +36,12 @@ jobs:
         run: dvc pull data/cats_dogs.dvc
       - name: download existing results
         run: aws s3 cp --recursive s3://dvc-bench/latest_results results
-      - name: configure dvc-bench
-        env:
-          CONFIG_JSON: ${{ secrets.CONFIG_JSON }}
-        run: echo "$CONFIG_JSON" > config.json
       - name: run benchmarks on latest master
-        run: asv run --show-stderr
+        env:
+            DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
+        run: |
+            export DVC_BENCH_CONFIG=$(realpath configs/all.json)
+            asv run --show-stderr
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:

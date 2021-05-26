@@ -61,6 +61,12 @@ class DVCIgnoreBench(DVCStatusBench):
             for i in range(number):
                 f_w.write("{}\n".format(i))
 
+    def setup(self):
+        super().setup()
+        self.add_ignore_rules(self.test_directory.name, 30)
+
+
+class DVCIgnoreSubrepoBench(DVCIgnoreBench):
     @staticmethod
     def add_subrepo(path, number):
         for i in range(number):
@@ -68,5 +74,4 @@ class DVCIgnoreBench(DVCStatusBench):
 
     def setup(self):
         super().setup()
-        self.add_ignore_rules(self.test_directory.name, 30)
         self.add_subrepo(self.test_directory.name, 10)

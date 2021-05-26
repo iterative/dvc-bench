@@ -38,10 +38,10 @@ jobs:
         run: aws s3 cp --recursive s3://dvc-bench/latest_results results
       - name: run benchmarks on latest master
         env:
-            DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
+          DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
         run: |
-            export DVC_BENCH_CONFIG=$(realpath configs/all.json)
-            asv run --show-stderr
+          export DVC_BENCH_CONFIG=$(realpath configs/all.json)
+          asv run --show-stderr
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:

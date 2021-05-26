@@ -1,0 +1,7 @@
+{
+    "remotes": {
+        "s3": {
+            "url": "dvc-temp/dvc-bench"
+        }
+    }
+}

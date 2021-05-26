@@ -30,14 +30,14 @@ class StatusCloudBench(BaseRemoteBench):
     repeat = 1
     timeout = 1200
 
-    def setup(self):
-        super().setup()
+    def setup(self, remote):
+        super().setup(remote)
 
         self.gen("data", "medium")
         self.dvc("add", "data", "--quiet")
         self.dvc("push", "data", "--quiet")
 
-    def time_status_c(self):
+    def time_status_c(self, _):
         self.dvc("status", "data", "--quiet", "-c", proc=True)
 
 
@@ -45,12 +45,13 @@ class StatusCloudMissingFilesBench(StatusCloudBench):
     repeat = 1
     timeout = 1200
 
-    def setup(self):
-        super().setup()
+    def setup(self, remote):
+        super().setup(remote)
+
         self.gen("data", "large", exist_ok=True)
         self.dvc("add", "data", "--quiet")
 
-    def time_status_c_with_missing(self):
+    def time_status_c_with_missing(self, _):
         self.dvc("status", "data", "--quiet", "-c", proc=True)
 
 

@@ -8,8 +8,8 @@ class PullBench(BaseRemoteBench):
     repeat = 1
     timeout = 12000
 
-    def setup(self):
-        super().setup()
+    def setup(self, remote):
+        super().setup(remote)
 
         self.gen("data", "cats_dogs")
         self.dvc("add", "data", "--quiet")
@@ -18,5 +18,5 @@ class PullBench(BaseRemoteBench):
         shutil.rmtree("data")
         shutil.rmtree(os.path.join(".dvc", "cache"))
 
-    def time_cats_dogs(self):
+    def time_cats_dogs(self, _):
         self.dvc("pull", "-j", "2", proc=True)

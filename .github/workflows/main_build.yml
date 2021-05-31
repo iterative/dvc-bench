@@ -38,7 +38,11 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
       - name: download data
-        run: dvc pull data/cats_dogs.dvc
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 30
+          max_attempts: 5
+          command: dvc pull data/cats_dogs.dvc
       - name: download existing results
         run: aws s3 cp --recursive s3://dvc-bench/latest_results results
       - name: run benchmarks

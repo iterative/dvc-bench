@@ -32,6 +32,9 @@ jobs:
           path: .dvc/cache
           key: ${{ runner.os }}-data-${{ hashFiles('**/*.dvc') }}
       - name: pull data
-        run: dvc pull data/cats_dogs.dvc
+        uses: nick-invision/retry@v2
+        with:
+          max_attempts: 5
+          command: dvc pull data/cats_dogs.dvc
       - name: quick asv build of HEAD
         run: asv run --quick -e

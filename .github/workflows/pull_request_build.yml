@@ -34,6 +34,7 @@ jobs:
       - name: pull data
         uses: nick-invision/retry@v2
         with:
+          timeout_minutes: 30
           max_attempts: 5
           command: dvc pull data/cats_dogs.dvc
       - name: quick asv build of HEAD

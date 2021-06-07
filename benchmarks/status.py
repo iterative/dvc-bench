@@ -27,9 +27,6 @@ class DVCStatusBench(BaseBench):
 
 
 class StatusCloudBench(BaseRemoteBench):
-    repeat = 1
-    timeout = 1200
-
     def setup(self, remote):
         super().setup(remote)
 
@@ -42,9 +39,6 @@ class StatusCloudBench(BaseRemoteBench):
 
 
 class StatusCloudMissingFilesBench(StatusCloudBench):
-    repeat = 1
-    timeout = 1200
-
     def setup(self, remote):
         super().setup(remote)
 

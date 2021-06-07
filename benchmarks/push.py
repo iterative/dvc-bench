@@ -2,9 +2,6 @@ from benchmarks.base import BaseRemoteBench
 
 
 class PushBench(BaseRemoteBench):
-    repeat = 1
-    timeout = 12000
-
     def setup(self, remote):
         super().setup(remote)
 

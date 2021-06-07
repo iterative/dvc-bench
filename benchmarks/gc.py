@@ -2,9 +2,6 @@ from benchmarks.base import BaseBench, BaseRemoteBench
 
 
 class GCBench(BaseBench):
-    repeat = 1
-    timeout = 12000
-
     def setup(self):
         super().setup()
 
@@ -21,9 +18,6 @@ class GCBench(BaseBench):
 
 
 class CloudGCBench(BaseRemoteBench):
-    repeat = 1
-    timeout = 12000
-
     def setup(self, remote):
         super().setup(remote)
 

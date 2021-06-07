@@ -2,9 +2,6 @@ from benchmarks.base import BaseRemoteBench
 
 
 class UpdateImportUrlBench(BaseRemoteBench):
-    repeat = 1
-    timeout = 12000
-
     def setup(self, remote):
         super().setup(remote)
         data_url = self.setup_data("100x1024")
@@ -16,9 +13,6 @@ class UpdateImportUrlBench(BaseRemoteBench):
 
 
 class UpdateImportUrlToRemoteBench(BaseRemoteBench):
-    repeat = 1
-    timeout = 12000
-
     def setup(self, remote):
         super().setup(remote)
         data_url = self.setup_data("100x1024")

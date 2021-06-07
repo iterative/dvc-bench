@@ -2,6 +2,9 @@ from benchmarks.base import BaseBench, BaseRemoteBench
 
 
 class GCBench(BaseBench):
+    repeat = 1
+    timeout = 12000
+
     def setup(self):
         super().setup()
 

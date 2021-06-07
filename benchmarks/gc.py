@@ -21,9 +21,6 @@ class GCBench(BaseBench):
 
 
 class CloudGCBench(BaseRemoteBench):
-    repeat = 1
-    timeout = 12000
-
     def setup(self, remote):
         super().setup(remote)
 

@@ -18,9 +18,6 @@ class ImportBench(BaseBench):
 
 
 class ImportUrlBench(BaseRemoteBench):
-    repeat = 1
-    timeout = 12000
-
     def setup(self, remote):
         super().setup(remote)
         self.data_url = self.setup_data("100x1024")
@@ -30,9 +27,6 @@ class ImportUrlBench(BaseRemoteBench):
 
 
 class ImportUrlToRemoteBench(BaseRemoteBench):
-    repeat = 1
-    timeout = 12000
-
     def setup(self, remote):
         super().setup(remote)
         self.data_url = self.setup_data("100x1024")

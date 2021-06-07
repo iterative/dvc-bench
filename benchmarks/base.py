@@ -154,6 +154,11 @@ def get_fs(filesystem, **kwargs):
 
 class BaseRemoteBench(BaseBench):
 
+    # For benchmarks that interact with remotes
+    # only run them once
+    repeat = 1
+    timeout = 12_000
+
     params = config["remotes"].keys()
 
     DEFAULT_REMOTE = "storage"

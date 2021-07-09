@@ -209,7 +209,7 @@ class BaseRemoteBench(BaseBench):
         else:
             raise ValueError(f"url {url!r} doesn't match with {remote_url!r}")
 
-    def setup_data(self, template, url=None):
+    def setup_data(self, template, url=None, wrap=False):
         fs = get_fs(self.remote_type, **self.remote_options["config"])
         if url is None:
             url = (
@@ -217,4 +217,6 @@ class BaseRemoteBench(BaseBench):
             )
 
         fs.put(DATA_TEMPLATES[template], url, recursive=True)
-        return self.wrap(url)
+        if wrap:
+            url = self.wrap(url)
+        return wrap

@@ -74,8 +74,9 @@ def git(tmpdir):
 @pytest.fixture
 def dvc(tmpdir):
     no_scm = not os.path.exists(os.path.join(tmpdir, ".git"))
-    DvcRepo.init(tmpdir, no_scm=no_scm).close()
-    print('dvc project', tmpdir)
+
+    def setup():
+        DvcRepo.init(tmpdir, no_scm=no_scm).close()
 
     def invoke_proc(*args, return_code=0):
         p = subprocess.Popen(args, env=os.environ)
@@ -87,6 +88,14 @@ def dvc(tmpdir):
             invoke_proc(*("dvc", *args), return_code=return_code)
         else:
             assert dvc_main.main(args) == return_code
+
+    def reset(proc=False):
+        invoke_dvc("destroy", "-f", proc=proc)
+        setup()
+
+    invoke_dvc.reset = reset
+
+    setup()
 
     return invoke_dvc
 

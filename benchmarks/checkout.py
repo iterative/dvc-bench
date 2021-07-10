@@ -1,6 +1,25 @@
 import shutil
 
+import pytest
+
 from benchmarks.base import BaseBench
+
+
+@pytest.mark.parametrize(
+    "link_type", ("copy", "symlink", "hardlink"),
+)
+def benchmark_checkout_cats_dogs(
+    benchmark, git, dvc, link_type, data_cats_dogs
+):
+    dvc("config", "cache.type", link_type)
+    dvc("add", "cats_dogs")
+
+    benchmark.pedantic(
+        dvc,
+        setup=lambda: shutil.rmtree("cats_dogs"),
+        args=("checkout", "cats_dogs.dvc"),
+        kwargs={"proc": True},
+    )
 
 
 class CheckoutBench(BaseBench):

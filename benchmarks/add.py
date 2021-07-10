@@ -1,4 +1,17 @@
+import pytest
+
 from benchmarks.base import BaseBench, BaseRemoteBench
+
+
+@pytest.mark.parametrize(
+    "link_type", ("copy", "symlink", "hardlink"),
+)
+def benchmark_add_cats_dogs(benchmark, git, dvc, link_type, data_cats_dogs):
+    dvc("config", "cache.type", link_type)
+
+    benchmark.pedantic(
+        dvc, setup=dvc.reset, args=("add", "cats_dogs"), kwargs={"proc": True},
+    )
 
 
 class Add(BaseBench):

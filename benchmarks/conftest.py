@@ -60,6 +60,16 @@ def chdir(path):
         os.chdir(cur_dir)
 
 
+def invoke_proc(*args, return_code=0):
+    p = subprocess.Popen(args, env=os.environ)
+    p.communicate()
+    assert p.returncode == return_code
+
+
+def invoke_git(*args, return_code=0):
+    invoke_proc(*("git", *args), return_code=return_code)
+
+
 root = os.path.abspath(os.path.join(__file__, "..", ".."))
 
 
@@ -70,6 +80,18 @@ root = os.path.abspath(os.path.join(__file__, "..", ".."))
 def git(tmpdir):
     GitRepo.init(tmpdir).close()
 
+    yield invoke_git
+
+
+@pytest.fixture
+def git_clone(tmpdir, request):
+    url, tag = request.param
+    invoke_git(
+        "clone", "--branch", tag, "--single-branch", url, tmpdir
+    )
+
+    yield invoke_git
+
 
 @pytest.fixture
 def dvc(tmpdir):
@@ -77,11 +99,6 @@ def dvc(tmpdir):
 
     def setup():
         DvcRepo.init(tmpdir, no_scm=no_scm).close()
-
-    def invoke_proc(*args, return_code=0):
-        p = subprocess.Popen(args, env=os.environ)
-        p.communicate()
-        assert p.returncode == return_code
 
     def invoke_dvc(*args, return_code=0, proc=False):
         if proc:

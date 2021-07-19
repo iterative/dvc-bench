@@ -80,7 +80,8 @@ root = os.path.abspath(os.path.join(__file__, "..", ".."))
 def git(tmpdir):
     GitRepo.init(tmpdir).close()
 
-    yield invoke_git
+    with chdir(tmpdir):
+        yield invoke_git
 
 
 @pytest.fixture
@@ -90,7 +91,8 @@ def git_clone(tmpdir, request):
         "clone", "--branch", tag, "--single-branch", url, tmpdir
     )
 
-    yield invoke_git
+    with chdir(tmpdir):
+        yield invoke_git
 
 
 @pytest.fixture
@@ -114,7 +116,8 @@ def dvc(tmpdir):
 
     setup()
 
-    return invoke_dvc
+    with chdir(tmpdir):
+        yield invoke_dvc
 
 
 def generate_data_fixture(name, data):
@@ -123,8 +126,7 @@ def generate_data_fixture(name, data):
         path = tmpdir / name
         shutil.copytree(data, path)
         try:
-            with chdir(tmpdir):
-                yield name
+            yield name
         finally:
             # remove data because tmpdir is kept on disk after the run
             if os.path.exists(path):

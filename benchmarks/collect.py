@@ -1,4 +1,22 @@
+import pytest
+
 from benchmarks.base import BaseBench
+
+
+def benchmark_stages_collection(benchmark, git, dvc, data_small):
+    dvc("add", "-R", "small")
+
+    benchmark(dvc, "status", proc=True)
+
+
+@pytest.mark.parametrize('git_clone', [
+    ("https://github.com/iterative/dvc.git", "0.10.0")
+], indirect=True)
+def benchmark_git_repo_traversing(benchmark, git_clone, dvc):
+    # DVC has no metrics, hence return_code==1
+    benchmark(
+        dvc, "metrics", "show", "--all-commits", return_code=1, proc=True
+    )
 
 
 class CollectBench(BaseBench):

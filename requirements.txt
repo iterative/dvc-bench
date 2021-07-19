@@ -6,4 +6,5 @@ awscli>=1.16.297
 pre-commit
 pytest
 pytest-mock
+pytest-benchmark
 feedparser

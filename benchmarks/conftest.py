@@ -78,6 +78,12 @@ root = os.path.abspath(os.path.join(__file__, "..", ".."))
 
 @pytest.fixture
 def git(tmpdir):
+    """Initialize a git repo, chdir into it and return a git invocator callable.
+
+    Example usage:
+
+        git("status", "--some-flag")
+    """
     GitRepo.init(tmpdir).close()
 
     with chdir(tmpdir):
@@ -86,6 +92,12 @@ def git(tmpdir):
 
 @pytest.fixture
 def git_clone(tmpdir, request):
+    """Clone a git repo, chdir into it and return a git invocator callable.
+
+    Example usage:
+
+        git("some-command", "--some-flag")
+    """
     url, tag = request.param
     invoke_git(
         "clone", "--branch", tag, "--single-branch", url, tmpdir
@@ -97,6 +109,16 @@ def git_clone(tmpdir, request):
 
 @pytest.fixture
 def dvc(tmpdir):
+    """Initialize a dvc repo, chdir into it and return a dvc invocator callable.
+
+    The callable has a ``reset`` attribute, which is a callable that force
+    re-initializes the dvc repo.
+
+    Example usage:
+
+        dvc("some-command", "--some-flag")
+        dvc.reset()
+    """
     no_scm = not os.path.exists(os.path.join(tmpdir, ".git"))
 
     def setup():

@@ -114,7 +114,8 @@ def dvc(tmpdir):
 
     invoke_dvc.reset = reset
 
-    setup()
+    if not os.path.exists(os.path.join(tmpdir, ".dvc")):
+        setup()
 
     with chdir(tmpdir):
         yield invoke_dvc

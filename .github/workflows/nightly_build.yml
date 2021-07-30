@@ -51,8 +51,6 @@ jobs:
         with:
           name: results-aws-runner
           path: results
-      - name: cleanup tmp
-        run: rm -rf /tmp/*
   publish:
     name: join results and publish
     needs: build

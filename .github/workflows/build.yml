@@ -53,6 +53,7 @@ jobs:
       - name: download existing results
         run: aws s3 cp --recursive s3://dvc-bench/latest_results results
       - name: run benchmarks
+        shell: bash
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
 #          DVC_BENCH_CONFIG: ${{ env.GITHUB_WORKSPACE }}/all.json
@@ -95,6 +96,7 @@ jobs:
       - name: download existing results
         run: aws s3 cp --recursive s3://dvc-bench/latest_results results
       - name: join results
+        shell: bash
         run: |
           cp -r /tmp/results-ubuntu/linux* results/
           if [[ "$GITHUB_EVENT_NAME" == "schedule" ]]; then cp /tmp/results-ubuntu/benchmarks.json results/benchmarks.json; fi

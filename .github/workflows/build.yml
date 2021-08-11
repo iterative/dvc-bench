@@ -61,19 +61,15 @@ jobs:
           command: dvc pull data/cats_dogs.dvc
       - name: download existing results
         run: aws s3 cp --recursive s3://dvc-bench/latest_results results
+      - name: convert revs
+        run: python revs_to_sha.py
       - name: run benchmarks
         shell: bash
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
+          DVC_BENCH_ASV_ARGS: "${{ github.event_name == 'push' && 'HASHFILE:hashes.txt' }}"
 #          DVC_BENCH_CONFIG: ${{ env.GITHUB_WORKSPACE }}/all.json
-        run: |
-          if [[ "$GITHUB_EVENT_NAME" == "schedule" ]]; then
-              asv run --show-stderr
-          elif [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
-              asv run --quick -e
-          else
-              dvc repro -f run_benchmarks
-          fi
+        run: ./run.sh $DVC_BENCH_ASV_ARGS
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:

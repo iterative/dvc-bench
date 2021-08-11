@@ -1,5 +1,9 @@
-name: daily run
+name: build
 on:
+  pull_request: {}
+  push:
+    branches:
+      - master
   schedule:
     - cron: '0 0 * * *'
 
@@ -10,7 +14,10 @@ jobs:
   build:
     timeout-minutes: 4320
     name: run benchmarks
-    runs-on: dvc-runner
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-2019, macos-10.15, ubuntu-18.04]
     steps:
       - uses: actions/setup-python@v2
         with:
@@ -18,7 +25,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: install requirements
         run: pip install -r requirements.txt
-      - name: setup asv machine
+      - name: check project styling
+        run: pre-commit run --all-files
+      - name: run tests
+        run: python -m py.test
+      - name: setup asv
         run: python write_asv_machine.py
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -40,12 +51,18 @@ jobs:
           command: dvc pull data/cats_dogs.dvc
       - name: download existing results
         run: aws s3 cp --recursive s3://dvc-bench/latest_results results
-      - name: run benchmarks on latest master
+      - name: run benchmarks
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
+          DVC_BENCH_CONFIG: ${{ env.GITHUB_WORKSPACE }}/all.json
         run: |
-          export DVC_BENCH_CONFIG=$(realpath configs/all.json)
-          asv run --show-stderr
+          if [[ "$GITHUB_EVENT_NAME" == "schedule" ]]; then
+              asv run --show-stderr
+          elif [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+              asv run --quick -e
+          else
+              dvc repro -f run_benchmarks
+          fi
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:
@@ -54,6 +71,7 @@ jobs:
   publish:
     name: join results and publish
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/setup-python@v2
@@ -78,6 +96,7 @@ jobs:
       - name: join results
         run: |
           cp -r /tmp/results-ubuntu/linux* results/
+          if [[ "$GITHUB_EVENT_NAME" == "schedule" ]]; then cp /tmp/results-ubuntu/benchmarks.json results/benchmarks.json; fi
       - name: create static html
         run: asv update && asv publish
       - name: upload new results

@@ -54,7 +54,7 @@ jobs:
       - name: run benchmarks
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
-          DVC_BENCH_CONFIG: ${{ env.GITHUB_WORKSPACE }}/all.json
+#          DVC_BENCH_CONFIG: ${{ env.GITHUB_WORKSPACE }}/all.json
         run: |
           if [[ "$GITHUB_EVENT_NAME" == "schedule" ]]; then
               asv run --show-stderr

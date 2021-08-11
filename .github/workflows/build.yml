@@ -22,14 +22,34 @@ jobs:
         run: pip install -r requirements.txt
       - name: check project styling
         run: pre-commit run --all-files
+  gen:
+    runs-on: ubuntu-latest
+    outputs:
+      tests: ${{ steps.tests.outputs.tests }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+            python-version: 3.7
+      - run: pip install asv virtualenv
+      - name: generate results/benchmarks.json
+        run: |
+          asv machine --yes
+          asv update
+          ls -la results/
+      - id: tests
+        run: echo "::set-output name=tests::$(jq -c 'keys' results/benchmarks.json | jq -c 'del(.[] | select(. == "version"))')"
   build:
+    needs: [gen]
     timeout-minutes: 4320
-    name: run benchmarks
+    name: run ${{ matrix.test }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2019, macos-10.15, ubuntu-18.04]
+#        os: [windows-2019, macos-10.15, ubuntu-18.04]
+        os: [ubuntu-18.04]
+        test: ${{fromJson(needs.gen.outputs.tests)}}
     steps:
       - uses: actions/setup-python@v2
         with:
@@ -62,14 +82,14 @@ jobs:
       - name: download existing results
         run: aws s3 cp --recursive s3://dvc-bench/latest_results results
       - name: convert revs
-        run: python revs_to_sha.py
+        run: asv check && python revs_to_sha.py
       - name: run benchmarks
         shell: bash
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
-          DVC_BENCH_ASV_ARGS: "${{ github.event_name == 'push' && 'HASHFILE:hashes.txt' }}"
+          DVC_BENCH_ASV_ARGS: "${{ github.event_name == 'push' && 'HASHFILE:hashes.txt' || '' }}"
 #          DVC_BENCH_CONFIG: ${{ env.GITHUB_WORKSPACE }}/all.json
-        run: ./run.sh $DVC_BENCH_ASV_ARGS
+        run: ./run.sh $DVC_BENCH_ASV_ARGS --bench ${{ matrix.test }}
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:

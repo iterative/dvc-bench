@@ -9,7 +9,7 @@ class UpdateImportUrlBench(BaseRemoteBench):
         self.setup_data("200x1024", url=data_url)
 
     def time_import_url_to_remote(self, _):
-        self.dvc("update", "stage.dvc", proc=True)
+        self.dvc("update", "stage.dvc", "-v", proc=True)
 
 
 class UpdateImportUrlToRemoteBench(BaseRemoteBench):
@@ -22,4 +22,4 @@ class UpdateImportUrlToRemoteBench(BaseRemoteBench):
         self.setup_data("200x1024", url=raw_data_url)
 
     def time_import_url_to_remote(self, _):
-        self.dvc("update", "stage.dvc", "--to-remote", proc=True)
+        self.dvc("update", "stage.dvc", "--to-remote", "-v", proc=True)

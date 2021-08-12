@@ -4,7 +4,6 @@ import re
 import time
 
 import feedparser
-
 from revs_to_sha import dvc_git_repo
 
 

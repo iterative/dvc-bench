@@ -4,7 +4,6 @@ import sys
 
 import pytest
 from asv.machine import Machine, MachineCollection
-
 from write_asv_machine import floor_nearest, write_machine_info
 
 

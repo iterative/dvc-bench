@@ -24,3 +24,12 @@ repos:
     language_version: python3
   repo: https://gitlab.com/pycqa/flake8
   rev: 3.7.9
+- hooks:
+    - args:
+        - -i
+        - "2"
+      id: beautysh
+      language_version: python3
+  repo: https://github.com/lovesegfault/beautysh
+  rev: v6.1.0
+

@@ -86,7 +86,7 @@ jobs:
           max_attempts: 5
           command: dvc pull data/cats_dogs.dvc
       - name: download existing results
-        run: aws s3 cp --recursive s3://dvc-bench/latest_results results
+        run: aws s3 cp --recursive s3://dvc-bench/results results
       - name: convert revs
         run: asv check && python revs_to_sha.py
       - name: run benchmarks
@@ -125,7 +125,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
       - name: download existing results
-        run: aws s3 cp --recursive s3://dvc-bench/latest_results results
+        run: aws s3 cp --recursive s3://dvc-bench/results results
       - name: join results
         shell: bash
         run: |
@@ -134,7 +134,7 @@ jobs:
       - name: create static html
         run: asv update && asv publish
       - name: upload new results
-        run: aws s3 cp --recursive results s3://dvc-bench/latest_results
+        run: aws s3 cp --recursive results s3://dvc-bench/results
       - name: deploy new benchmarks to github pages
         uses: peaceiris/actions-gh-pages@v3
         with:

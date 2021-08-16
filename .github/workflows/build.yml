@@ -19,7 +19,10 @@ jobs:
         with:
             python-version: 3.7
       - name: install requirements
-        run: pip install -r requirements.txt
+        run: |
+          pip install -U pip
+          pip install wheel
+          pip install -r requirements.txt
       - name: check project styling
         run: pre-commit run --all-files
   gen:
@@ -56,7 +59,10 @@ jobs:
             python-version: 3.7
       - uses: actions/checkout@v2
       - name: install requirements
-        run: pip install -r requirements.txt
+        run: |
+          pip install -U pip
+          pip install wheel
+          pip install -r requirements.txt
       - name: run tests
         run: python -m py.test
       - name: setup asv

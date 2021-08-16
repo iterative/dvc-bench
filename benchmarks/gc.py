@@ -12,7 +12,7 @@ class GCBench(BaseBench):
         self.init_dvc()
 
         self.gen("data", "cats_dogs")
-        self.dvc("add", "data", "--quiet")
+        self.dvc("add", "data")
 
         # remove everything from the local system
         self.dvc("remove", "data.dvc")
@@ -26,8 +26,8 @@ class CloudGCBench(BaseRemoteBench):
         super().setup(remote)
 
         self.gen("data", "large")
-        self.dvc("add", "data", "--quiet")
-        self.dvc("push", "data", "--quiet")
+        self.dvc("add", "data")
+        self.dvc("push", "data")
 
         # remove everything from the local system
         self.dvc("remove", "data.dvc")

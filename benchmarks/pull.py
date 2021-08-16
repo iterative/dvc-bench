@@ -9,8 +9,8 @@ class PullBench(BaseRemoteBench):
         super().setup(remote)
 
         self.gen("data", "cats_dogs")
-        self.dvc("add", "data", "--quiet")
-        self.dvc("push", "data", "--quiet")
+        self.dvc("add", "data")
+        self.dvc("push", "data")
 
         shutil.rmtree("data")
         shutil.rmtree(os.path.join(".dvc", "cache"))

@@ -15,10 +15,10 @@ class Add(BaseBench):
 
         self.gen("data", template="cats_dogs")
 
-        self.dvc("config", "cache.type", link_type, "--quiet")
+        self.dvc("config", "cache.type", link_type)
 
     def time_cats_dogs(self, link_type):
-        self.dvc("add", "data", "--quiet", proc=True)
+        self.dvc("add", "data", proc=True)
 
 
 class AddToCache(BaseRemoteBench):

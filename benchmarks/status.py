@@ -17,13 +17,13 @@ class DVCStatusBench(BaseBench):
         os.makedirs(
             os.path.join(self.test_directory.name, "data"), exist_ok=True
         )
-        self.dvc("add", "data", "--quiet")
+        self.dvc("add", "data")
         shutil.copytree(data_path, os.path.join("data", "data"))
         # calculating md5
-        self.dvc("status", "--quiet", return_code=1)
+        self.dvc("status", return_code=1)
 
     def time_status(self):
-        self.dvc("status", "--quiet", return_code=1, proc=True)
+        self.dvc("status", return_code=1, proc=True)
 
 
 class StatusCloudBench(BaseRemoteBench):
@@ -31,11 +31,11 @@ class StatusCloudBench(BaseRemoteBench):
         super().setup(remote)
 
         self.gen("data", "medium")
-        self.dvc("add", "data", "--quiet")
-        self.dvc("push", "data", "--quiet")
+        self.dvc("add", "data")
+        self.dvc("push", "data")
 
     def time_status_c(self, _):
-        self.dvc("status", "data", "--quiet", "-c", proc=True)
+        self.dvc("status", "data", "-c", proc=True)
 
 
 class StatusCloudMissingFilesBench(StatusCloudBench):
@@ -43,10 +43,10 @@ class StatusCloudMissingFilesBench(StatusCloudBench):
         super().setup(remote)
 
         self.gen("data", "large", exist_ok=True)
-        self.dvc("add", "data", "--quiet")
+        self.dvc("add", "data")
 
     def time_status_c_with_missing(self, _):
-        self.dvc("status", "data", "--quiet", "-c", proc=True)
+        self.dvc("status", "data", "-c", proc=True)
 
 
 class DVCIgnoreBench(DVCStatusBench):

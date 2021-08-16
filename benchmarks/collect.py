@@ -11,12 +11,12 @@ class CollectBench(BaseBench):
         self.init_dvc()
 
         self.gen("data", template="small")
-        self.dvc("add", "-R", "data", "--quiet")
+        self.dvc("add", "-R", "data")
 
-        self.dvc("status", "--quiet")
+        self.dvc("status")
 
     def time_stages_collection(self):
-        self.dvc("status", "--quiet", proc=True)
+        self.dvc("status", proc=True)
 
 
 class TraverseGitRepoBench(BaseBench):

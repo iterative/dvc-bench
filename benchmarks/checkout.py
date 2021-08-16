@@ -15,10 +15,10 @@ class CheckoutBench(BaseBench):
         self.init_git()
         self.init_dvc()
 
-        self.dvc("config", "cache.type", link_type, "--quiet")
+        self.dvc("config", "cache.type", link_type)
 
         self.gen("data", template="cats_dogs")
-        self.dvc("add", "data", "--quiet")
+        self.dvc("add", "data")
         shutil.rmtree("data")
 
     def time_cats_dogs(self, link_type):

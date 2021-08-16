@@ -3,7 +3,7 @@ from benchmarks.base import BaseBench
 
 class InitNoScmBench(BaseBench):
     def time_init(self):
-        self.dvc("init", "--no-scm", "--quiet", proc=True)
+        self.dvc("init", "--no-scm", proc=True)
 
 
 class InitScmBench(BaseBench):
@@ -12,4 +12,4 @@ class InitScmBench(BaseBench):
         self.init_git()
 
     def time_init(self):
-        self.dvc("init", "--quiet", proc=True)
+        self.dvc("init", proc=True)

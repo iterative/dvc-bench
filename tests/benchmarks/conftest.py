@@ -46,7 +46,7 @@ def make_dataset(request, test_config, tmp_dir, pytestconfig):
         dvcfile=False, files=True, cache=False, commit=False, remote=False
     ):
         from dvc.repo import Repo
-        from dvc.exceptions import CheckoutError
+        from dvc.exceptions import CheckoutError, DownloadError
 
         path = tmp_dir / "dataset"
         root = pytestconfig.rootpath
@@ -59,7 +59,7 @@ def make_dataset(request, test_config, tmp_dir, pytestconfig):
             try:
                 dvc.pull([str(src_dvc)])
                 break
-            except CheckoutError:
+            except (CheckoutError, DownloadError):
                 pass
 
         if files:

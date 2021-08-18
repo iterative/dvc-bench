@@ -73,7 +73,7 @@ jobs:
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
         run: |
-          ./run.sh ${{ matrix.test }}
+          ./run.sh ${{ matrix.test }} --size large
           name=$(echo -n "${{ matrix.test }}" | sed -e 's/[ \t:\/\\"<>|*?]/-/g' -e 's/--*/-/g')
           echo "ARTIFACT_NAME=$name" >> $GITHUB_ENV
       - name: upload raw results

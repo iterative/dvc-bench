@@ -1,30 +1,52 @@
 ## dvc-bench
-Benchmarking [dvc](https://github.com/iterative/dvc) with Airspeed Velocity.
-
+Benchmarking [dvc](https://github.com/iterative/dvc) with pytest-benchmark.
 
 ### Setting up
-1. Clone this repository.
-2. `cd dvc-bench`
-3. Create a virtual env and install requirements:
-   ```console
-   $ pip install -r requirements.txt
-   ```
-   > `virtualenv` has to be 16
-
-### Running benchmarks
-```console
-$ dvc pull data/cats_dogs.dvc
-$ dvc repro run_benchmarks
+```
+$ pip install -r requirements.txt
+$ dvc pull # optional, otherwise will pull datasets dynamically
 ```
 
-### Visualizing results
+### Running all benchmarks
 ```console
-$ asv publish && asv preview
+$ pytest
 ```
 
-### Testing local changes against dvc master
-1. Set up this project
-2. Change `repo` value in `asv.conf.json` to point to your local `dvc` repository.
-3. Put target git hash and master hash to `file.txt`
-4. Run benchmark(s): `asv run HASHFILE:file.txt`
-5. To run specific benchmark, use `--bench {benchmark_name}` option.
+### Running one benchmark
+```console
+$ pytest tests/benchmarks/cli/commands/test_add.py
+```
+
+### CLI options
+```
+$ pytest -h
+...
+ --size={tiny,small,large}                                   
+                       Size of the dataset/datafile to use in
+                       tests (default: small)
+ --remote={azure,gdrive,gs,hdfs,http,oss,s3,ssh,webdav}
+                       Remote type to use in tests (default: local)
+...
+```
+
+### Comparing results
+```
+$ py.test-benchmark compare --histogram histograms/ --group-by name --sort name --csv results.csv
+```
+
+### Testing different dvc versions
+```
+pip install dvc==2.5.4
+pytest
+pip install dvc==2.6.0
+pytest
+```
+
+### Contributing
+tests/benchmarks structure:
+- cli: should be able to run these with any dvc (rpm, deb, pypi, snap, etc) (could be used in dvc-test repo too)
+  - commands: granular tests for individual commands. These should have a cached setup, so that we could use them during rapid development instead of our hand-written scripts. Every test could be run in a separate machine.
+  - stories: multistage start-to-end benchmarks, useful for testing workflows (e.g. in documentation, see test_sharing inspired by [sharing-data-and-models use-case](https://dvc.org/doc/use-cases/sharing-data-and-model-files). Every full story could be run in a separate machine.
+- api: for python api only.
+  - methods: granular tests for individual methods (e.g. `api.open/read`). Same reasoning as in `cli.commands`
+  - stories: same as `cli.stories` but for our api. E.g. imagine using our api with pandas or smth like that.

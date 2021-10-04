@@ -29,6 +29,8 @@ runs:
     - name: run benchmarks for base version
       shell: bash
       working-directory: dvc-bench
+      env:
+        DVC_TEST: "true"
       run: |
         dvc --version
         pytest --benchmark-autosave ${{ inputs.pytest_options }} tests/benchmarks
@@ -42,7 +44,9 @@ runs:
       run: pip install '.[all,tests]'
     - name: run benchmarks for PR
       shell: bash
-      working-directory: dvc-bench 
+      working-directory: dvc-bench
+      env:
+        DVC_TEST: "true"
       run: |
         dvc --version
         pytest --benchmark-compare --benchmark-compare-fail=mean:5% --benchmark-group-by name ${{ inputs.pytest_options}} tests/benchmarks

@@ -45,4 +45,4 @@ runs:
       working-directory: dvc-bench 
       run: |
         dvc --version
-        pytest --benchmark-compare --benchmark-compare-fail=mean:5% --benchmark-group-by name ${{ input.pytest_options}} tests/benchmarks
+        pytest --benchmark-compare --benchmark-compare-fail=mean:5% --benchmark-group-by name ${{ inputs.pytest_options}} tests/benchmarks

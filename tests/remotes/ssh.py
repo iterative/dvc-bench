@@ -7,7 +7,7 @@ import pytest
 from funcy import cached_property
 from mockssh.server import Handler
 
-from dvc.path_info import URLInfo
+from .path_info import URLInfo
 
 from .base import Base
 from .local import Local

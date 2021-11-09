@@ -5,7 +5,7 @@ import uuid
 import pytest
 import requests
 
-from dvc.path_info import HTTPURLInfo
+from .path_info import HTTPURLInfo
 
 from .base import Base
 

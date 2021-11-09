@@ -5,7 +5,7 @@ import uuid
 import pytest
 from funcy import cached_property
 
-from dvc.path_info import CloudURLInfo
+from .path_info import CloudURLInfo
 from dvc.utils import env2bool
 
 from .base import Base

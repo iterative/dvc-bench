@@ -9,7 +9,7 @@ from tempfile import TemporaryDirectory
 
 import pytest
 
-from dvc.path_info import URLInfo
+from .path_info import URLInfo
 
 from .base import Base
 

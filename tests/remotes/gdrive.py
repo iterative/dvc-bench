@@ -8,7 +8,7 @@ import pytest
 from funcy import cached_property, retry
 
 from dvc.fs.gdrive import GDriveFileSystem
-from dvc.path_info import CloudURLInfo
+from .path_info import CloudURLInfo
 from dvc.utils import tmp_fname
 
 from .base import Base

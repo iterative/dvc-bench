@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from dvc.path_info import URLInfo
+from .path_info import URLInfo
 
 from .base import Base
 from .hdfs import _hdfs_root, md5md5crc32c

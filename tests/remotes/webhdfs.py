@@ -6,10 +6,9 @@ from pathlib import Path
 
 import pytest
 
-from .path_info import URLInfo
-
 from .base import Base
 from .hdfs import _hdfs_root, md5md5crc32c
+from .path_info import URLInfo
 
 
 class WebHDFS(Base, URLInfo):  # pylint: disable=abstract-method

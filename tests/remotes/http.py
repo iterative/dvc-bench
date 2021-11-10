@@ -5,9 +5,8 @@ import uuid
 import pytest
 import requests
 
-from .path_info import HTTPURLInfo
-
 from .base import Base
+from .path_info import HTTPURLInfo
 
 
 class HTTP(Base, HTTPURLInfo):

@@ -6,9 +6,8 @@ import uuid
 import pytest
 from funcy import cached_property
 
-from .path_info import CloudURLInfo
-
 from .base import Base
+from .path_info import CloudURLInfo
 
 TEST_AZURE_CONTAINER = "tests"
 TEST_AZURE_CONNECTION_STRING = (

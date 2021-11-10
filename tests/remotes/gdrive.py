@@ -8,10 +8,10 @@ import pytest
 from funcy import cached_property, retry
 
 from dvc.fs.gdrive import GDriveFileSystem
-from .path_info import CloudURLInfo
 from dvc.utils import tmp_fname
 
 from .base import Base
+from .path_info import CloudURLInfo
 
 TEST_GDRIVE_REPO_BUCKET = "root"
 

@@ -7,10 +7,9 @@ import pytest
 from funcy import cached_property
 from mockssh.server import Handler
 
-from .path_info import URLInfo
-
 from .base import Base
 from .local import Local
+from .path_info import URLInfo
 
 TEST_SSH_USER = "user"
 TEST_SSH_KEY_PATH = os.path.join(

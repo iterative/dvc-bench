@@ -9,9 +9,8 @@ from tempfile import TemporaryDirectory
 
 import pytest
 
-from .path_info import URLInfo
-
 from .base import Base
+from .path_info import URLInfo
 
 _hdfs_root = TemporaryDirectory()
 

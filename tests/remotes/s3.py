@@ -5,10 +5,10 @@ import uuid
 import pytest
 from funcy import cached_property
 
-from .path_info import CloudURLInfo
 from dvc.utils import env2bool
 
 from .base import Base
+from .path_info import CloudURLInfo
 
 TEST_AWS_REPO_BUCKET = os.environ.get("DVC_TEST_AWS_REPO_BUCKET", "dvc-temp")
 TEST_AWS_ENDPOINT_URL = "http://127.0.0.1:{port}/"

@@ -91,7 +91,7 @@ class TmpDir(pathlib.Path):
 
     def init(self, *, scm=False, dvc=False, subdir=False):
         from dvc.repo import Repo
-        from dvc.scm.git import Git
+        from scmrepo.git import Git
 
         assert not scm or not hasattr(self, "scm")
         assert not dvc or not hasattr(self, "dvc")
@@ -160,7 +160,7 @@ class TmpDir(pathlib.Path):
 
     def commit(self, output_paths, msg):
         def to_gitignore(stage_path):
-            from dvc.scm import Git
+            from scmrepo.git import Git
 
             return os.path.join(os.path.dirname(stage_path), Git.GITIGNORE)
 
@@ -275,7 +275,7 @@ def make_tmp_dir(tmp_path_factory, request, worker_id):
         from shutil import ignore_patterns
 
         from dvc.repo import Repo
-        from dvc.scm.git import Git
+        from scmrepo.git import Git
 
         cache = CACHE.get((scm, dvc, subdir))
         if not cache:

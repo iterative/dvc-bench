@@ -108,7 +108,8 @@ jobs:
         run: |
           tree /tmp/benchmarks
           mkdir html
-          PY_COLORS=1 py.test-benchmark compare $(find /tmp/benchmarks -type f) --histogram histograms --group-by name --csv results.csv --sort name > raw
+          echo "$(date)" > raw
+          PY_COLORS=1 py.test-benchmark compare $(find /tmp/benchmarks -type f) --histogram histograms --group-by name --csv results.csv --sort name >> raw
           cat raw | ansi2html -W > html/index.html
       - name: create md
         if: github.event_name == 'pull_request'

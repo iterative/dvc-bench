@@ -26,6 +26,9 @@ REMOTES = {
 }
 
 
+DEFAULT_DVC_BIN = "dvc"
+
+
 @pytest.fixture(autouse=True)
 def reset_loglevel(request, caplog):
     """
@@ -103,12 +106,20 @@ def pytest_addoption(parser):
         help="Remote type to use in tests",
     )
 
+    parser.addoption(
+        "--dvc-bin",
+        type=str,
+        default=DEFAULT_DVC_BIN,
+        help="Path to dvc binary",
+    )
+
 
 class DVCTestConfig:
     def __init__(self):
         self.enabled_remotes = set()
         self.size = "small"
         self.remote = "local"
+        self.dvc_bin = DEFAULT_DVC_BIN
 
     def requires(self, remote_name):
         if remote_name not in REMOTES or remote_name in self.enabled_remotes:
@@ -173,3 +184,4 @@ def pytest_configure(config):
 
     config.dvc_config.size = config.getoption("--size")
     config.dvc_config.remote = config.getoption("--remote")
+    config.dvc_config.dvc_bin = config.getoption("--dvc-bin")

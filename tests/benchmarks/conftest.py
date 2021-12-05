@@ -5,9 +5,9 @@ import pytest
 
 
 @pytest.fixture
-def dvc_bin():
+def dvc_bin(test_config):
     def _dvc_bin(*args):
-        proc = Popen(["dvc", *args])
+        proc = Popen([test_config.dvc_bin, *args])
         proc.communicate()
         assert proc.returncode == 0
 

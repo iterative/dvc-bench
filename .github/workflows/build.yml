@@ -23,6 +23,7 @@ jobs:
           pip install -U pip
           pip install wheel
           pip install -r requirements.txt
+          pip install git+https://github.com/iterative/dvc
       - name: check project styling
         run: pre-commit run --all-files
   gen:
@@ -35,7 +36,9 @@ jobs:
         with:
             python-version: 3.7
       - name: install reqs
-        run: pip install -r requirements.txt
+        run: |
+            pip install -r requirements.txt
+            pip install git+https://github.com/iterative/dvc
       - id: tests
         run: echo "::set-output name=tests::$(./scripts/ci/list_tests.sh)"
   build:
@@ -55,7 +58,9 @@ jobs:
             python-version: 3.7
       - uses: actions/checkout@v2
       - name: install requirements
-        run: pip install -r requirements.txt
+        run: |
+            pip install -r requirements.txt
+            pip install git+https://github.com/iterative/dvc
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -91,7 +96,9 @@ jobs:
           python-version: 3.7
       - uses: actions/checkout@v2
       - name: install requirements
-        run: pip install -r requirements.txt
+        run: |
+            pip install -r requirements.txt
+            pip install git+https://github.com/iterative/dvc
       - name: download ubuntu results
         uses: actions/download-artifact@v2
         with:

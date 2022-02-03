@@ -60,7 +60,7 @@ def make_dataset(request, test_config, tmp_dir, pytestconfig):
                 dvc.pull([str(src_dvc)])
                 break
             except (CheckoutError, DownloadError):
-                pass
+                print("retrying pull...")
 
         if files:
             shutil.copytree(src, path)

@@ -18,5 +18,5 @@ for REV in ${REVS[@]}; do
   ./.venv/bin/pip install -e '.[all,tests]'
   popd
 
-  pytest --benchmark-save $REV $@ --dvc-bin "$(pwd)/dvc/.venv/bin/dvc"
+  pytest --benchmark-save $REV $@ --dvc-bin "$(pwd)/dvc/.venv/bin/dvc" -s
 done

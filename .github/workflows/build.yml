@@ -57,7 +57,6 @@ jobs:
       - name: install requirements
         run: |
             pip install -r requirements.txt
-            pip install git+https://github.com/iterative/dvc
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:

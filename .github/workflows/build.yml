@@ -40,7 +40,7 @@ jobs:
         run: echo "::set-output name=tests::$(./scripts/ci/list_tests.sh)"
   build:
     needs: [gen]
-    timeout-minutes: 60
+    timeout-minutes: 80
     name: run ${{ matrix.test }}
     runs-on: ${{ matrix.os }}
     strategy:

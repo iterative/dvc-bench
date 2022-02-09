@@ -57,9 +57,11 @@ def make_dataset(request, test_config, tmp_dir, pytestconfig):
 
         while True:
             try:
-                print("running pull...")
-                dvc.pull([str(src_dvc)])
-                print("done pulling")
+                print("running fetch...")
+                dvc.fetch([str(src_dvc)])
+                print("done fetching")
+                dvc.checkout([str(src_dvc)])
+                print("done checkingout")
                 break
             except (CheckoutError, DownloadError):
                 print("retrying pull...")

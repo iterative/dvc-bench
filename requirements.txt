@@ -1,5 +1,5 @@
 virtualenv==20.0.35
-dvc[all,tests]==2.9.3
+dvc[all,tests]==2.9.1
 pytest-benchmark[histogram]
 ansi2html
 csv2md

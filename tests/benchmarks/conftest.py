@@ -7,7 +7,7 @@ import pytest
 @pytest.fixture
 def dvc_bin(test_config):
     def _dvc_bin(*args):
-        proc = Popen([test_config.dvc_bin, *args])
+        proc = Popen([test_config.dvc_bin, "-q", *args])
         proc.communicate()
         assert proc.returncode == 0
 
@@ -45,8 +45,8 @@ def make_dataset(request, test_config, tmp_dir, pytestconfig):
     def _make_dataset(
         dvcfile=False, files=True, cache=False, commit=False, remote=False
     ):
-        from dvc.repo import Repo
         from dvc.exceptions import CheckoutError, DownloadError
+        from dvc.repo import Repo
 
         path = tmp_dir / "dataset"
         root = pytestconfig.rootpath

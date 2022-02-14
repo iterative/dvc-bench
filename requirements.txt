@@ -1,12 +1,6 @@
-scmrepo
 virtualenv==20.0.35
-gitpython==3.1.11
-dvc[all,tests]==2.9.1
-awscli==1.19.106
+dvc[all,tests]==2.9.3
 pre-commit==2.11.1
-pytest==6.2.5
-pytest-mock==3.6.1
-feedparser==6.0.8
 pytest-benchmark[histogram]
 ansi2html
 csv2md

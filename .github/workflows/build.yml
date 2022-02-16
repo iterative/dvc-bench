@@ -60,9 +60,12 @@ jobs:
             pip install git+https://github.com/iterative/dvc
       - name: pull data
         run: |
-            dvc pull -R data/small -vv
-            dvc pull -R data/large -vv
-            dvc pull -vv
+            echo "pull small"
+            dvc pull -R data/small -vv -j2
+            echo "pull large"
+            dvc pull -R data/large -vv -j2
+            echo "pull all"
+            dvc pull -vv -j2
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:

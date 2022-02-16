@@ -10,4 +10,4 @@ def test_init(bench_dvc, tmp_dir, scm):
             else:
                 item.unlink()
 
-    bench_dvc("init", setup=_cleanup_dir, rounds=10, warmup_rounds=1)
+    bench_dvc("init", setup=_cleanup_dir, rounds=100, warmup_rounds=1)

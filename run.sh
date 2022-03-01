@@ -14,14 +14,17 @@ REVS=(
 
 if [ ! -d "dvc" ]; then
   git clone https://github.com/iterative/dvc
-  python -m venv dvc/.venv
 fi
 
 for REV in ${REVS[@]}; do
+  python -m venv dvc/.venv
+
   pushd dvc
   git checkout $REV
   ./.venv/bin/pip install -e '.[all,tests]'
   popd
 
   pytest --benchmark-save $REV $@ --dvc-bin "$(pwd)/dvc/.venv/bin/dvc"
+
+  rm -rf dvc/.venv
 done

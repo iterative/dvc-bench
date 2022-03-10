@@ -1,5 +1,5 @@
 virtualenv==20.0.35
-dvc[all,tests]==2.9.3
+dvc[all,tests]@git+https://github.com/dtrifiro/dvc@fix/7414-hang-on-pull
 pre-commit==2.11.1
 pytest-benchmark[histogram]
 ansi2html

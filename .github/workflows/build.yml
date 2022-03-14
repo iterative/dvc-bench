@@ -69,6 +69,7 @@ jobs:
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
         run: |
+          python -c "from os import cpu_count; print(f'cpu_count={cpu_count()}')"
           ./run.sh ${{ matrix.test }} --size large
           name=$(echo -n "${{ matrix.test }}" | sed -e 's/[ \t:\/\\"<>|*?]/-/g' -e 's/--*/-/g')
           echo "ARTIFACT_NAME=$name" >> $GITHUB_ENV

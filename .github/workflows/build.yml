@@ -57,7 +57,7 @@ jobs:
       - name: install requirements
         run: |
             pip install -r requirements.txt
-            pip install git+https://github.com/iterative/dvc
+            pip install git+https://github.com/dtrifiro/dvc@fix/7414-hang-on-pull
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:

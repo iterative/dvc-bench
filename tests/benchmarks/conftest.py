@@ -1,4 +1,5 @@
 import shutil
+import sys
 from subprocess import Popen
 
 import pytest
@@ -45,8 +46,8 @@ def make_dataset(request, test_config, tmp_dir, pytestconfig):
     def _make_dataset(
         dvcfile=False, files=True, cache=False, commit=False, remote=False
     ):
-        from dvc.repo import Repo
         from dvc.exceptions import CheckoutError, DownloadError
+        from dvc.repo import Repo
 
         path = tmp_dir / "dataset"
         root = pytestconfig.rootpath
@@ -55,12 +56,17 @@ def make_dataset(request, test_config, tmp_dir, pytestconfig):
 
         dvc = Repo(root)
 
-        while True:
+        retries = 3
+        while retries > 0:
             try:
                 dvc.pull([str(src_dvc)])
                 break
-            except (CheckoutError, DownloadError):
-                pass
+            except (CheckoutError, DownloadError) as exc:
+                print(
+                    f"Exception while running `pull`, retrying (exc={exc})",
+                    file=sys.stderr,
+                )
+                retries -= 1
 
         if files:
             shutil.copytree(src, path)

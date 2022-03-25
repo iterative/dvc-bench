@@ -7,3 +7,5 @@ dvc/
 html/
 /benchmarks_log
 /.benchmarks
+viz*.json
+.venv*

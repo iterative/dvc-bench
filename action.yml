@@ -38,6 +38,7 @@ runs:
       uses: actions/checkout@v2
       with:
         path: dvc-bench/dvc
+        fetch-depth: 0
     - name: install PR dvc version
       shell: bash
       working-directory: dvc-bench/dvc

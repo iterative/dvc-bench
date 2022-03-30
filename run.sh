@@ -5,18 +5,20 @@ set -x
 
 export PIPENV_IGNORE_VIRTUALENVS=1
 
-REVS=("main" "2.10.0" "2.9.5" "2.8.3" "2.7.3" "2.6.3")
+REV=$1
+shift
 
 if [ ! -d "dvc" ]; then
   git clone https://github.com/iterative/dvc
   python -m venv dvc/.venv
 fi
 
-for REV in ${REVS[@]}; do
-  pushd dvc
-  git checkout $REV
-  ./.venv/bin/pip install -e '.[all,tests]'
-  popd
+pushd dvc
+git checkout $REV
+./.venv/bin/pip install -e '.[all,tests]'
+popd
 
-  pytest --benchmark-save $REV $@ --dvc-bin "$(pwd)/dvc/.venv/bin/dvc"
-done
+if [[ $REV == "main" ]]; then
+  REV="main@$(git rev-parse --short=7 HEAD)"
+fi
+pytest --benchmark-save "$REV" $@ --dvc-bin "$(pwd)/dvc/.venv/bin/dvc"

@@ -41,7 +41,7 @@ jobs:
   build:
     needs: [gen]
     timeout-minutes: 60
-    name: run ${{ matrix.test }}
+    name: run ${{ matrix.rev }} ${{ matrix.test }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -49,6 +49,7 @@ jobs:
 #        os: [windows-2019, macos-10.15, ubuntu-18.04]
         os: [ubuntu-18.04]
         test: ${{fromJson(needs.gen.outputs.tests)}}
+        rev: ["main", "2.10.0", "2.9.5", "2.8.3", "2.7.3", "2.6.3"]
     steps:
       - uses: actions/setup-python@v2
         with:
@@ -69,13 +70,13 @@ jobs:
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
         run: |
-          ./run.sh ${{ matrix.test }} --size large
-          name=$(echo -n "${{ matrix.test }}" | sed -e 's/[ \t:\/\\"<>|*?]/-/g' -e 's/--*/-/g')
-          echo "ARTIFACT_NAME=$name" >> $GITHUB_ENV
+          ./run.sh ${{matrix.rev}} ${{ matrix.test }} --size large
+          test_name=$(echo -n "${{ matrix.test }}" | awk -F ":" '{print $NF}')
+          echo "ARTIFACT_NAME=${{matrix.rev}}-$test_name" >> $GITHUB_ENV
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:
-          name: benchmarks-${{ env.ARTIFACT_NAME }}
+          name: ${{ env.ARTIFACT_NAME }}
           path: .benchmarks
   publish:
     name: join results and publish
@@ -102,6 +103,10 @@ jobs:
         shell: bash
         run: |
           tree /tmp/benchmarks
+          for el in $(find /tmp/benchmarks -type f); do # cleanup tree for easier reading of report
+            artifact_dir=$(dirname $(dirname $el))
+            mv $el $artifact_dir
+          done
           mkdir html
           echo "$(date)" > raw
           PY_COLORS=1 py.test-benchmark compare $(find /tmp/benchmarks -type f) --histogram histograms --group-by name --csv results.csv --sort name >> raw

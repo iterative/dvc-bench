@@ -41,7 +41,7 @@ jobs:
   build:
     needs: [gen]
     timeout-minutes: 60
-    name: run ${{ matrix.rev }} ${{ matrix.test }}
+    name: run ${{ matrix.test.name }} (${{ matrix.rev }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -70,9 +70,8 @@ jobs:
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
         run: |
-          ./run.sh ${{matrix.rev}} ${{ matrix.test }} --size large
-          test_name=$(echo -n "${{ matrix.test }}" | awk -F ":" '{print $NF}')
-          echo "ARTIFACT_NAME=${{matrix.rev}}-$test_name" >> $GITHUB_ENV
+          ./run.sh ${{matrix.rev}} ${{ matrix.test.path }} --size large
+          echo "ARTIFACT_NAME=${{matrix.rev}}-${{matrix.test.name}}" >> $GITHUB_ENV
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:
@@ -103,13 +102,21 @@ jobs:
         shell: bash
         run: |
           tree /tmp/benchmarks
+          mkdir results
           for el in $(find /tmp/benchmarks -type f); do # cleanup tree for easier reading of report
-            artifact_dir=$(dirname $(dirname $el))
-            mv $el $artifact_dir
+            artifact_name=$(basename $(dirname $(dirname $el)))
+            benchmark=$(basename $el)
+            if [[ $benchmark == "*main*.json" ]]; then
+              rev=$(echo $benchmark | cut -d @ -f 2 | cut -d . -f 1)
+              out="results/${artifact_name}_${rev}.json"
+            else
+              out="results/${artifact_name}.json"
+            fi
+            mv $el $out
           done
           mkdir html
           echo "$(date)" > raw
-          PY_COLORS=1 py.test-benchmark compare $(find /tmp/benchmarks -type f) --histogram histograms --group-by name --csv results.csv --sort name >> raw
+          PY_COLORS=1 py.test-benchmark compare $(find results/ -type f) --histogram histograms --group-by name --csv results.csv --sort name >> raw
           cat raw | ansi2html -W > html/index.html
       - name: create md
         if: github.event_name == 'pull_request'

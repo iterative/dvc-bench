@@ -22,6 +22,7 @@ runs:
       with:
         path: dvc-bench/dvc
         ref: ${{ github.event.pull_request.base.sha }}
+        fetch-depth: 0
     - name: install base dvc version
       shell: bash
       working-directory: dvc-bench/dvc

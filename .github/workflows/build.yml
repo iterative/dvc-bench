@@ -41,7 +41,7 @@ jobs:
   build:
     needs: [gen]
     timeout-minutes: 60
-    name: run ${{ matrix.test.name }}
+    name: run ${{ matrix.test }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -69,11 +69,13 @@ jobs:
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
         run: |
-          ./run.sh ${{ matrix.test.path }} --size large
+          ./run.sh ${{ matrix.test }} --size large
+          name=$(echo -n "${{ matrix.test }}" | sed -e 's/[ \t:\/\\"<>|*?]/-/g' -e 's/--*/-/g')
+          echo "ARTIFACT_NAME=$name" >> $GITHUB_ENV
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.test.name }}
+          name: benchmarks-${{ env.ARTIFACT_NAME }}
           path: .benchmarks
   publish:
     name: join results and publish
@@ -100,15 +102,9 @@ jobs:
         shell: bash
         run: |
           tree /tmp/benchmarks
-          mkdir results
-          for el in $(find /tmp/benchmarks -type f); do # cleanup tree for easier reading of report
-            artifact_name=$(basename $(dirname $(dirname $el)))
-            mkdir -p results/$artifact_name
-            mv $el results/${artifact_name}/
-          done
           mkdir html
           echo "$(date)" > raw
-          PY_COLORS=1 py.test-benchmark compare $(find results/ -type f) --histogram histograms --group-by fullfunc --csv results.csv --sort name >> raw
+          PY_COLORS=1 py.test-benchmark compare $(find /tmp/benchmarks -type f) --histogram histograms --group-by name --csv results.csv --sort name >> raw
           cat raw | ansi2html -W > html/index.html
       - name: create md
         if: github.event_name == 'pull_request'

@@ -108,7 +108,7 @@ jobs:
           done
           mkdir html
           echo "$(date)" > raw
-          PY_COLORS=1 py.test-benchmark compare $(find results/ -type f) --histogram histograms --group-by fullfunc --csv results.csv --sort name >> raw
+          PY_COLORS=1 py.test-benchmark compare $(find results/ -type f) --histogram histograms --group-by name --csv results.csv --sort name >> raw
           cat raw | ansi2html -W > html/index.html
       - name: create md
         if: github.event_name == 'pull_request'

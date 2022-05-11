@@ -121,6 +121,8 @@ jobs:
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}"
           echo ::set-output name=body::$body
+      - name: create summary
+        run: python scripts/ci/csv_to_md.py --wrap >> $GITHUB_STEP_SUMMARY
       - name: post comment
         if: ${{ github.event_name == 'pull_request' && ! github.event.pull_request.head.repo.fork }}
         uses: peter-evans/create-or-update-comment@v1

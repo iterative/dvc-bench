@@ -100,6 +100,8 @@ jobs:
           path: /tmp/benchmarks
       - name: join results
         shell: bash
+        env:
+            DATASET_SIZE: ${{ github.event.inputs.dataset }}
         run: |
           tree /tmp/benchmarks
           mkdir results
@@ -110,6 +112,7 @@ jobs:
           done
           mkdir html
           echo "$(date)" > raw
+          echo "dataset: ${DATASET_SIZE:-mnist}" >> raw
           PY_COLORS=1 py.test-benchmark compare $(find results/ -type f) --histogram histograms --group-by name --csv results.csv --sort name >> raw
           cat raw | ansi2html -W > html/index.html
       - name: create md

@@ -86,7 +86,7 @@ def pytest_addoption(parser):
 
     parser.addoption(
         "--size",
-        choices=["tiny", "small", "large"],
+        choices=["tiny", "small", "large", "mnist"],
         default="small",
         help="Size of the dataset/datafile to use in tests",
     )

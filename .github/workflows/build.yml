@@ -18,6 +18,7 @@ on:
           - tiny
           - small
           - large
+          - mnist
 
 env:
   DVC_TEST: "true"
@@ -76,7 +77,7 @@ jobs:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
           DATASET_SIZE: ${{ github.event.inputs.dataset }}
         run: |
-          ./run.sh ${{ matrix.test.path }} --size ${DATASET_SIZE:-large}
+          ./run.sh ${{ matrix.test.path }} --size ${DATASET_SIZE:-mnist}
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:

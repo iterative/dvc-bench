@@ -1,7 +1,5 @@
 [core]
     remote = bench_s3_public
-['remote "dataset_registry"']
-    url = https://remote.dvc.org/dataset-registry
 ['remote "bench_s3"']
     url = s3://dvc-bench/cache
 ['remote "bench_s3_public"']

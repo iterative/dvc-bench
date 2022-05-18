@@ -23,7 +23,10 @@ def make_bench(request):
         bench = pytest_benchmark.plugin.benchmark.__pytest_wrapped__.obj(
             request
         )
-        bench.name += f"-{name}"
+        suffix = f"-{name}"
+        bench.name += suffix
+        bench.fullname += suffix
+
         return bench
 
     return _make_bench

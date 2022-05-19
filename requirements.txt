@@ -2,6 +2,7 @@ virtualenv==20.0.35
 dvc[all,tests]==2.9.3
 pre-commit==2.11.1
 pytest-benchmark[histogram]
+pytest-virtualenv
 ansi2html
 csv2md
 funcy

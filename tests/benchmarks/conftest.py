@@ -1,13 +1,67 @@
+import os
 import shutil
 from subprocess import Popen
 
 import pytest
+from dulwich.porcelain import clone
+from pytest_virtualenv import VirtualEnv
 
 
-@pytest.fixture
-def dvc_bin(test_config):
+def pytest_generate_tests(metafunc):
+    str_revs = metafunc.config.getoption("--dvc-revs")
+    revs = str_revs.split(",") if str_revs else [None]
+    if "dvc_rev" in metafunc.fixturenames:
+        metafunc.parametrize("dvc_rev", revs, scope="session")
+
+
+@pytest.fixture(scope="session")
+def make_dvc_venv(tmp_path_factory):
+    def _make_dvc_venv(name):
+        venv_dir = tmp_path_factory.mktemp(f"dvc-venv-{name}")
+        return VirtualEnv(workspace=venv_dir)
+
+    return _make_dvc_venv
+
+
+@pytest.fixture(scope="session")
+def dvc_venvs():
+    return {}
+
+
+@pytest.fixture(scope="session")
+def dvc_git_repo(tmp_path_factory, test_config):
+    url = test_config.dvc_git_repo
+
+    if os.path.isdir(url):
+        return url
+
+    tmp_path = os.fspath(tmp_path_factory.mktemp("dvc-git-repo"))
+    clone(url, tmp_path)
+
+    return tmp_path
+
+
+@pytest.fixture(scope="session")
+def dvc_bin(dvc_rev, dvc_venvs, make_dvc_venv, dvc_git_repo, test_config):
+    if dvc_rev:
+        venv = dvc_venvs.get(dvc_rev)
+        if not venv:
+            venv = make_dvc_venv(dvc_rev)
+            venv.run("pip install -U pip")
+            # NOTE: temporary workaround for
+            # https://github.com/iterative/scmrepo/issues/73
+            venv.run("pip install dulwich==0.20.37")
+            venv.run(
+                f"pip install git+file://{dvc_git_repo}@{dvc_rev} "
+                "--only-binary=dulwich"
+            )
+            dvc_venvs[dvc_rev] = venv
+        dvc_bin = venv.virtualenv / "bin" / "dvc"
+    else:
+        dvc_bin = test_config.dvc_bin
+
     def _dvc_bin(*args):
-        proc = Popen([test_config.dvc_bin, *args])
+        proc = Popen([dvc_bin, *args])
         proc.communicate()
         assert proc.returncode == 0
 
@@ -23,9 +77,15 @@ def make_bench(request):
         bench = pytest_benchmark.plugin.benchmark.__pytest_wrapped__.obj(
             request
         )
+
         suffix = f"-{name}"
-        bench.name += suffix
-        bench.fullname += suffix
+
+        def add_suffix(_name):
+            start, sep, end = _name.partition("[")
+            return start + suffix + sep + end
+
+        bench.name = add_suffix(bench.name)
+        bench.fullname = add_suffix(bench.fullname)
 
         return bench
 

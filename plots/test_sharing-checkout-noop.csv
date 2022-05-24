@@ -1,0 +1,6 @@
+index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
+0,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-checkout-noop[2.6.3],2.6.3,2.512857489999988,2.512857489999988,2.512857489999988,0.0,2.512857489999988,0.0,0;0,0.3979533276278253,1,1,test_sharing-checkout-noop,2.6.3
+1,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-checkout-noop[2.8.3],2.8.3,6.2505549400002565,6.2505549400002565,6.2505549400002565,0.0,6.2505549400002565,0.0,0;0,0.159985794797279,1,1,test_sharing-checkout-noop,2.8.3
+2,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-checkout-noop[2.9.5],2.9.5,5.469914154000435,5.469914154000435,5.469914154000435,0.0,5.469914154000435,0.0,0;0,0.1828182256331477,1,1,test_sharing-checkout-noop,2.9.5
+3,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-checkout-noop[2.10.0],2.10.0,5.39966774200002,5.39966774200002,5.39966774200002,0.0,5.39966774200002,0.0,0;0,0.1851965801935811,1,1,test_sharing-checkout-noop,2.10
+4,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-checkout-noop[main],main,5.285008209999887,5.285008209999887,5.285008209999887,0.0,5.285008209999887,0.0,0;0,0.1892144648153765,1,1,test_sharing-checkout-noop,99.99.99

@@ -1,0 +1,14 @@
+stages:
+  gen_plots:
+    cmd: python plots.py
+    deps:
+    - plots.py
+    - results.csv
+    plots:
+    - plots:
+        cache: false
+        x: 'param:dvc_rev'
+        x_label: 'DVC Revision'
+        y: mean
+        y_label: 'Mean Time'
+        template: linear_versions

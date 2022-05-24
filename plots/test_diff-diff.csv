@@ -1,0 +1,6 @@
+index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
+0,tests/benchmarks/cli/commands/test_diff.py::test_diff-diff[2.6.3],2.6.3,116.16352329499978,116.16352329499978,116.16352329499978,0.0,116.16352329499978,0.0,0;0,0.0086085543175242,1,1,test_diff-diff,2.6.3
+1,tests/benchmarks/cli/commands/test_diff.py::test_diff-diff[2.8.3],2.8.3,71.45220055499976,71.45220055499976,71.45220055499976,0.0,71.45220055499976,0.0,0;0,0.0139953702227863,1,1,test_diff-diff,2.8.3
+2,tests/benchmarks/cli/commands/test_diff.py::test_diff-diff[2.9.5],2.9.5,62.29177433399991,62.29177433399991,62.29177433399991,0.0,62.29177433399991,0.0,0;0,0.0160534839582211,1,1,test_diff-diff,2.9.5
+3,tests/benchmarks/cli/commands/test_diff.py::test_diff-diff[2.10.0],2.10.0,60.79699943600008,60.79699943600008,60.79699943600008,0.0,60.79699943600008,0.0,0;0,0.016448180161468,1,1,test_diff-diff,2.10
+4,tests/benchmarks/cli/commands/test_diff.py::test_diff-diff[main],main,55.25879571899986,55.25879571899986,55.25879571899986,0.0,55.25879571899986,0.0,0;0,0.0180966665485285,1,1,test_diff-diff,99.99.99

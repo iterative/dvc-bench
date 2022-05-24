@@ -1,0 +1,16 @@
+schema: '2.0'
+stages:
+  gen_plots:
+    cmd: python plots.py
+    deps:
+    - path: plots.py
+      md5: 3673048a44df80582382304ab48cdd9b
+      size: 630
+    - path: results.csv
+      md5: 538b4993f552f45b3ac20732ccb95217
+      size: 26070
+    outs:
+    - path: plots
+      md5: 1ffb6ae57aeacf51de081145c74c40e0.dir
+      size: 633907
+      nfiles: 27

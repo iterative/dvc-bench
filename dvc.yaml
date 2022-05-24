@@ -1,0 +1,9 @@
+stages:
+  gen_plots:
+    cmd: python plots.py
+    deps:
+    - plots.py
+    - results.csv
+    plots:
+    - plots:
+        cache: false

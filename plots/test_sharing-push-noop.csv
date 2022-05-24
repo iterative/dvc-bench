@@ -1,0 +1,6 @@
+index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
+0,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-push-noop[2.6.3],2.6.3,2.9699644870006523,2.9699644870006523,2.9699644870006523,0.0,2.9699644870006523,0.0,0;0,0.3367043627548198,1,1,test_sharing-push-noop,2.6.3
+1,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-push-noop[2.8.3],2.8.3,2.648866774999988,2.648866774999988,2.648866774999988,0.0,2.648866774999988,0.0,0;0,0.3775199301973217,1,1,test_sharing-push-noop,2.8.3
+2,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-push-noop[2.9.5],2.9.5,2.683720815000015,2.683720815000015,2.683720815000015,0.0,2.683720815000015,0.0,0;0,0.3726170004013604,1,1,test_sharing-push-noop,2.9.5
+3,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-push-noop[2.10.0],2.10.0,2.6617783730002884,2.6617783730002884,2.6617783730002884,0.0,2.6617783730002884,0.0,0;0,0.3756886787207703,1,1,test_sharing-push-noop,2.10
+4,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-push-noop[main],main,2.7378262619999987,2.7378262619999987,2.7378262619999987,0.0,2.7378262619999987,0.0,0;0,0.3652532718674025,1,1,test_sharing-push-noop,99.99.99

@@ -1,0 +1,6 @@
+index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
+0,tests/benchmarks/cli/commands/test_import.py::test_import-import[2.6.3],2.6.3,318.6828438069997,318.6828438069997,318.6828438069997,0.0,318.6828438069997,0.0,0;0,0.003137916017235,1,1,test_import-import,2.6.3
+1,tests/benchmarks/cli/commands/test_import.py::test_import-import[2.8.3],2.8.3,372.2723925240002,372.2723925240002,372.2723925240002,0.0,372.2723925240002,0.0,0;0,0.0026862051016461,1,1,test_import-import,2.8.3
+2,tests/benchmarks/cli/commands/test_import.py::test_import-import[2.9.5],2.9.5,476.1091930120001,476.1091930120001,476.1091930120001,0.0,476.1091930120001,0.0,0;0,0.0021003585200145,1,1,test_import-import,2.9.5
+3,tests/benchmarks/cli/commands/test_import.py::test_import-import[2.10.0],2.10.0,475.5307121209999,475.5307121209999,475.5307121209999,0.0,475.5307121209999,0.0,0;0,0.0021029135963473,1,1,test_import-import,2.10
+4,tests/benchmarks/cli/commands/test_import.py::test_import-import[main],main,409.502751388,409.502751388,409.502751388,0.0,409.502751388,0.0,0;0,0.0024419860345517,1,1,test_import-import,99.99.99

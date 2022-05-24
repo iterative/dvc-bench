@@ -1,0 +1,6 @@
+index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
+0,tests/benchmarks/cli/commands/test_ls.py::test_list-list[2.6.3],2.6.3,0.3938892219998706,0.3938892219998706,0.3938892219998706,0.0,0.3938892219998706,0.0,0;0,2.538784876932551,1,1,test_list-list,2.6.3
+1,tests/benchmarks/cli/commands/test_ls.py::test_list-list[2.8.3],2.8.3,0.4447869449995778,0.4447869449995778,0.4447869449995778,0.0,0.4447869449995778,0.0,0;0,2.248267426106558,1,1,test_list-list,2.8.3
+2,tests/benchmarks/cli/commands/test_ls.py::test_list-list[2.9.5],2.9.5,2.658372223999777,2.658372223999777,2.658372223999777,0.0,2.658372223999777,0.0,0;0,0.3761700453277396,1,1,test_list-list,2.9.5
+3,tests/benchmarks/cli/commands/test_ls.py::test_list-list[2.10.0],2.10.0,2.6865975470000194,2.6865975470000194,2.6865975470000194,0.0,2.6865975470000194,0.0,0;0,0.3722180127487449,1,1,test_list-list,2.10
+4,tests/benchmarks/cli/commands/test_ls.py::test_list-list[main],main,2.5239802360001704,2.5239802360001704,2.5239802360001704,0.0,2.5239802360001704,0.0,0;0,0.3961996158831778,1,1,test_list-list,99.99.99

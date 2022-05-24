@@ -7,3 +7,8 @@ stages:
     plots:
     - plots:
         cache: false
+        x: 'param:dvc_rev'
+        x_label: 'DVC Revision'
+        y: mean
+        y_label: 'Mean Time'
+        template: templates/linear_versions.json

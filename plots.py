@@ -13,13 +13,9 @@ def version(x):
     except:
         return StrictVersion("99.99.99")
     
-df["ver"] = df["param:dvc_rev"].apply(version)
-df = df.sort_values("ver").reset_index()
-
 os.makedirs("plots", exist_ok=True)
 for test, test_df in df.groupby("test"):
-    ax = test_df[["mean"]].plot(title=test)
-    ax.set_xticks(test_df.index)
-    ax.set_xticklabels(test_df["param:dvc_rev"])
-    ax.legend([test])
-    ax.figure.savefig(f"plots/{test}.png")
+    test_df["ver_sort"] = test_df["param:dvc_rev"].apply(version)
+    test_df = test_df.sort_values("ver_sort").reset_index(drop=True)
+    test_df.index.name = "index"
+    test_df.to_csv(f"plots/{test}.csv")

@@ -4,13 +4,13 @@ stages:
     cmd: python plots.py
     deps:
     - path: plots.py
-      md5: 3673048a44df80582382304ab48cdd9b
-      size: 630
+      md5: d14581b088a19976c87b41f39a1200d6
+      size: 558
     - path: results.csv
       md5: 538b4993f552f45b3ac20732ccb95217
       size: 26070
     outs:
     - path: plots
-      md5: 1ffb6ae57aeacf51de081145c74c40e0.dir
-      size: 633907
+      md5: 698fe1027e6ba06b6f37073d15204285.dir
+      size: 32329
       nfiles: 27

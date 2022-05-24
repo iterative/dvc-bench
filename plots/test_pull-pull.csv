@@ -1,0 +1,6 @@
+index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
+0,tests/benchmarks/cli/commands/test_pull.py::test_pull-pull[2.6.3],2.6.3,169.74160756699985,169.74160756699985,169.74160756699985,0.0,169.74160756699985,0.0,0;0,0.0058913074662927,1,1,test_pull-pull,2.6.3
+1,tests/benchmarks/cli/commands/test_pull.py::test_pull-pull[2.8.3],2.8.3,210.96198011800016,210.96198011800016,210.96198011800016,0.0,210.96198011800016,0.0,0;0,0.0047401906231665,1,1,test_pull-pull,2.8.3
+2,tests/benchmarks/cli/commands/test_pull.py::test_pull-pull[2.9.5],2.9.5,239.512561477,239.512561477,239.512561477,0.0,239.512561477,0.0,0;0,0.0041751463632358,1,1,test_pull-pull,2.9.5
+3,tests/benchmarks/cli/commands/test_pull.py::test_pull-pull[2.10.0],2.10.0,241.273714426,241.273714426,241.273714426,0.0,241.273714426,0.0,0;0,0.0041446703068299,1,1,test_pull-pull,2.10
+4,tests/benchmarks/cli/commands/test_pull.py::test_pull-pull[main],main,215.82761657799983,215.82761657799983,215.82761657799983,0.0,215.82761657799983,0.0,0;0,0.0046333273556704,1,1,test_pull-pull,99.99.99

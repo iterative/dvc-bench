@@ -48,13 +48,7 @@ def dvc_bin(dvc_rev, dvc_venvs, make_dvc_venv, dvc_git_repo, test_config):
         if not venv:
             venv = make_dvc_venv(dvc_rev)
             venv.run("pip install -U pip")
-            # NOTE: temporary workaround for
-            # https://github.com/iterative/scmrepo/issues/73
-            venv.run("pip install dulwich==0.20.37")
-            venv.run(
-                f"pip install git+file://{dvc_git_repo}@{dvc_rev} "
-                "--only-binary=dulwich"
-            )
+            venv.run(f"pip install git+file://{dvc_git_repo}@{dvc_rev}")
             dvc_venvs[dvc_rev] = venv
         dvc_bin = venv.virtualenv / "bin" / "dvc"
     else:

@@ -12,7 +12,7 @@ def pytest_generate_tests(metafunc):
     str_revs = metafunc.config.getoption("--dvc-revs")
     revs = str_revs.split(",") if str_revs else [None]
     if "dvc_rev" in metafunc.fixturenames:
-        metafunc.parametrize("dvc_rev", revs, scope="session")
+        metafunc.parametrize("dvc_rev", list(enumerate(revs)), scope="session")
 
 
 @pytest.fixture(scope="session")
@@ -47,11 +47,12 @@ def dvc_bin(
     dvc_rev, dvc_venvs, make_dvc_venv, dvc_git_repo, test_config, request
 ):
     if dvc_rev:
-        venv = dvc_venvs.get(dvc_rev)
+        index, rev = dvc_rev
+        venv = dvc_venvs.get(rev)
         if not venv:
-            venv = make_dvc_venv(dvc_rev)
+            venv = make_dvc_venv(rev)
             venv.run("pip install -U pip")
-            venv.run(f"pip install git+file://{dvc_git_repo}@{dvc_rev}")
+            venv.run(f"pip install git+file://{dvc_git_repo}@{rev}")
             dvc_venvs[dvc_rev] = venv
         dvc_bin = venv.virtualenv / "bin" / "dvc"
     else:
@@ -78,9 +79,15 @@ def make_bench(request):
 
         suffix = f"-{name}"
 
+        try:
+            idx, rev = request.getfixturevalue("dvc_rev")
+            rev = f"{idx}-{rev}"
+        except KeyError:
+            rev = ""
+
         def add_suffix(_name):
             start, sep, end = _name.partition("[")
-            return start + suffix + sep + end
+            return start + suffix + sep + rev + "]"
 
         bench.name = add_suffix(bench.name)
         bench.fullname = add_suffix(bench.fullname)
@@ -106,8 +113,8 @@ def make_dataset(request, test_config, tmp_dir, pytestconfig):
     def _make_dataset(
         dvcfile=False, files=True, cache=False, commit=False, remote=False
     ):
-        from dvc.repo import Repo
         from dvc.exceptions import CheckoutError, DownloadError
+        from dvc.repo import Repo
 
         path = tmp_dir / "dataset"
         root = pytestconfig.rootpath

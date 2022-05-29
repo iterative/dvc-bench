@@ -76,7 +76,7 @@ jobs:
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
           DATASET_SIZE: ${{ github.event.inputs.dataset }}
-        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs main,2.10.0,2.9.5,2.8.3,2.6.3 ${{ matrix.test.path }} --size ${DATASET_SIZE:-mnist}
+        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs main,2.10.2,2.9.5,2.8.3,2.6.3 ${{ matrix.test.path }} --size ${DATASET_SIZE:-mnist}
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:

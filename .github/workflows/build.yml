@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-            python-version: 3.7
+            python-version: 3.10
       - name: install requirements
         run: |
           pip install -U pip
@@ -46,7 +46,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-            python-version: 3.7
+            python-version: 3.10
       - name: install reqs
         run: pip install -r requirements.txt
       - id: tests
@@ -65,7 +65,7 @@ jobs:
     steps:
       - uses: actions/setup-python@v2
         with:
-            python-version: 3.7
+            python-version: 3.10
       - uses: actions/checkout@v2
       - name: install requirements
         run: |
@@ -89,7 +89,7 @@ jobs:
     steps:
       - uses: actions/setup-python@v2
         with:
-          python-version: 3.7
+          python-version: 3.10
       - uses: actions/checkout@v2
       - name: install requirements
         run: pip install -r requirements.txt

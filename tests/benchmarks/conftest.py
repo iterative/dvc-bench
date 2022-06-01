@@ -192,3 +192,25 @@ def project(test_config, monkeypatch, make_project):
         path = make_project(url, rev=rev)
 
     monkeypatch.chdir(path)
+
+
+@pytest.fixture
+def make_pipeline(request, test_config, tmp_dir, pytestconfig):
+    def _make_pipeline():
+        with open(tmp_dir / "dvc.yaml", "w", encoding="UTF-8") as f:
+            f.write(
+                """stages:
+  prepare:
+    cmd: echo foo > prepare_output
+    deps:
+    - dataset
+    outs:
+    - prepare_output"""
+            )
+
+    return _make_pipeline
+
+
+@pytest.fixture
+def pipeline(make_pipeline):
+    return make_pipeline()

@@ -1,9 +1,10 @@
 import os
 import shutil
-from subprocess import Popen
+from subprocess import check_output
 
 import pytest
 from dulwich.porcelain import clone
+from packaging import version
 from pytest_virtualenv import VirtualEnv
 
 
@@ -42,7 +43,9 @@ def dvc_git_repo(tmp_path_factory, test_config):
 
 
 @pytest.fixture(scope="session")
-def dvc_bin(dvc_rev, dvc_venvs, make_dvc_venv, dvc_git_repo, test_config):
+def dvc_bin(
+    dvc_rev, dvc_venvs, make_dvc_venv, dvc_git_repo, test_config, request
+):
     if dvc_rev:
         venv = dvc_venvs.get(dvc_rev)
         if not venv:
@@ -55,9 +58,10 @@ def dvc_bin(dvc_rev, dvc_venvs, make_dvc_venv, dvc_git_repo, test_config):
         dvc_bin = test_config.dvc_bin
 
     def _dvc_bin(*args):
-        proc = Popen([dvc_bin, *args])
-        proc.communicate()
-        assert proc.returncode == 0
+        return check_output([dvc_bin, *args], text=True)
+
+    actual = version.parse(_dvc_bin("--version"))
+    _dvc_bin.version = (actual.major, actual.minor, actual.micro)
 
     return _dvc_bin
 
@@ -160,3 +164,31 @@ def dataset(make_dataset):
 @pytest.fixture
 def remote_dataset(test_config):
     pytest.skip("fixme")
+
+
+@pytest.fixture
+def make_project(tmp_path_factory):
+    def _make_project(url, rev=None):
+        path = os.fspath(tmp_path_factory.mktemp("dvc-project"))
+
+        if rev:
+            rev = rev.encode("ascii")
+
+        clone(url, path, branch=rev)
+        return path
+
+    return _make_project
+
+
+@pytest.fixture
+def project(test_config, monkeypatch, make_project):
+    rev = test_config.project_rev
+    url = test_config.project_git_repo
+
+    if os.path.isdir(url):
+        path = url
+        assert not rev
+    else:
+        path = make_project(url, rev=rev)
+
+    monkeypatch.chdir(path)

@@ -28,6 +28,7 @@ REMOTES = {
 
 DEFAULT_DVC_BIN = "dvc"
 DEFAULT_DVC_GIT_REPO = "https://github.com/iterative/dvc"
+DEFAULT_PROJECT_GIT_REPO = "https://github.com/iterative/example-get-started"
 
 
 @pytest.fixture(autouse=True)
@@ -122,6 +123,19 @@ def pytest_addoption(parser):
         help="Path or url to dvc git repo",
     )
 
+    parser.addoption(
+        "--project-rev",
+        type=str,
+        help="Project revision to test",
+    )
+
+    parser.addoption(
+        "--project-git-repo",
+        type=str,
+        default=DEFAULT_PROJECT_GIT_REPO,
+        help="Path or url to dvc project",
+    )
+
 
 class DVCTestConfig:
     def __init__(self):
@@ -131,6 +145,8 @@ class DVCTestConfig:
         self.dvc_bin = DEFAULT_DVC_BIN
         self.dvc_revs = None
         self.dvc_git_repo = DEFAULT_DVC_GIT_REPO
+        self.project_rev = None
+        self.project_git_repo = DEFAULT_PROJECT_GIT_REPO
 
     def requires(self, remote_name):
         if remote_name not in REMOTES or remote_name in self.enabled_remotes:
@@ -198,3 +214,5 @@ def pytest_configure(config):
     config.dvc_config.dvc_bin = config.getoption("--dvc-bin")
     config.dvc_config.dvc_revs = config.getoption("--dvc-revs")
     config.dvc_config.dvc_git_repo = config.getoption("--dvc-git-repo")
+    config.dvc_config.project_rev = config.getoption("--project-rev")
+    config.dvc_config.project_git_repo = config.getoption("--project-git-repo")

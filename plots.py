@@ -1,7 +1,7 @@
 import os
-from distutils.version import StrictVersion
 
 import pandas as pd
+from distutils.version import StrictVersion
 
 df = pd.read_csv("results.csv")
 df["test"] = df["name"].str.extract(r"::(.*)\[")

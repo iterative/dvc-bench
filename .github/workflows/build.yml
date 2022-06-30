@@ -139,3 +139,13 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: html
+      - name: update results
+        run: |
+          dvc repro
+          git add results.csv plots
+      - name: create PR
+        if: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: update results
+          title: update results

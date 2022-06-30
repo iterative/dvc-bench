@@ -1,0 +1,6 @@
+index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
+0,tests/benchmarks/cli/commands/test_status.py::test_status-status-changed[2.6.3],2.6.3,77.37684911199995,77.37684911199995,77.37684911199995,0.0,77.37684911199995,0.0,0;0,0.0129237622296113,1,1,test_status-status-changed,2.6.3
+1,tests/benchmarks/cli/commands/test_status.py::test_status-status-changed[2.8.3],2.8.3,82.62495969199995,82.62495969199995,82.62495969199995,0.0,82.62495969199995,0.0,0;0,0.0121028803369791,1,1,test_status-status-changed,2.8.3
+2,tests/benchmarks/cli/commands/test_status.py::test_status-status-changed[2.9.5],2.9.5,76.12102816400011,76.12102816400011,76.12102816400011,0.0,76.12102816400011,0.0,0;0,0.013136974422436,1,1,test_status-status-changed,2.9.5
+3,tests/benchmarks/cli/commands/test_status.py::test_status-status-changed[2.10.0],2.10.0,74.39937654799996,74.39937654799996,74.39937654799996,0.0,74.39937654799996,0.0,0;0,0.013440972846793,1,1,test_status-status-changed,2.10
+4,tests/benchmarks/cli/commands/test_status.py::test_status-status-changed[main],main,39.50477035000006,39.50477035000006,39.50477035000006,0.0,39.50477035000006,0.0,0;0,0.0253133986387038,1,1,test_status-status-changed,99.99.99

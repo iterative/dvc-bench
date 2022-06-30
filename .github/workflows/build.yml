@@ -37,7 +37,7 @@ jobs:
           pip install wheel
           pip install -r requirements.txt
       - name: check project styling
-        run: pre-commit run --all-files
+        run: pre-commit run --all-files --show-diff-on-failure
   gen:
     runs-on: ubuntu-latest
     outputs:

@@ -22,6 +22,7 @@ on:
 
 env:
   DVC_TEST: "true"
+  FORCE_COLOR: "1"
 
 jobs:
   lint:

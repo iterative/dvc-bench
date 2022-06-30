@@ -6,3 +6,4 @@ pytest-virtualenv
 ansi2html
 csv2md
 funcy
+pandas

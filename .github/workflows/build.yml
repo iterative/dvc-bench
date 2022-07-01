@@ -143,10 +143,8 @@ jobs:
       - name: update results
         run: |
           dvc repro
-          git add results.csv plots
+          git add results.csv plots dvc.lock
+          git commit -m "update results"
       - name: create PR
         if: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
         uses: peter-evans/create-pull-request@v4
-        with:
-          commit-message: update results
-          title: update results

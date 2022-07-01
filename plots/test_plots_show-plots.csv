@@ -1,0 +1,6 @@
+index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
+0,tests/benchmarks/cli/commands/test_plots_show.py::test_plots_show-plots[2.6.3],2.6.3,0.7947506450000219,0.7947506450000219,0.7947506450000219,0.0,0.7947506450000219,0.0,0;0,1.2582562924500331,1,1,test_plots_show-plots,2.6.3
+1,tests/benchmarks/cli/commands/test_plots_show.py::test_plots_show-plots[2.10.2],2.10.2,0.9596747730000176,0.9596747730000176,0.9596747730000176,0.0,0.9596747730000176,0.0,0;0,1.0420196801400987,1,1,test_plots_show-plots,2.10.2
+2,tests/benchmarks/cli/commands/test_plots_show.py::test_plots_show-plots[2.11.0],2.11.0,1.357916079000006,1.357916079000006,1.357916079000006,0.0,1.357916079000006,0.0,0;0,0.7364225341056556,1,1,test_plots_show-plots,2.11
+3,tests/benchmarks/cli/commands/test_plots_show.py::test_plots_show-plots[2.12.0],2.12.0,1.394322451999983,1.394322451999983,1.394322451999983,0.0,1.394322451999983,0.0,0;0,0.7171942175682703,1,1,test_plots_show-plots,2.12
+4,tests/benchmarks/cli/commands/test_plots_show.py::test_plots_show-plots[main],main,1.923312166999949,1.923312166999949,1.923312166999949,0.0,1.923312166999949,0.0,0;0,0.519936397823467,1,1,test_plots_show-plots,99.99.99

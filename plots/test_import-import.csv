@@ -1,6 +1,6 @@
 index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
-0,tests/benchmarks/cli/commands/test_import.py::test_import-import[2.6.3],2.6.3,303.61377255599973,303.61377255599973,303.61377255599973,0.0,303.61377255599973,0.0,0;0,0.0032936582276271,1,1,test_import-import,2.6.3
-1,tests/benchmarks/cli/commands/test_import.py::test_import-import[2.10.2],2.10.2,430.3937804060001,430.3937804060001,430.3937804060001,0.0,430.3937804060001,0.0,0;0,0.0023234536499497,1,1,test_import-import,2.10.2
-2,tests/benchmarks/cli/commands/test_import.py::test_import-import[2.11.0],2.11.0,388.371457402,388.371457402,388.371457402,0.0,388.371457402,0.0,0;0,0.0025748545134842,1,1,test_import-import,2.11
-3,tests/benchmarks/cli/commands/test_import.py::test_import-import[2.12.0],2.12.0,368.0071534299998,368.0071534299998,368.0071534299998,0.0,368.0071534299998,0.0,0;0,0.0027173384829059,1,1,test_import-import,2.12
-4,tests/benchmarks/cli/commands/test_import.py::test_import-import[main],main,366.7084725090001,366.7084725090001,366.7084725090001,0.0,366.7084725090001,0.0,0;0,0.0027269618101759,1,1,test_import-import,99.99.99
+0,tests/benchmarks/cli/commands/test_import.py::test_import-import[2.6.3],2.6.3,308.40667685499966,308.40667685499966,308.40667685499966,0.0,308.40667685499966,0.0,0;0,0.0032424719535827,1,1,test_import-import,2.6.3
+1,tests/benchmarks/cli/commands/test_import.py::test_import-import[2.10.2],2.10.2,437.8753200629999,437.8753200629999,437.8753200629999,0.0,437.8753200629999,0.0,0;0,0.0022837551106011,1,1,test_import-import,2.10.2
+2,tests/benchmarks/cli/commands/test_import.py::test_import-import[2.11.0],2.11.0,393.5202996429998,393.5202996429998,393.5202996429998,0.0,393.5202996429998,0.0,0;0,0.0025411649688902,1,1,test_import-import,2.11
+3,tests/benchmarks/cli/commands/test_import.py::test_import-import[2.12.0],2.12.0,371.5320725400002,371.5320725400002,371.5320725400002,0.0,371.5320725400002,0.0,0;0,0.0026915576713564,1,1,test_import-import,2.12
+4,tests/benchmarks/cli/commands/test_import.py::test_import-import[main],main,369.622360457,369.622360457,369.622360457,0.0,369.622360457,0.0,0;0,0.0027054640275647,1,1,test_import-import,99.99.99

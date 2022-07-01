@@ -1,6 +1,6 @@
 index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
-0,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-add[2.6.3],2.6.3,244.9954043199996,244.9954043199996,244.9954043199996,0.0,244.9954043199996,0.0,0;0,0.0040817092172629,1,1,test_sharing-add,2.6.3
-1,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-add[2.10.2],2.10.2,209.56500640600007,209.56500640600007,209.56500640600007,0.0,209.56500640600007,0.0,0;0,0.0047717890364894,1,1,test_sharing-add,2.10.2
-2,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-add[2.11.0],2.11.0,206.587636103,206.587636103,206.587636103,0.0,206.587636103,0.0,0;0,0.004840560736662,1,1,test_sharing-add,2.11
-3,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-add[2.12.0],2.12.0,200.94263126299984,200.94263126299984,200.94263126299984,0.0,200.94263126299984,0.0,0;0,0.0049765447666063,1,1,test_sharing-add,2.12
-4,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-add[main],main,188.54368497900032,188.54368497900032,188.54368497900032,0.0,188.54368497900032,0.0,0;0,0.0053038106267594,1,1,test_sharing-add,99.99.99
+0,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-add[2.6.3],2.6.3,333.8417649949997,333.8417649949997,333.8417649949997,0.0,333.8417649949997,0.0,0;0,0.0029954310839896,1,1,test_sharing-add,2.6.3
+1,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-add[2.10.2],2.10.2,295.99911111799975,295.99911111799975,295.99911111799975,0.0,295.99911111799975,0.0,0;0,0.0033783885236106,1,1,test_sharing-add,2.10.2
+2,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-add[2.11.0],2.11.0,290.2014103070005,290.2014103070005,290.2014103070005,0.0,290.2014103070005,0.0,0;0,0.0034458826335203,1,1,test_sharing-add,2.11
+3,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-add[2.12.0],2.12.0,267.8694754549997,267.8694754549997,267.8694754549997,0.0,267.8694754549997,0.0,0;0,0.0037331614522386,1,1,test_sharing-add,2.12
+4,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-add[main],main,267.59290050699974,267.59290050699974,267.59290050699974,0.0,267.59290050699974,0.0,0;0,0.0037370199213257,1,1,test_sharing-add,99.99.99

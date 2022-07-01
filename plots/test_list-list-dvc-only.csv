@@ -1,6 +1,6 @@
 index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
-0,tests/benchmarks/cli/commands/test_ls.py::test_list-list-dvc-only[2.6.3],2.6.3,0.483342261999951,0.483342261999951,0.483342261999951,0.0,0.483342261999951,0.0,0;0,2.068927297733591,1,1,test_list-list-dvc-only,2.6.3
-1,tests/benchmarks/cli/commands/test_ls.py::test_list-list-dvc-only[2.10.2],2.10.2,2.4287825769997653,2.4287825769997653,2.4287825769997653,0.0,2.4287825769997653,0.0,0;0,0.4117289087421252,1,1,test_list-list-dvc-only,2.10.2
-2,tests/benchmarks/cli/commands/test_ls.py::test_list-list-dvc-only[2.11.0],2.11.0,2.316687393999928,2.316687393999928,2.316687393999928,0.0,2.316687393999928,0.0,0;0,0.4316508142574333,1,1,test_list-list-dvc-only,2.11
-3,tests/benchmarks/cli/commands/test_ls.py::test_list-list-dvc-only[2.12.0],2.12.0,2.437479056000029,2.437479056000029,2.437479056000029,0.0,2.437479056000029,0.0,0;0,0.4102599353780818,1,1,test_list-list-dvc-only,2.12
-4,tests/benchmarks/cli/commands/test_ls.py::test_list-list-dvc-only[main],main,2.4526292789998934,2.4526292789998934,2.4526292789998934,0.0,2.4526292789998934,0.0,0;0,0.4077257042318964,1,1,test_list-list-dvc-only,99.99.99
+0,tests/benchmarks/cli/commands/test_ls.py::test_list-list-dvc-only[2.6.3],2.6.3,0.6371071119997396,0.6371071119997396,0.6371071119997396,0.0,0.6371071119997396,0.0,0;0,1.5695947842447076,1,1,test_list-list-dvc-only,2.6.3
+1,tests/benchmarks/cli/commands/test_ls.py::test_list-list-dvc-only[2.10.2],2.10.2,2.7396356569997806,2.7396356569997806,2.7396356569997806,0.0,2.7396356569997806,0.0,0;0,0.3650120399933457,1,1,test_list-list-dvc-only,2.10.2
+2,tests/benchmarks/cli/commands/test_ls.py::test_list-list-dvc-only[2.11.0],2.11.0,2.6977947870000207,2.6977947870000207,2.6977947870000207,0.0,2.6977947870000207,0.0,0;0,0.3706731159904166,1,1,test_list-list-dvc-only,2.11
+3,tests/benchmarks/cli/commands/test_ls.py::test_list-list-dvc-only[2.12.0],2.12.0,2.731195984000351,2.731195984000351,2.731195984000351,0.0,2.731195984000351,0.0,0;0,0.3661399642713708,1,1,test_list-list-dvc-only,2.12
+4,tests/benchmarks/cli/commands/test_ls.py::test_list-list-dvc-only[main],main,2.693771874000049,2.693771874000049,2.693771874000049,0.0,2.693771874000049,0.0,0;0,0.3712266839118321,1,1,test_list-list-dvc-only,99.99.99

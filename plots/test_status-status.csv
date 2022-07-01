@@ -1,6 +1,6 @@
 index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
-0,tests/benchmarks/cli/commands/test_status.py::test_status-status[2.6.3],2.6.3,84.90823801700003,84.90823801700003,84.90823801700003,0.0,84.90823801700003,0.0,0;0,0.0117774202286447,1,1,test_status-status,2.6.3
-1,tests/benchmarks/cli/commands/test_status.py::test_status-status[2.10.2],2.10.2,46.7497930290001,46.7497930290001,46.7497930290001,0.0,46.7497930290001,0.0,0;0,0.0213904690311607,1,1,test_status-status,2.10.2
-2,tests/benchmarks/cli/commands/test_status.py::test_status-status[2.11.0],2.11.0,44.818833582000025,44.818833582000025,44.818833582000025,0.0,44.818833582000025,0.0,0;0,0.0223120487544686,1,1,test_status-status,2.11
-3,tests/benchmarks/cli/commands/test_status.py::test_status-status[2.12.0],2.12.0,23.097125011000003,23.097125011000003,23.097125011000003,0.0,23.097125011000003,0.0,0;0,0.0432954317701337,1,1,test_status-status,2.12
-4,tests/benchmarks/cli/commands/test_status.py::test_status-status[main],main,23.516968060999943,23.516968060999943,23.516968060999943,0.0,23.516968060999943,0.0,0;0,0.0425224883329403,1,1,test_status-status,99.99.99
+0,tests/benchmarks/cli/commands/test_status.py::test_status-status[2.6.3],2.6.3,86.13768993999975,86.13768993999975,86.13768993999975,0.0,86.13768993999975,0.0,0;0,0.0116093199236775,1,1,test_status-status,2.6.3
+1,tests/benchmarks/cli/commands/test_status.py::test_status-status[2.10.2],2.10.2,47.38983504099997,47.38983504099997,47.38983504099997,0.0,47.38983504099997,0.0,0;0,0.0211015716584545,1,1,test_status-status,2.10.2
+2,tests/benchmarks/cli/commands/test_status.py::test_status-status[2.11.0],2.11.0,45.04546983299997,45.04546983299997,45.04546983299997,0.0,45.04546983299997,0.0,0;0,0.0221997906494785,1,1,test_status-status,2.11
+3,tests/benchmarks/cli/commands/test_status.py::test_status-status[2.12.0],2.12.0,22.69431965700005,22.69431965700005,22.69431965700005,0.0,22.69431965700005,0.0,0;0,0.044063889780082,1,1,test_status-status,2.12
+4,tests/benchmarks/cli/commands/test_status.py::test_status-status[main],main,22.974465366000004,22.974465366000004,22.974465366000004,0.0,22.974465366000004,0.0,0;0,0.0435265841476295,1,1,test_status-status,99.99.99

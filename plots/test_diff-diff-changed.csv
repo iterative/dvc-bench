@@ -1,6 +1,6 @@
 index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
-0,tests/benchmarks/cli/commands/test_diff.py::test_diff-diff-changed[2.6.3],2.6.3,56.87503422500004,56.87503422500004,56.87503422500004,0.0,56.87503422500004,0.0,0;0,0.0175824070020592,1,1,test_diff-diff-changed,2.6.3
-1,tests/benchmarks/cli/commands/test_diff.py::test_diff-diff-changed[2.10.2],2.10.2,24.140680157999668,24.140680157999668,24.140680157999668,0.0,24.140680157999668,0.0,0;0,0.0414238535722707,1,1,test_diff-diff-changed,2.10.2
-2,tests/benchmarks/cli/commands/test_diff.py::test_diff-diff-changed[2.11.0],2.11.0,23.587548959999825,23.587548959999825,23.587548959999825,0.0,23.587548959999825,0.0,0;0,0.0423952485141977,1,1,test_diff-diff-changed,2.11
-3,tests/benchmarks/cli/commands/test_diff.py::test_diff-diff-changed[2.12.0],2.12.0,5.016067986000053,5.016067986000053,5.016067986000053,0.0,5.016067986000053,0.0,0;0,0.1993593393851559,1,1,test_diff-diff-changed,2.12
-4,tests/benchmarks/cli/commands/test_diff.py::test_diff-diff-changed[main],main,5.127087526999958,5.127087526999958,5.127087526999958,0.0,5.127087526999958,0.0,0;0,0.1950425060492649,1,1,test_diff-diff-changed,99.99.99
+0,tests/benchmarks/cli/commands/test_diff.py::test_diff-diff-changed[2.6.3],2.6.3,61.04596258599986,61.04596258599986,61.04596258599986,0.0,61.04596258599986,0.0,0;0,0.0163810997097675,1,1,test_diff-diff-changed,2.6.3
+1,tests/benchmarks/cli/commands/test_diff.py::test_diff-diff-changed[2.10.2],2.10.2,26.6562022359999,26.6562022359999,26.6562022359999,0.0,26.6562022359999,0.0,0;0,0.0375147213825334,1,1,test_diff-diff-changed,2.10.2
+2,tests/benchmarks/cli/commands/test_diff.py::test_diff-diff-changed[2.11.0],2.11.0,26.27772762299992,26.27772762299992,26.27772762299992,0.0,26.27772762299992,0.0,0;0,0.0380550409208419,1,1,test_diff-diff-changed,2.11
+3,tests/benchmarks/cli/commands/test_diff.py::test_diff-diff-changed[2.12.0],2.12.0,5.471880327000008,5.471880327000008,5.471880327000008,0.0,5.471880327000008,0.0,0;0,0.1827525348216553,1,1,test_diff-diff-changed,2.12
+4,tests/benchmarks/cli/commands/test_diff.py::test_diff-diff-changed[main],main,5.472833048000211,5.472833048000211,5.472833048000211,0.0,5.472833048000211,0.0,0;0,0.1827207209190133,1,1,test_diff-diff-changed,99.99.99

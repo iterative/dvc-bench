@@ -1,0 +1,378 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" id="chart-53708c68-d59e-498f-92cb-915947f8422d" class="pygal-chart" viewBox="0 0 800 600"><!--Generated with pygal 3.0.0 (etree) ©Kozea 2012-2016 on 2022-07-01--><!--http://pygal.org--><!--http://github.com/Kozea/pygal--><defs><style type="text/css">#chart-53708c68-d59e-498f-92cb-915947f8422d{-webkit-user-select:none;-webkit-font-smoothing:antialiased;font-family:Consolas,"Deja Vu Sans Mono","Bitstream Vera Sans Mono","Courier New",monospace}#chart-53708c68-d59e-498f-92cb-915947f8422d .title{font-family:Consolas,"Deja Vu Sans Mono","Bitstream Vera Sans Mono","Courier New",monospace;font-size:16px}#chart-53708c68-d59e-498f-92cb-915947f8422d .legends .legend text{font-family:Consolas,"Deja Vu Sans Mono","Bitstream Vera Sans Mono","Courier New",monospace;font-size:14px}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis text{font-family:Consolas,"Deja Vu Sans Mono","Bitstream Vera Sans Mono","Courier New",monospace;font-size:10px}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis text.major{font-family:Consolas,"Deja Vu Sans Mono","Bitstream Vera Sans Mono","Courier New",monospace;font-size:10px}#chart-53708c68-d59e-498f-92cb-915947f8422d .text-overlay text.value{font-family:Consolas,"Deja Vu Sans Mono","Bitstream Vera Sans Mono","Courier New",monospace;font-size:16px}#chart-53708c68-d59e-498f-92cb-915947f8422d .text-overlay text.label{font-family:Consolas,"Deja Vu Sans Mono","Bitstream Vera Sans Mono","Courier New",monospace;font-size:10px}#chart-53708c68-d59e-498f-92cb-915947f8422d .tooltip{font-family:Consolas,"Deja Vu Sans Mono","Bitstream Vera Sans Mono","Courier New",monospace;font-size:14px}#chart-53708c68-d59e-498f-92cb-915947f8422d text.no_data{font-family:Consolas,"Deja Vu Sans Mono","Bitstream Vera Sans Mono","Courier New",monospace;font-size:64px}
+#chart-53708c68-d59e-498f-92cb-915947f8422d{background-color:rgba(249,249,249,1)}#chart-53708c68-d59e-498f-92cb-915947f8422d path,#chart-53708c68-d59e-498f-92cb-915947f8422d line,#chart-53708c68-d59e-498f-92cb-915947f8422d rect,#chart-53708c68-d59e-498f-92cb-915947f8422d circle{-webkit-transition:150ms;-moz-transition:150ms;transition:150ms}#chart-53708c68-d59e-498f-92cb-915947f8422d .graph &gt; .background{fill:rgba(249,249,249,1)}#chart-53708c68-d59e-498f-92cb-915947f8422d .plot &gt; .background{fill:rgba(255,255,255,1)}#chart-53708c68-d59e-498f-92cb-915947f8422d .graph{fill:rgba(0,0,0,.87)}#chart-53708c68-d59e-498f-92cb-915947f8422d text.no_data{fill:rgba(0,0,0,1)}#chart-53708c68-d59e-498f-92cb-915947f8422d .title{fill:rgba(0,0,0,1)}#chart-53708c68-d59e-498f-92cb-915947f8422d .legends .legend text{fill:rgba(0,0,0,.87)}#chart-53708c68-d59e-498f-92cb-915947f8422d .legends .legend:hover text{fill:rgba(0,0,0,1)}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis .line{stroke:rgba(0,0,0,1)}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis .guide.line{stroke:rgba(0,0,0,.54)}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis .major.line{stroke:rgba(0,0,0,.87)}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis text.major{fill:rgba(0,0,0,1)}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis.y .guides:hover .guide.line,#chart-53708c68-d59e-498f-92cb-915947f8422d .line-graph .axis.x .guides:hover .guide.line,#chart-53708c68-d59e-498f-92cb-915947f8422d .stackedline-graph .axis.x .guides:hover .guide.line,#chart-53708c68-d59e-498f-92cb-915947f8422d .xy-graph .axis.x .guides:hover .guide.line{stroke:rgba(0,0,0,1)}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis .guides:hover text{fill:rgba(0,0,0,1)}#chart-53708c68-d59e-498f-92cb-915947f8422d .reactive{fill-opacity:.7;stroke-opacity:.8;stroke-width:1}#chart-53708c68-d59e-498f-92cb-915947f8422d .ci{stroke:rgba(0,0,0,.87)}#chart-53708c68-d59e-498f-92cb-915947f8422d .reactive.active,#chart-53708c68-d59e-498f-92cb-915947f8422d .active .reactive{fill-opacity:.8;stroke-opacity:.9;stroke-width:4}#chart-53708c68-d59e-498f-92cb-915947f8422d .ci .reactive.active{stroke-width:1.5}#chart-53708c68-d59e-498f-92cb-915947f8422d .series text{fill:rgba(0,0,0,1)}#chart-53708c68-d59e-498f-92cb-915947f8422d .tooltip rect{fill:rgba(255,255,255,1);stroke:rgba(0,0,0,1);-webkit-transition:opacity 150ms;-moz-transition:opacity 150ms;transition:opacity 150ms}#chart-53708c68-d59e-498f-92cb-915947f8422d .tooltip .label{fill:rgba(0,0,0,.87)}#chart-53708c68-d59e-498f-92cb-915947f8422d .tooltip .label{fill:rgba(0,0,0,.87)}#chart-53708c68-d59e-498f-92cb-915947f8422d .tooltip .legend{font-size:.8em;fill:rgba(0,0,0,.54)}#chart-53708c68-d59e-498f-92cb-915947f8422d .tooltip .x_label{font-size:.6em;fill:rgba(0,0,0,1)}#chart-53708c68-d59e-498f-92cb-915947f8422d .tooltip .xlink{font-size:.5em;text-decoration:underline}#chart-53708c68-d59e-498f-92cb-915947f8422d .tooltip .value{font-size:1.5em}#chart-53708c68-d59e-498f-92cb-915947f8422d .bound{font-size:.5em}#chart-53708c68-d59e-498f-92cb-915947f8422d .max-value{font-size:.75em;fill:rgba(0,0,0,.54)}#chart-53708c68-d59e-498f-92cb-915947f8422d .map-element{fill:rgba(255,255,255,1);stroke:rgba(0,0,0,.54) !important}#chart-53708c68-d59e-498f-92cb-915947f8422d .map-element .reactive{fill-opacity:inherit;stroke-opacity:inherit}#chart-53708c68-d59e-498f-92cb-915947f8422d .color-0,#chart-53708c68-d59e-498f-92cb-915947f8422d .color-0 a:visited{stroke:#000000;fill:#000000}#chart-53708c68-d59e-498f-92cb-915947f8422d .color-1,#chart-53708c68-d59e-498f-92cb-915947f8422d .color-1 a:visited{stroke:#000000;fill:#000000}#chart-53708c68-d59e-498f-92cb-915947f8422d .color-2,#chart-53708c68-d59e-498f-92cb-915947f8422d .color-2 a:visited{stroke:#000000;fill:#000000}#chart-53708c68-d59e-498f-92cb-915947f8422d .color-3,#chart-53708c68-d59e-498f-92cb-915947f8422d .color-3 a:visited{stroke:#000000;fill:#000000}#chart-53708c68-d59e-498f-92cb-915947f8422d .color-4,#chart-53708c68-d59e-498f-92cb-915947f8422d .color-4 a:visited{stroke:#000000;fill:#000000}#chart-53708c68-d59e-498f-92cb-915947f8422d .text-overlay .color-0 text{fill:white}#chart-53708c68-d59e-498f-92cb-915947f8422d .text-overlay .color-1 text{fill:white}#chart-53708c68-d59e-498f-92cb-915947f8422d .text-overlay .color-2 text{fill:white}#chart-53708c68-d59e-498f-92cb-915947f8422d .text-overlay .color-3 text{fill:white}#chart-53708c68-d59e-498f-92cb-915947f8422d .text-overlay .color-4 text{fill:white}
+#chart-53708c68-d59e-498f-92cb-915947f8422d text.no_data{text-anchor:middle}#chart-53708c68-d59e-498f-92cb-915947f8422d .guide.line{fill:none}#chart-53708c68-d59e-498f-92cb-915947f8422d .centered{text-anchor:middle}#chart-53708c68-d59e-498f-92cb-915947f8422d .title{text-anchor:middle}#chart-53708c68-d59e-498f-92cb-915947f8422d .legends .legend text{fill-opacity:1}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis.x text{text-anchor:middle}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis.x:not(.web) text[transform]{text-anchor:start}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis.x:not(.web) text[transform].backwards{text-anchor:end}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis.y text{text-anchor:end}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis.y text[transform].backwards{text-anchor:start}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis.y2 text{text-anchor:start}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis.y2 text[transform].backwards{text-anchor:end}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis .guide.line{stroke-dasharray:4,4;stroke:black}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis .major.guide.line{stroke-dasharray:6,6;stroke:black}#chart-53708c68-d59e-498f-92cb-915947f8422d .horizontal .axis.y .guide.line,#chart-53708c68-d59e-498f-92cb-915947f8422d .horizontal .axis.y2 .guide.line,#chart-53708c68-d59e-498f-92cb-915947f8422d .vertical .axis.x .guide.line{opacity:0}#chart-53708c68-d59e-498f-92cb-915947f8422d .horizontal .axis.always_show .guide.line,#chart-53708c68-d59e-498f-92cb-915947f8422d .vertical .axis.always_show .guide.line{opacity:1 !important}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis.y .guides:hover .guide.line,#chart-53708c68-d59e-498f-92cb-915947f8422d .axis.y2 .guides:hover .guide.line,#chart-53708c68-d59e-498f-92cb-915947f8422d .axis.x .guides:hover .guide.line{opacity:1}#chart-53708c68-d59e-498f-92cb-915947f8422d .axis .guides:hover text{opacity:1}#chart-53708c68-d59e-498f-92cb-915947f8422d .nofill{fill:none}#chart-53708c68-d59e-498f-92cb-915947f8422d .subtle-fill{fill-opacity:.2}#chart-53708c68-d59e-498f-92cb-915947f8422d .dot{stroke-width:1px;fill-opacity:1;stroke-opacity:1}#chart-53708c68-d59e-498f-92cb-915947f8422d .dot.active{stroke-width:5px}#chart-53708c68-d59e-498f-92cb-915947f8422d .dot.negative{fill:transparent}#chart-53708c68-d59e-498f-92cb-915947f8422d text,#chart-53708c68-d59e-498f-92cb-915947f8422d tspan{stroke:none !important}#chart-53708c68-d59e-498f-92cb-915947f8422d .series text.active{opacity:1}#chart-53708c68-d59e-498f-92cb-915947f8422d .tooltip rect{fill-opacity:.95;stroke-width:.5}#chart-53708c68-d59e-498f-92cb-915947f8422d .tooltip text{fill-opacity:1}#chart-53708c68-d59e-498f-92cb-915947f8422d .showable{visibility:hidden}#chart-53708c68-d59e-498f-92cb-915947f8422d .showable.shown{visibility:visible}#chart-53708c68-d59e-498f-92cb-915947f8422d .gauge-background{fill:rgba(229,229,229,1);stroke:none}#chart-53708c68-d59e-498f-92cb-915947f8422d .bg-lines{stroke:rgba(249,249,249,1);stroke-width:2px}
+.tooltip .value{font-size:1em !important}.axis text{font-size:9px !important}</style><script type="text/javascript">window.pygal = window.pygal || {};window.pygal.config = window.pygal.config || {};window.pygal.config['53708c68-d59e-498f-92cb-915947f8422d'] = {"allow_interruptions": false, "box_mode": "tukey", "classes": ["pygal-chart"], "css": ["file://style.css", "file://graph.css", "inline:\n                .tooltip .value {\n                    font-size: 1em !important;\n                }\n                .axis text {\n                    font-size: 9px !important;\n                }\n            "], "defs": [], "disable_xml_declaration": false, "dots_size": 2.5, "dynamic_print_values": false, "explicit_size": false, "fill": false, "force_uri_protocol": "https", "formatter": null, "half_pie": false, "height": 600, "include_x_axis": false, "inner_radius": 0, "interpolate": null, "interpolation_parameters": {}, "interpolation_precision": 250, "inverse_y_axis": false, "js": ["file:///opt/hostedtoolcache/Python/3.10.5/x64/lib/python3.10/site-packages/pygaljs/static/2.0.x/pygal-tooltips.js"], "legend_at_bottom": false, "legend_at_bottom_columns": null, "legend_box_size": 12, "logarithmic": false, "margin": 20, "margin_bottom": null, "margin_left": null, "margin_right": null, "margin_top": null, "max_scale": 20, "min_scale": 20, "missing_value_fill_truncation": "x", "no_data_text": "No data", "no_prefix": false, "order_min": null, "pretty_print": false, "print_labels": false, "print_values": false, "print_values_position": "center", "print_zeroes": true, "range": [234, 298], "rounded_bars": null, "secondary_range": null, "show_dots": true, "show_legend": false, "show_minor_x_labels": true, "show_minor_y_labels": true, "show_only_major_dots": false, "show_x_guides": false, "show_x_labels": true, "show_y_guides": true, "show_y_labels": true, "spacing": 10, "stack_from_top": false, "strict": false, "stroke": true, "stroke_style": null, "style": {"background": "rgba(249, 249, 249, 1)", "ci_colors": [], "colors": ["#000000", "#000000", "#000000", "#000000", "#000000"], "dot_opacity": "1", "font_family": "Consolas, \"Deja Vu Sans Mono\", \"Bitstream Vera Sans Mono\", \"Courier New\", monospace", "foreground": "rgba(0, 0, 0, .87)", "foreground_strong": "rgba(0, 0, 0, 1)", "foreground_subtle": "rgba(0, 0, 0, .54)", "guide_stroke_color": "black", "guide_stroke_dasharray": "4,4", "label_font_family": "Consolas, \"Deja Vu Sans Mono\", \"Bitstream Vera Sans Mono\", \"Courier New\", monospace", "label_font_size": 10, "legend_font_family": "Consolas, \"Deja Vu Sans Mono\", \"Bitstream Vera Sans Mono\", \"Courier New\", monospace", "legend_font_size": 14, "major_guide_stroke_color": "black", "major_guide_stroke_dasharray": "6,6", "major_label_font_family": "Consolas, \"Deja Vu Sans Mono\", \"Bitstream Vera Sans Mono\", \"Courier New\", monospace", "major_label_font_size": 10, "no_data_font_family": "Consolas, \"Deja Vu Sans Mono\", \"Bitstream Vera Sans Mono\", \"Courier New\", monospace", "no_data_font_size": 64, "opacity": ".7", "opacity_hover": ".8", "plot_background": "rgba(255, 255, 255, 1)", "stroke_opacity": ".8", "stroke_opacity_hover": ".9", "stroke_width": "1", "stroke_width_hover": "4", "title_font_family": "Consolas, \"Deja Vu Sans Mono\", \"Bitstream Vera Sans Mono\", \"Courier New\", monospace", "title_font_size": 16, "tooltip_font_family": "Consolas, \"Deja Vu Sans Mono\", \"Bitstream Vera Sans Mono\", \"Courier New\", monospace", "tooltip_font_size": 14, "transition": "150ms", "value_background": "rgba(229, 229, 229, 1)", "value_colors": [], "value_font_family": "Consolas, \"Deja Vu Sans Mono\", \"Bitstream Vera Sans Mono\", \"Courier New\", monospace", "value_font_size": 16, "value_label_font_family": "Consolas, \"Deja Vu Sans Mono\", \"Bitstream Vera Sans Mono\", \"Courier New\", monospace", "value_label_font_size": 10}, "title": "Speed in Seconds of test_add-add", "tooltip_border_radius": 0, "tooltip_fancy_mode": true, "truncate_label": 50, "truncate_legend": null, "width": 800, "x_label_rotation": 270, "x_labels": ["test_add-add[2.10.2] (0001_test_ad)", "test_add-add[2.11.0] (0001_test_ad)", "test_add-add[2.12.0] (0001_test_ad)", "test_add-add[2.6.3] (0001_test_ad)", "test_add-add[main] (0001_test_ad)"], "x_labels_major": null, "x_labels_major_count": null, "x_labels_major_every": null, "x_title": "Trial", "xrange": null, "y_label_rotation": 0, "y_labels": null, "y_labels_major": null, "y_labels_major_count": null, "y_labels_major_every": null, "y_title": "Duration", "zero": 234, "legends": ["tests/benchmarks/cli/commands/test_add.py::test_add-add[2.10.2] - 1 rounds", "tests/benchmarks/cli/commands/test_add.py::test_add-add[2.11.0] - 1 rounds", "tests/benchmarks/cli/commands/test_add.py::test_add-add[2.12.0] - 1 rounds", "tests/benchmarks/cli/commands/test_add.py::test_add-add[2.6.3] - 1 rounds", "tests/benchmarks/cli/commands/test_add.py::test_add-add[main] - 1 rounds"]}</script><script type="text/javascript">(function() {
+  var $, get_translation, init, init_svg, matches, padding, r_translation, sibl, svg_ns, tooltip_timeout, xlink_ns;
+
+  svg_ns = 'http://www.w3.org/2000/svg';
+
+  xlink_ns = 'http://www.w3.org/1999/xlink';
+
+  $ = function(sel, ctx) {
+    if (ctx == null) {
+      ctx = null;
+    }
+    ctx = ctx || document;
+    return Array.prototype.slice.call(ctx.querySelectorAll(sel), 0).filter(function(e) {
+      return e !== ctx;
+    });
+  };
+
+  matches = function(el, selector) {
+    return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector);
+  };
+
+  sibl = function(el, match) {
+    if (match == null) {
+      match = null;
+    }
+    return Array.prototype.filter.call(el.parentElement.children, function(child) {
+      return child !== el &amp;&amp; (!match || matches(child, match));
+    });
+  };
+
+  Array.prototype.one = function() {
+    return this.length &gt; 0 &amp;&amp; this[0] || {};
+  };
+
+  padding = 5;
+
+  tooltip_timeout = null;
+
+  r_translation = /translate\((\d+)[ ,]+(\d+)\)/;
+
+  get_translation = function(el) {
+    return (r_translation.exec(el.getAttribute('transform')) || []).slice(1).map(function(x) {
+      return +x;
+    });
+  };
+
+  init = function(ctx) {
+    var bbox, box, config, el, graph, inner_svg, num, parent, tooltip, tooltip_el, tt, uid, untooltip, xconvert, yconvert, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _ref3;
+    if ($('svg', ctx).length) {
+      inner_svg = $('svg', ctx).one();
+      parent = inner_svg.parentElement;
+      box = inner_svg.viewBox.baseVal;
+      bbox = parent.getBBox();
+      xconvert = function(x) {
+        return ((x - box.x) / box.width) * bbox.width;
+      };
+      yconvert = function(y) {
+        return ((y - box.y) / box.height) * bbox.height;
+      };
+    } else {
+      xconvert = yconvert = function(x) {
+        return x;
+      };
+    }
+    if (((_ref = window.pygal) != null ? _ref.config : void 0) != null) {
+      if (window.pygal.config.no_prefix != null) {
+        config = window.pygal.config;
+      } else {
+        uid = ctx.id.replace('chart-', '');
+        config = window.pygal.config[uid];
+      }
+    } else {
+      config = window.config;
+    }
+    tooltip_el = null;
+    graph = $('.graph').one();
+    tt = $('.tooltip', ctx).one();
+    _ref1 = $('.reactive', ctx);
+    for (_i = 0, _len = _ref1.length; _i &lt; _len; _i++) {
+      el = _ref1[_i];
+      el.addEventListener('mouseenter', (function(el) {
+        return function() {
+          return el.classList.add('active');
+        };
+      })(el));
+      el.addEventListener('mouseleave', (function(el) {
+        return function() {
+          return el.classList.remove('active');
+        };
+      })(el));
+    }
+    _ref2 = $('.activate-serie', ctx);
+    for (_j = 0, _len1 = _ref2.length; _j &lt; _len1; _j++) {
+      el = _ref2[_j];
+      num = el.id.replace('activate-serie-', '');
+      el.addEventListener('mouseenter', (function(num) {
+        return function() {
+          var re, _k, _len2, _ref3, _results;
+          _ref3 = $('.serie-' + num + ' .reactive', ctx);
+          _results = [];
+          for (_k = 0, _len2 = _ref3.length; _k &lt; _len2; _k++) {
+            re = _ref3[_k];
+            _results.push(re.classList.add('active'));
+          }
+          return _results;
+        };
+      })(num));
+      el.addEventListener('mouseleave', (function(num) {
+        return function() {
+          var re, _k, _len2, _ref3, _results;
+          _ref3 = $('.serie-' + num + ' .reactive', ctx);
+          _results = [];
+          for (_k = 0, _len2 = _ref3.length; _k &lt; _len2; _k++) {
+            re = _ref3[_k];
+            _results.push(re.classList.remove('active'));
+          }
+          return _results;
+        };
+      })(num));
+      el.addEventListener('click', (function(el, num) {
+        return function() {
+          var ov, re, rect, show, _k, _l, _len2, _len3, _ref3, _ref4, _results;
+          rect = $('rect', el).one();
+          show = rect.style.fill !== '';
+          rect.style.fill = show ? '' : 'transparent';
+          _ref3 = $('.serie-' + num + ' .reactive', ctx);
+          for (_k = 0, _len2 = _ref3.length; _k &lt; _len2; _k++) {
+            re = _ref3[_k];
+            re.style.display = show ? '' : 'none';
+          }
+          _ref4 = $('.text-overlay .serie-' + num, ctx);
+          _results = [];
+          for (_l = 0, _len3 = _ref4.length; _l &lt; _len3; _l++) {
+            ov = _ref4[_l];
+            _results.push(ov.style.display = show ? '' : 'none');
+          }
+          return _results;
+        };
+      })(el, num));
+    }
+    _ref3 = $('.tooltip-trigger', ctx);
+    for (_k = 0, _len2 = _ref3.length; _k &lt; _len2; _k++) {
+      el = _ref3[_k];
+      el.addEventListener('mouseenter', (function(el) {
+        return function() {
+          return tooltip_el = tooltip(el);
+        };
+      })(el));
+    }
+    tt.addEventListener('mouseenter', function() {
+      return tooltip_el != null ? tooltip_el.classList.add('active') : void 0;
+    });
+    tt.addEventListener('mouseleave', function() {
+      return tooltip_el != null ? tooltip_el.classList.remove('active') : void 0;
+    });
+    ctx.addEventListener('mouseleave', function() {
+      if (tooltip_timeout) {
+        clearTimeout(tooltip_timeout);
+      }
+      return untooltip(0);
+    });
+    graph.addEventListener('mousemove', function(el) {
+      if (tooltip_timeout) {
+        return;
+      }
+      if (!matches(el.target, '.background')) {
+        return;
+      }
+      return untooltip(1000);
+    });
+    tooltip = function(el) {
+      var a, baseline, cls, current_x, current_y, dy, h, i, key, keys, label, legend, name, plot_x, plot_y, rect, serie_index, subval, text, text_group, texts, traversal, value, w, x, x_elt, x_label, xlink, y, y_elt, _l, _len3, _len4, _len5, _m, _n, _ref4, _ref5, _ref6, _ref7, _ref8;
+      clearTimeout(tooltip_timeout);
+      tooltip_timeout = null;
+      tt.style.opacity = 1;
+      tt.style.display = '';
+      text_group = $('g.text', tt).one();
+      rect = $('rect', tt).one();
+      text_group.innerHTML = '';
+      label = sibl(el, '.label').one().textContent;
+      x_label = sibl(el, '.x_label').one().textContent;
+      value = sibl(el, '.value').one().textContent;
+      xlink = sibl(el, '.xlink').one().textContent;
+      serie_index = null;
+      parent = el;
+      traversal = [];
+      while (parent) {
+        traversal.push(parent);
+        if (parent.classList.contains('series')) {
+          break;
+        }
+        parent = parent.parentElement;
+      }
+      if (parent) {
+        _ref4 = parent.classList;
+        for (_l = 0, _len3 = _ref4.length; _l &lt; _len3; _l++) {
+          cls = _ref4[_l];
+          if (cls.indexOf('serie-') === 0) {
+            serie_index = +cls.replace('serie-', '');
+            break;
+          }
+        }
+      }
+      legend = null;
+      if (serie_index !== null) {
+        legend = config.legends[serie_index];
+      }
+      dy = 0;
+      keys = [[label, 'label']];
+      _ref5 = value.split('\n');
+      for (i = _m = 0, _len4 = _ref5.length; _m &lt; _len4; i = ++_m) {
+        subval = _ref5[i];
+        keys.push([subval, 'value-' + i]);
+      }
+      if (config.tooltip_fancy_mode) {
+        keys.push([xlink, 'xlink']);
+        keys.unshift([x_label, 'x_label']);
+        keys.unshift([legend, 'legend']);
+      }
+      texts = {};
+      for (_n = 0, _len5 = keys.length; _n &lt; _len5; _n++) {
+        _ref6 = keys[_n], key = _ref6[0], name = _ref6[1];
+        if (key) {
+          text = document.createElementNS(svg_ns, 'text');
+          text.textContent = key;
+          text.setAttribute('x', padding);
+          text.setAttribute('dy', dy);
+          text.classList.add(name.indexOf('value') === 0 ? 'value' : name);
+          if (name.indexOf('value') === 0 &amp;&amp; config.tooltip_fancy_mode) {
+            text.classList.add('color-' + serie_index);
+          }
+          if (name === 'xlink') {
+            a = document.createElementNS(svg_ns, 'a');
+            a.setAttributeNS(xlink_ns, 'href', key);
+            a.textContent = void 0;
+            a.appendChild(text);
+            text.textContent = 'Link &gt;';
+            text_group.appendChild(a);
+          } else {
+            text_group.appendChild(text);
+          }
+          dy += text.getBBox().height + padding / 2;
+          baseline = padding;
+          if (text.style.dominantBaseline !== void 0) {
+            text.style.dominantBaseline = 'text-before-edge';
+          } else {
+            baseline += text.getBBox().height * .8;
+          }
+          text.setAttribute('y', baseline);
+          texts[name] = text;
+        }
+      }
+      w = text_group.getBBox().width + 2 * padding;
+      h = text_group.getBBox().height + 2 * padding;
+      rect.setAttribute('width', w);
+      rect.setAttribute('height', h);
+      if (texts.value) {
+        texts.value.setAttribute('dx', (w - texts.value.getBBox().width) / 2 - padding);
+      }
+      if (texts.x_label) {
+        texts.x_label.setAttribute('dx', w - texts.x_label.getBBox().width - 2 * padding);
+      }
+      if (texts.xlink) {
+        texts.xlink.setAttribute('dx', w - texts.xlink.getBBox().width - 2 * padding);
+      }
+      x_elt = sibl(el, '.x').one();
+      y_elt = sibl(el, '.y').one();
+      x = parseInt(x_elt.textContent);
+      if (x_elt.classList.contains('centered')) {
+        x -= w / 2;
+      } else if (x_elt.classList.contains('left')) {
+        x -= w;
+      } else if (x_elt.classList.contains('auto')) {
+        x = xconvert(el.getBBox().x + el.getBBox().width / 2) - w / 2;
+      }
+      y = parseInt(y_elt.textContent);
+      if (y_elt.classList.contains('centered')) {
+        y -= h / 2;
+      } else if (y_elt.classList.contains('top')) {
+        y -= h;
+      } else if (y_elt.classList.contains('auto')) {
+        y = yconvert(el.getBBox().y + el.getBBox().height / 2) - h / 2;
+      }
+      _ref7 = get_translation(tt.parentElement), plot_x = _ref7[0], plot_y = _ref7[1];
+      if (x + w + plot_x &gt; config.width) {
+        x = config.width - w - plot_x;
+      }
+      if (y + h + plot_y &gt; config.height) {
+        y = config.height - h - plot_y;
+      }
+      if (x + plot_x &lt; 0) {
+        x = -plot_x;
+      }
+      if (y + plot_y &lt; 0) {
+        y = -plot_y;
+      }
+      _ref8 = get_translation(tt), current_x = _ref8[0], current_y = _ref8[1];
+      if (current_x === x &amp;&amp; current_y === y) {
+        return el;
+      }
+      tt.setAttribute('transform', "translate(" + x + " " + y + ")");
+      return el;
+    };
+    return untooltip = function(ms) {
+      return tooltip_timeout = setTimeout(function() {
+        tt.style.display = 'none';
+        tt.style.opacity = 0;
+        if (tooltip_el != null) {
+          tooltip_el.classList.remove('active');
+        }
+        return tooltip_timeout = null;
+      }, ms);
+    };
+  };
+
+  init_svg = function() {
+    var chart, charts, _i, _len, _results;
+    charts = $('.pygal-chart');
+    if (charts.length) {
+      _results = [];
+      for (_i = 0, _len = charts.length; _i &lt; _len; _i++) {
+        chart = charts[_i];
+        _results.push(init(chart));
+      }
+      return _results;
+    }
+  };
+
+  if (document.readyState !== 'loading') {
+    init_svg();
+  } else {
+    document.addEventListener('DOMContentLoaded', function() {
+      return init_svg();
+    });
+  }
+
+  window.pygal = window.pygal || {};
+
+  window.pygal.init = init;
+
+  window.pygal.init_svg = init_svg;
+
+}).call(this);
+</script></defs><title>Speed in Seconds of test_add-add</title><g class="graph custombox-graph vertical"><rect x="0" y="0" width="800" height="600" class="background" /><g transform="translate(74, 46)" class="plot"><rect x="0" y="0" width="706.0" height="288.0" class="background" /><g class="axis y always_show"><path d="M0.000000 288.000000 h706.000000" class="line" /><g class="guides"><path d="M0.000000 273.807692 h706.000000" class="guide line" /><text x="-5" y="277.3076923076923" class="">236</text><title>236</title></g><g class="guides"><path d="M0.000000 256.500000 h706.000000" class="major guide line" /><text x="-5" y="260.0" class="major">240</text><title>240</title></g><g class="guides"><path d="M0.000000 239.192308 h706.000000" class="guide line" /><text x="-5" y="242.69230769230768" class="">244</text><title>244</title></g><g class="guides"><path d="M0.000000 221.884615 h706.000000" class="guide line" /><text x="-5" y="225.38461538461536" class="">248</text><title>248</title></g><g class="guides"><path d="M0.000000 204.576923 h706.000000" class="guide line" /><text x="-5" y="208.07692307692304" class="">252</text><title>252</title></g><g class="guides"><path d="M0.000000 187.269231 h706.000000" class="guide line" /><text x="-5" y="190.76923076923072" class="">256</text><title>256</title></g><g class="guides"><path d="M0.000000 169.961538 h706.000000" class="major guide line" /><text x="-5" y="173.4615384615384" class="major">260</text><title>260</title></g><g class="guides"><path d="M0.000000 152.653846 h706.000000" class="guide line" /><text x="-5" y="156.1538461538461" class="">264</text><title>264</title></g><g class="guides"><path d="M0.000000 135.346154 h706.000000" class="guide line" /><text x="-5" y="138.84615384615378" class="">268</text><title>268</title></g><g class="guides"><path d="M0.000000 118.038462 h706.000000" class="guide line" /><text x="-5" y="121.53846153846149" class="">272</text><title>272</title></g><g class="guides"><path d="M0.000000 100.730769 h706.000000" class="guide line" /><text x="-5" y="104.23076923076917" class="">276</text><title>276</title></g><g class="guides"><path d="M0.000000 83.423077 h706.000000" class="major guide line" /><text x="-5" y="86.92307692307685" class="major">280</text><title>280</title></g><g class="guides"><path d="M0.000000 66.115385 h706.000000" class="guide line" /><text x="-5" y="69.61538461538453" class="">284</text><title>284</title></g><g class="guides"><path d="M0.000000 48.807692 h706.000000" class="guide line" /><text x="-5" y="52.307692307692236" class="">288</text><title>288</title></g><g class="guides"><path d="M0.000000 31.500000 h706.000000" class="guide line" /><text x="-5" y="34.999999999999886" class="">292</text><title>292</title></g><g class="guides"><path d="M0.000000 14.192308 h706.000000" class="guide line" /><text x="-5" y="17.692307692307566" class="">296</text><title>296</title></g></g><g class="axis x"><path d="M0.000000 0.000000 v288.000000" class="line" /><g class="guides"><path d="M81.461538 0.000000 v288.000000" class="guide line" /><text x="81.46153846153847" y="303.0" class="backwards" transform="rotate(270 81.461538 303.000000)">test_add-add[2.10.2] (0001_test_ad)</text></g><g class="guides"><path d="M217.230769 0.000000 v288.000000" class="guide line" /><text x="217.23076923076923" y="303.0" class="backwards" transform="rotate(270 217.230769 303.000000)">test_add-add[2.11.0] (0001_test_ad)</text></g><g class="guides"><path d="M353.000000 0.000000 v288.000000" class="guide line" /><text x="353.0" y="303.0" class="backwards" transform="rotate(270 353.000000 303.000000)">test_add-add[2.12.0] (0001_test_ad)</text></g><g class="guides"><path d="M488.769231 0.000000 v288.000000" class="guide line" /><text x="488.7692307692308" y="303.0" class="backwards" transform="rotate(270 488.769231 303.000000)">test_add-add[2.6.3] (0001_test_ad)</text></g><g class="guides"><path d="M624.538462 0.000000 v288.000000" class="guide line" /><text x="624.5384615384615" y="303.0" class="backwards" transform="rotate(270 624.538462 303.000000)">test_add-add[main] (0001_test_ad)</text></g></g><g class="series serie-0 color-0"><g class="boxes"><g class="box"><path stroke-width="3" d="M51.592308 171.225663 L111.330769 171.225663" class="reactive tooltip-trigger" /><path stroke-width="3" d="M21.723077 171.225663 L141.200000 171.225663" class="reactive tooltip-trigger" /><path stroke-width="3" d="M51.592308 171.225663 L111.330769 171.225663" class="reactive tooltip-trigger" /><path stroke-width="2" d="M81.461538 171.225663 L81.461538 171.225663" class="reactive tooltip-trigger" /><path stroke-width="2" d="M81.461538 171.225663 L81.461538 171.225663" class="reactive tooltip-trigger" /><rect x="21.723076923076924" y="171.22566327403837" height="0.0" width="119.47692307692309" class="subtle-fill reactive tooltip-trigger" /><circle cx="81.46153846153847" cy="171.22566327403837" r="3" class="subtle-fill reactive tooltip-trigger" /><circle cx="81.46153846153847" cy="171.22566327403837" r="3" class="subtle-fill reactive tooltip-trigger" /><desc class="value">Min: 259.7078
+Q1-1.5IQR: 259.7078
+Q1: 259.7078
+Median: 259.7078
+Q3: 259.7078
+Q3+1.5IQR: 259.7078
+Max: 259.7078</desc><desc class="x centered">81.46153846153847</desc><desc class="y centered">171.22566327403837</desc><desc class="x_label">Linux-CPython-3.10-64bit/0001_test_add.json</desc></g></g></g><g class="series serie-1 color-1"><g class="boxes"><g class="box"><path stroke-width="3" d="M187.361538 169.899687 L247.100000 169.899687" class="reactive tooltip-trigger" /><path stroke-width="3" d="M157.492308 169.899687 L276.969231 169.899687" class="reactive tooltip-trigger" /><path stroke-width="3" d="M187.361538 169.899687 L247.100000 169.899687" class="reactive tooltip-trigger" /><path stroke-width="2" d="M217.230769 169.899687 L217.230769 169.899687" class="reactive tooltip-trigger" /><path stroke-width="2" d="M217.230769 169.899687 L217.230769 169.899687" class="reactive tooltip-trigger" /><rect x="157.4923076923077" y="169.8996865413448" height="0.0" width="119.47692307692309" class="subtle-fill reactive tooltip-trigger" /><circle cx="217.23076923076923" cy="169.8996865413448" r="3" class="subtle-fill reactive tooltip-trigger" /><circle cx="217.23076923076923" cy="169.8996865413448" r="3" class="subtle-fill reactive tooltip-trigger" /><desc class="value">Min: 260.0143
+Q1-1.5IQR: 260.0143
+Q1: 260.0143
+Median: 260.0143
+Q3: 260.0143
+Q3+1.5IQR: 260.0143
+Max: 260.0143</desc><desc class="x centered">217.23076923076923</desc><desc class="y centered">169.8996865413448</desc><desc class="x_label">Linux-CPython-3.10-64bit/0001_test_add.json</desc></g></g></g><g class="series serie-2 color-2"><g class="boxes"><g class="box"><path stroke-width="3" d="M323.130769 279.751676 L382.869231 279.751676" class="reactive tooltip-trigger" /><path stroke-width="3" d="M293.261538 279.751676 L412.738462 279.751676" class="reactive tooltip-trigger" /><path stroke-width="3" d="M323.130769 279.751676 L382.869231 279.751676" class="reactive tooltip-trigger" /><path stroke-width="2" d="M353.000000 279.751676 L353.000000 279.751676" class="reactive tooltip-trigger" /><path stroke-width="2" d="M353.000000 279.751676 L353.000000 279.751676" class="reactive tooltip-trigger" /><rect x="293.26153846153846" y="279.75167600192384" height="0.0" width="119.47692307692309" class="subtle-fill reactive tooltip-trigger" /><circle cx="353.0" cy="279.75167600192384" r="3" class="subtle-fill reactive tooltip-trigger" /><circle cx="353.0" cy="279.75167600192384" r="3" class="subtle-fill reactive tooltip-trigger" /><desc class="value">Min: 234.6263
+Q1-1.5IQR: 234.6263
+Q1: 234.6263
+Median: 234.6263
+Q3: 234.6263
+Q3+1.5IQR: 234.6263
+Max: 234.6263</desc><desc class="x centered">353.0</desc><desc class="y centered">279.75167600192384</desc><desc class="x_label">Linux-CPython-3.10-64bit/0001_test_add.json</desc></g></g></g><g class="series serie-3 color-3"><g class="boxes"><g class="box"><path stroke-width="3" d="M458.900000 7.140984 L518.638462 7.140984" class="reactive tooltip-trigger" /><path stroke-width="3" d="M429.030769 7.140984 L548.507692 7.140984" class="reactive tooltip-trigger" /><path stroke-width="3" d="M458.900000 7.140984 L518.638462 7.140984" class="reactive tooltip-trigger" /><path stroke-width="2" d="M488.769231 7.140984 L488.769231 7.140984" class="reactive tooltip-trigger" /><path stroke-width="2" d="M488.769231 7.140984 L488.769231 7.140984" class="reactive tooltip-trigger" /><rect x="429.03076923076924" y="7.1409842004812845" height="0.0" width="119.47692307692309" class="subtle-fill reactive tooltip-trigger" /><circle cx="488.7692307692308" cy="7.1409842004812845" r="3" class="subtle-fill reactive tooltip-trigger" /><circle cx="488.7692307692308" cy="7.1409842004812845" r="3" class="subtle-fill reactive tooltip-trigger" /><desc class="value">Min: 297.6296
+Q1-1.5IQR: 297.6296
+Q1: 297.6296
+Median: 297.6296
+Q3: 297.6296
+Q3+1.5IQR: 297.6296
+Max: 297.6296</desc><desc class="x centered">488.7692307692308</desc><desc class="y centered">7.1409842004812845</desc><desc class="x_label">Linux-CPython-3.10-64bit/0001_test_add.json</desc></g></g></g><g class="series serie-4 color-4"><g class="boxes"><g class="box"><path stroke-width="3" d="M594.669231 258.706882 L654.407692 258.706882" class="reactive tooltip-trigger" /><path stroke-width="3" d="M564.800000 258.706882 L684.276923 258.706882" class="reactive tooltip-trigger" /><path stroke-width="3" d="M594.669231 258.706882 L654.407692 258.706882" class="reactive tooltip-trigger" /><path stroke-width="2" d="M624.538462 258.706882 L624.538462 258.706882" class="reactive tooltip-trigger" /><path stroke-width="2" d="M624.538462 258.706882 L624.538462 258.706882" class="reactive tooltip-trigger" /><rect x="564.8000000000001" y="258.70688214663437" height="0.0" width="119.47692307692309" class="subtle-fill reactive tooltip-trigger" /><circle cx="624.5384615384617" cy="258.70688214663437" r="3" class="subtle-fill reactive tooltip-trigger" /><circle cx="624.5384615384617" cy="258.70688214663437" r="3" class="subtle-fill reactive tooltip-trigger" /><desc class="value">Min: 239.4900
+Q1-1.5IQR: 239.4900
+Q1: 239.4900
+Median: 239.4900
+Q3: 239.4900
+Q3+1.5IQR: 239.4900
+Max: 239.4900</desc><desc class="x centered">624.5384615384617</desc><desc class="y centered">258.70688214663437</desc><desc class="x_label">Linux-CPython-3.10-64bit/0001_test_add.json</desc></g></g></g></g><g class="titles"><text x="400.0" y="26" class="title plot_title">Speed in Seconds of test_add-add</text><text x="427.0" y="580.0" class="title">Trial</text><text x="0" y="216.0" class="title" transform="rotate(-90 0.000000 190.000000)">Duration</text></g><g transform="translate(74, 46)" class="plot overlay"><g class="series serie-0 color-0" /><g class="series serie-1 color-1" /><g class="series serie-2 color-2" /><g class="series serie-3 color-3" /><g class="series serie-4 color-4" /></g><g transform="translate(74, 46)" class="plot text-overlay"><g class="series serie-0 color-0" /><g class="series serie-1 color-1" /><g class="series serie-2 color-2" /><g class="series serie-3 color-3" /><g class="series serie-4 color-4" /></g><g transform="translate(74, 46)" class="plot tooltip-overlay"><g transform="translate(0 0)" style="opacity: 0" class="tooltip"><rect rx="0" ry="0" width="0" height="0" class="tooltip-box" /><g class="text" /></g></g></g></svg>

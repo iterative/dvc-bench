@@ -1,5 +1,0 @@
-index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
-0,tests/benchmarks/cli/commands/test_exp_show.py::test_exp_show-exp[2.10.2],2.10.2,1.3708388940000305,1.3708388940000305,1.3708388940000305,0.0,1.3708388940000305,0.0,0;0,0.7294803236010152,1,1,test_exp_show-exp,2.10.2
-1,tests/benchmarks/cli/commands/test_exp_show.py::test_exp_show-exp[2.11.0],2.11.0,1.3472863519999692,1.3472863519999692,1.3472863519999692,0.0,1.3472863519999692,0.0,0;0,0.74223270985827,1,1,test_exp_show-exp,2.11
-2,tests/benchmarks/cli/commands/test_exp_show.py::test_exp_show-exp[2.12.0],2.12.0,1.3390733940000246,1.3390733940000246,1.3390733940000246,0.0,1.3390733940000246,0.0,0;0,0.7467850563536637,1,1,test_exp_show-exp,2.12
-3,tests/benchmarks/cli/commands/test_exp_show.py::test_exp_show-exp[main],main,1.3945815030000404,1.3945815030000404,1.3945815030000404,0.0,1.3945815030000404,0.0,0;0,0.7170609948925811,1,1,test_exp_show-exp,99.99.99

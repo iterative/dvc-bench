@@ -1,6 +1,0 @@
-index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
-0,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-add-noop[2.6.3],2.6.3,21.36729331300012,21.36729331300012,21.36729331300012,0.0,21.36729331300012,0.0,0;0,0.0468004994994657,1,1,test_sharing-add-noop,2.6.3
-1,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-add-noop[2.10.2],2.10.2,141.00222365399986,141.00222365399986,141.00222365399986,0.0,141.00222365399986,0.0,0;0,0.0070920867351274,1,1,test_sharing-add-noop,2.10.2
-2,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-add-noop[2.11.0],2.11.0,135.76985212,135.76985212,135.76985212,0.0,135.76985212,0.0,0;0,0.0073654053855501,1,1,test_sharing-add-noop,2.11
-3,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-add-noop[2.12.0],2.12.0,159.98167763599986,159.98167763599986,159.98167763599986,0.0,159.98167763599986,0.0,0;0,0.0062507157993133,1,1,test_sharing-add-noop,2.12
-4,tests/benchmarks/cli/stories/use-cases/test_sharing.py::test_sharing-add-noop[main],main,156.5609113810001,156.5609113810001,156.5609113810001,0.0,156.5609113810001,0.0,0;0,0.0063872903598934,1,1,test_sharing-add-noop,99.99.99

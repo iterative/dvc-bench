@@ -1,6 +1,0 @@
-index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
-0,tests/benchmarks/cli/commands/test_push.py::test_push-push[2.6.3],2.6.3,137.0608989809998,137.0608989809998,137.0608989809998,0.0,137.0608989809998,0.0,0;0,0.0072960268569274,1,1,test_push-push,2.6.3
-1,tests/benchmarks/cli/commands/test_push.py::test_push-push[2.10.2],2.10.2,171.19652366800028,171.19652366800028,171.19652366800028,0.0,171.19652366800028,0.0,0;0,0.0058412401056652,1,1,test_push-push,2.10.2
-2,tests/benchmarks/cli/commands/test_push.py::test_push-push[2.11.0],2.11.0,175.46790098600013,175.46790098600013,175.46790098600013,0.0,175.46790098600013,0.0,0;0,0.0056990480559734,1,1,test_push-push,2.11
-3,tests/benchmarks/cli/commands/test_push.py::test_push-push[2.12.0],2.12.0,170.46804122000003,170.46804122000003,170.46804122000003,0.0,170.46804122000003,0.0,0;0,0.0058662022091838,1,1,test_push-push,2.12
-4,tests/benchmarks/cli/commands/test_push.py::test_push-push[main],main,169.8128062379999,169.8128062379999,169.8128062379999,0.0,169.8128062379999,0.0,0;0,0.0058888373742464,1,1,test_push-push,99.99.99

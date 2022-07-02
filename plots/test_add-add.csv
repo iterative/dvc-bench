@@ -1,6 +1,0 @@
-index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
-0,tests/benchmarks/cli/commands/test_add.py::test_add-add[2.6.3],2.6.3,312.7412461539998,312.7412461539998,312.7412461539998,0.0,312.7412461539998,0.0,0;0,0.0031975315449999,1,1,test_add-add,2.6.3
-1,tests/benchmarks/cli/commands/test_add.py::test_add-add[2.10.2],2.10.2,293.876943792,293.876943792,293.876943792,0.0,293.876943792,0.0,0;0,0.0034027848088272,1,1,test_add-add,2.10.2
-2,tests/benchmarks/cli/commands/test_add.py::test_add-add[2.11.0],2.11.0,295.5407153560004,295.5407153560004,295.5407153560004,0.0,295.5407153560004,0.0,0;0,0.0033836285426711,1,1,test_add-add,2.11
-3,tests/benchmarks/cli/commands/test_add.py::test_add-add[2.12.0],2.12.0,262.48083061800025,262.48083061800025,262.48083061800025,0.0,262.48083061800025,0.0,0;0,0.0038098020249537,1,1,test_add-add,2.12
-4,tests/benchmarks/cli/commands/test_add.py::test_add-add[main],main,244.92079759700027,244.92079759700027,244.92079759700027,0.0,244.92079759700027,0.0,0;0,0.0040829525700199,1,1,test_add-add,99.99.99

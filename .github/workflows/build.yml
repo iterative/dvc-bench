@@ -77,7 +77,7 @@ jobs:
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
           DATASET_SIZE: ${{ github.event.inputs.dataset }}
-        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs main,2.12.0,2.11.0,2.10.2,2.6.3 ${{ matrix.test.path }} --size ${DATASET_SIZE:-small}
+        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs main,2.12.0,2.11.0,2.10.2,2.6.3 ${{ matrix.test.path }} --size ${DATASET_SIZE:-mnist}
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:
@@ -102,12 +102,14 @@ jobs:
             DATASET_SIZE: ${{ github.event.inputs.dataset }}
         run: |
           tree .benchmarks
-          mkdir -p html/bench
+          mkdir html
           echo "$(date)" > raw
-          echo "dataset: ${DATASET_SIZE:-small}" >> raw
+          echo "dataset: ${DATASET_SIZE:-mnist}" >> raw
           echo "project: example-get-started" >> raw
           PY_COLORS=1 py.test-benchmark compare --histogram histograms/ --group-by func --csv results.csv --sort name >> raw
-          cat raw | ansi2html -W > html/bench/index.html
+          dvc repro
+          dvc plots show -o html
+          cat raw | ansi2html -W >> html/index.html
       - name: upload joint results.csv
         uses: actions/upload-artifact@v2
         with:
@@ -134,15 +136,9 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: ${{ steps.get-comment-body.outputs.body }}
-      - name: generate plots
-        run: |
-          dvc repro
-          mkdir -p html/plots
-          dvc plots show -o html/plots
       - name: deploy new benchmarks to github pages
         if: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: html
-          keep_files: true

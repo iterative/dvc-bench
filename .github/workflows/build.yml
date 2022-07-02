@@ -107,7 +107,7 @@ jobs:
           echo "dataset: ${DATASET_SIZE:-small}" >> raw
           echo "project: example-get-started" >> raw
           PY_COLORS=1 py.test-benchmark compare --histogram histograms/ --group-by func --csv results.csv --sort name >> raw
-#          cat raw | ansi2html -W > html/index.html
+          cat raw | ansi2html -W >> html/index.html
       - name: upload joint results.csv
         uses: actions/upload-artifact@v2
         with:
@@ -144,15 +144,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: html
-      - name: update results
-        run: dvc repro
-#      - name: create PR
-#        if: ${{ github.event_name == 'push' || github.event_name == 'schedule' }}
-#        uses: peter-evans/create-pull-request@v4
-#        with:
-#          add-paths: |
-#            results.csv
-#            plots
-#            dvc.lock
-#          commit-message: update results
-#          title: update results

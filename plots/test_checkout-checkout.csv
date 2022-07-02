@@ -1,6 +1,6 @@
 index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
-0,tests/benchmarks/cli/commands/test_checkout.py::test_checkout-checkout[2.6.3],2.6.3,61.12235859799989,61.12235859799989,61.12235859799989,0.0,61.12235859799989,0.0,0;0,0.0163606251940795,1,1,test_checkout-checkout,2.6.3
-1,tests/benchmarks/cli/commands/test_checkout.py::test_checkout-checkout[2.10.2],2.10.2,84.45394831299996,84.45394831299996,84.45394831299996,0.0,84.45394831299996,0.0,0;0,0.0118407726337889,1,1,test_checkout-checkout,2.10.2
-2,tests/benchmarks/cli/commands/test_checkout.py::test_checkout-checkout[2.11.0],2.11.0,83.12990244599996,83.12990244599996,83.12990244599996,0.0,83.12990244599996,0.0,0;0,0.0120293657345452,1,1,test_checkout-checkout,2.11
-3,tests/benchmarks/cli/commands/test_checkout.py::test_checkout-checkout[2.12.0],2.12.0,86.37272866300009,86.37272866300009,86.37272866300009,0.0,86.37272866300009,0.0,0;0,0.0115777284737835,1,1,test_checkout-checkout,2.12
-4,tests/benchmarks/cli/commands/test_checkout.py::test_checkout-checkout[main],main,85.898861754,85.898861754,85.898861754,0.0,85.898861754,0.0,0;0,0.0116415977997919,1,1,test_checkout-checkout,99.99.99
+0,tests/benchmarks/cli/commands/test_checkout.py::test_checkout-checkout[2.6.3],2.6.3,60.05713678499978,60.05713678499978,60.05713678499978,0.0,60.05713678499978,0.0,0;0,0.0166508104370664,1,1,test_checkout-checkout,2.6.3
+1,tests/benchmarks/cli/commands/test_checkout.py::test_checkout-checkout[2.10.2],2.10.2,85.13981694900008,85.13981694900008,85.13981694900008,0.0,85.13981694900008,0.0,0;0,0.0117453858351494,1,1,test_checkout-checkout,2.10.2
+2,tests/benchmarks/cli/commands/test_checkout.py::test_checkout-checkout[2.11.0],2.11.0,84.3071476529999,84.3071476529999,84.3071476529999,0.0,84.3071476529999,0.0,0;0,0.0118613904969944,1,1,test_checkout-checkout,2.11
+3,tests/benchmarks/cli/commands/test_checkout.py::test_checkout-checkout[2.12.0],2.12.0,85.60614533900002,85.60614533900002,85.60614533900002,0.0,85.60614533900002,0.0,0;0,0.0116814043669412,1,1,test_checkout-checkout,2.12
+4,tests/benchmarks/cli/commands/test_checkout.py::test_checkout-checkout[main],main,85.91170690800004,85.91170690800004,85.91170690800004,0.0,85.91170690800004,0.0,0;0,0.0116398571974697,1,1,test_checkout-checkout,99.99.99

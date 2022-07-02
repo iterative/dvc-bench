@@ -1,6 +1,6 @@
 index,name,param:dvc_rev,min,max,mean,stddev,median,iqr,outliers,ops,rounds,iterations,test,ver_sort
-0,tests/benchmarks/cli/commands/test_pull.py::test_pull-pull[2.6.3],2.6.3,184.74802295399968,184.74802295399968,184.74802295399968,0.0,184.74802295399968,0.0,0;0,0.005412777814943,1,1,test_pull-pull,2.6.3
-1,tests/benchmarks/cli/commands/test_pull.py::test_pull-pull[2.10.2],2.10.2,235.18809859300015,235.18809859300015,235.18809859300015,0.0,235.18809859300015,0.0,0;0,0.0042519158324015,1,1,test_pull-pull,2.10.2
-2,tests/benchmarks/cli/commands/test_pull.py::test_pull-pull[2.11.0],2.11.0,233.286771346,233.286771346,233.286771346,0.0,233.286771346,0.0,0;0,0.0042865696765842,1,1,test_pull-pull,2.11
-3,tests/benchmarks/cli/commands/test_pull.py::test_pull-pull[2.12.0],2.12.0,235.433350732,235.433350732,235.433350732,0.0,235.433350732,0.0,0;0,0.0042474865896902,1,1,test_pull-pull,2.12
-4,tests/benchmarks/cli/commands/test_pull.py::test_pull-pull[main],main,233.113451063,233.113451063,233.113451063,0.0,233.113451063,0.0,0;0,0.004289756749085,1,1,test_pull-pull,99.99.99
+0,tests/benchmarks/cli/commands/test_pull.py::test_pull-pull[2.6.3],2.6.3,186.5807667009999,186.5807667009999,186.5807667009999,0.0,186.5807667009999,0.0,0;0,0.0053596092334775,1,1,test_pull-pull,2.6.3
+1,tests/benchmarks/cli/commands/test_pull.py::test_pull-pull[2.10.2],2.10.2,236.5717155240004,236.5717155240004,236.5717155240004,0.0,236.5717155240004,0.0,0;0,0.0042270480128405,1,1,test_pull-pull,2.10.2
+2,tests/benchmarks/cli/commands/test_pull.py::test_pull-pull[2.11.0],2.11.0,235.29677565200015,235.29677565200015,235.29677565200015,0.0,235.29677565200015,0.0,0;0,0.004249951990328,1,1,test_pull-pull,2.11
+3,tests/benchmarks/cli/commands/test_pull.py::test_pull-pull[2.12.0],2.12.0,237.571672049,237.571672049,237.571672049,0.0,237.571672049,0.0,0;0,0.0042092560589199,1,1,test_pull-pull,2.12
+4,tests/benchmarks/cli/commands/test_pull.py::test_pull-pull[main],main,233.924544889,233.924544889,233.924544889,0.0,233.924544889,0.0,0;0,0.0042748827425292,1,1,test_pull-pull,99.99.99

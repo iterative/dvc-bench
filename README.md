@@ -21,11 +21,18 @@ $ pytest tests/benchmarks/cli/commands/test_add.py
 ```
 $ pytest -h
 ...
- --size={tiny,small,large}                                   
-                       Size of the dataset/datafile to use in
-                       tests (default: small)
- --remote={azure,gdrive,gs,hdfs,http,oss,s3,ssh,webdav}
-                       Remote type to use in tests (default: local)
+  --size={tiny,small,large,mnist}
+                        Size of the dataset/datafile to use in tests
+  --remote={azure,gdrive,gs,hdfs,http,oss,s3,ssh,webdav}
+                        Remote type to use in tests
+  --dvc-bin=DVC_BIN     Path to dvc binary
+  --dvc-revs=DVC_REVS   Comma-separated list of DVC revisions to test (overrides `--dvc-bin`)
+  --dvc-git-repo=DVC_GIT_REPO
+                        Path or url to dvc git repo
+  --project-rev=PROJECT_REV
+                        Project revision to test
+  --project-git-repo=PROJECT_GIT_REPO
+                        Path or url to dvc project
 ...
 ```
 
@@ -34,12 +41,11 @@ $ pytest -h
 $ py.test-benchmark compare --histogram histograms/ --group-by name --sort name --csv results.csv
 ```
 
-### Testing different dvc versions
+and if you want beautiful plots:
+
 ```
-pip install dvc==2.5.4
-pytest
-pip install dvc==2.6.0
-pytest
+$ dvc repro
+$ dvc plots show
 ```
 
 ### Contributing

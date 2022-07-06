@@ -23,7 +23,7 @@ on:
 env:
   DVC_TEST: "true"
   FORCE_COLOR: "1"
-  DATASET: ${{ github.event.inputs.dataset }} || ${{ github.event_name == 'schedule' && 'mnist' || 'small' }}
+  DATASET: ${{ github.event.inputs.dataset || ( github.event_name == 'schedule' && 'mnist' || 'small' ) }}
 
 jobs:
   lint:

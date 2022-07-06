@@ -101,6 +101,7 @@ jobs:
         run: |
           tree .benchmarks
           mkdir html
+          echo bench.dvc.org > html/CNAME
           echo > raw
           echo "$(date)" >> raw
           echo "dataset: ${DATASET}" >> raw

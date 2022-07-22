@@ -3,7 +3,7 @@ from shutil import rmtree
 
 
 def test_data_status(dvc_bin, bench_dvc, tmp_dir, scm, dvc, make_dataset):
-    if dvc_bin.version <= (2, 15, 0):
+    if dvc_bin.version < (2, 15, 0):
         pytest.skip()
 
     dataset = make_dataset(cache=True, files=True, dvcfile=True, commit=False)

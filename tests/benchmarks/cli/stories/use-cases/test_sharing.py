@@ -9,7 +9,7 @@ def test_sharing(bench_dvc, tmp_dir, dvc, dataset, remote):
     bench_dvc("push", name="noop")
 
     shutil.rmtree(dataset)
-    shutil.rmtree(dvc.odb.local.cache_dir)
+    shutil.rmtree(dvc.odb.local.path)
 
     bench_dvc("pull")
     bench_dvc("pull", name="noop")

@@ -11,6 +11,7 @@ echo > raw
 echo "$(date)" >> raw
 echo "dataset: ${DATASET}" >> raw
 echo "project: example-get-started" >> raw
+cat raw | ansi2html -W > html/index.html
 
 for file in $(find .benchmarks -type f);
 do

@@ -12,7 +12,7 @@ on:
       dataset:
         description: "Dataset Size"
         required: false
-        default: "small"
+        default: "mnist"
         type: choice
         options:
           - tiny

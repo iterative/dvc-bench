@@ -1,5 +1,5 @@
 virtualenv==20.0.35
-dvc[all,tests]==2.12.1
+dvc[all,tests] @ git+https://github.com/iterative/dvc.git
 pre-commit==2.11.1
 pytest-benchmark[histogram]
 pytest-virtualenv

@@ -49,7 +49,7 @@ jobs:
         run: |
             pip install -U pip wheel
             pip install -r requirements.txt
-            pip install git+https://github.com/iterative/dvc#egg=dvc[s3]
+            pip install git+https://github.com/iterative/dvc#egg=dvc[s3,tests]
       - name: run benchmarks
         shell: bash
         env:

@@ -40,7 +40,6 @@ def test_data_status_all_flags(
         "--granular",
         "--unchanged",
         "--untracked-files",
-        "--with-dirs",
         "--json",
     )
     dataset = make_dataset(cache=True, files=True, dvcfile=True, commit=False)

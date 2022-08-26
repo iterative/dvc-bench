@@ -24,37 +24,10 @@ env:
   DVC_TEST: "true"
   FORCE_COLOR: "1"
   DATASET: ${{ github.event.inputs.dataset || ( github.event_name == 'schedule' && 'mnist' || 'small' ) }}
+  DVC_REVS: main,reduce-cache-check
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-            python-version: "3.10"
-      - name: install requirements
-        run: |
-          pip install -U pip
-          pip install wheel
-          pip install -r requirements.txt
-      - name: check project styling
-        run: pre-commit run --all-files --show-diff-on-failure
-  gen:
-    runs-on: ubuntu-latest
-    outputs:
-      tests: ${{ steps.tests.outputs.tests }}
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-            python-version: "3.10"
-      - name: install reqs
-        run: pip install -r requirements.txt
-      - id: tests
-        run: echo "::set-output name=tests::$(./scripts/ci/list_tests.sh)"
   build:
-    needs: [gen]
     timeout-minutes: 120
     name: run ${{ matrix.test.name }}
     runs-on: ${{ matrix.os }}
@@ -62,8 +35,11 @@ jobs:
       fail-fast: false
       matrix:
 #        os: [windows-2019, macos-10.15, ubuntu-18.04]
-        os: [ubuntu-18.04]
-        test: ${{fromJson(needs.gen.outputs.tests)}}
+        os: [ubuntu-latest]
+        path: [tests/benchmarks/cli/commands/test_data_status.py]
+        test:
+        - {name: test_data_status}
+        - {name: test_data_status_all_flags}
     steps:
       - uses: actions/setup-python@v2
         with:
@@ -77,7 +53,7 @@ jobs:
         shell: bash
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
-        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs main,reduce-cache-check ${{ matrix.test.path }} --size mnist
+        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs ${DVC_REVS} ${{ matrix.path }}::${{ matrix.test.name }} --size mnist
       - name: upload raw results
         uses: actions/upload-artifact@v2
         with:

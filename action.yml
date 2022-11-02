@@ -13,6 +13,18 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - uses: actions/setup-python@v4
+      id: py
+      with:
+          python-version: "${{ inputs.python-version }}"
+          cache: pip
+          cache-dependency-path: ${{ github.action_path }}/requirements.txt
+    - run: |
+        python -m pip install --upgrade pip wheel
+        pip install -r ${{ github.action_path }}/requirements.txt
+      if: steps.py.outputs.cache-hit != 'true'
+      shell: bash
+
     - uses: actions/checkout@v3
       with:
         path: pr
@@ -23,19 +35,6 @@ runs:
         path: base
         ref: "${{ github.event.pull_request.base.sha }}"
         fetch-depth: 0
-
-    - uses: actions/setup-python@v4
-      id: py
-      with:
-          python-version: "${{ inputs.python-version }}"
-          cache: pip
-          cache-dependency-path: ${{ github.action_path }}/requirements.txt
-
-    - run: |
-        python -m pip install --upgrade pip wheel
-        pip install -r ${{ github.action_path }}/requirements.txt
-      if: steps.py.outputs.cache-hit != 'true'
-      shell: bash
 
     - uses: syphar/restore-virtualenv@v1
       id: venv

@@ -25,9 +25,9 @@ runs:
         fetch-depth: 0
 
     - uses: actions/setup-python@v4
+      id: py
       with:
           python-version: "${{ inputs.python-version }}"
-          id: py
           cache: pip
           cache-dependency-path: ${{ github.action_path }}/requirements.txt
 

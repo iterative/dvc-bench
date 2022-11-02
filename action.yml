@@ -27,34 +27,43 @@ runs:
     - uses: actions/setup-python@v4
       with:
           python-version: "${{ inputs.python-version }}"
+          id: py
           cache: pip
-          cache-dependency-path: |
-            ${{ github.action_path }}/requirements.txt
-            base/pyproject.toml
+          cache-dependency-path: ${{ github.action_path }}/requirements.txt
 
-    - run: pip install --upgrade pip wheel
+    - run: |
+        python -m pip install --upgrade pip wheel
+        pip install -r ${{ github.action_path }}/requirements.txt
+      if: steps.py.outputs.cache-hit != 'true'
       shell: bash
 
-    - name: install dvc-bench requirements
-      run: pip install -r ${{ github.action_path }}/requirements.txt
-      shell: bash
+    - uses: syphar/restore-virtualenv@v1
+      id: venv
+      with:
+        requirement_files: base/pyproject.toml
 
     - name: install dvc from base branch
       working-directory: base
       shell: bash
-      run: pip install . && dvc --version
+      if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+      run: pip install .
 
     - name: run benchmarks for base
       shell: bash
       working-directory: "${{ github.action_path }}"
       env:
         DVC_TEST: "true"
-      run: pytest --benchmark-autosave ${{ inputs.pytest_options }} tests/benchmarks
+      run: |
+        ${{ steps.venv.outputs.virtualenv-directory}}/bin/dvc --version
+        ${{ steps.py.outputs.python-path}} -m pytest \
+          --benchmark-autosave \
+          --dvc-bin ${{ steps.venv.outputs.virtualenv-directory}}/bin/dvc \
+          ${{ inputs.pytest_options }} tests/benchmarks
 
     - name: install dvc from pull request
       working-directory: pr
       shell: bash
-      run: pip install . && dvc --version
+      run: pip install .
 
     - name: run benchmarks for PR
       shell: bash
@@ -62,8 +71,12 @@ runs:
       env:
         DVC_TEST: "true"
         PY_COLORS: "1"
-      run: >
-        pytest --benchmark-compare
-        --benchmark-compare-fail=median:5%
-        --benchmark-group-by name
-        ${{ inputs.pytest_options}} tests/benchmarks
+      run: |
+        ${{ steps.venv.outputs.virtualenv-directory}}/bin/dvc --version
+        ${{ steps.py.outputs.python-path}} -m pytest \
+          --benchmark-autosave \
+          --benchmark-compare \
+          --benchmark-compare-fail=median:5% \
+          --benchmark-group-by name \
+          --dvc-bin ${{ steps.venv.outputs.virtualenv-directory}}/bin/dvc \
+          ${{ inputs.pytest_options }} tests/benchmarks

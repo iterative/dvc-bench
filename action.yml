@@ -5,50 +5,66 @@ inputs:
     description: 'pytest options'
     default: ""
     required: false
+  python-version:
+    default: "3.10"
+    description: "python version to install"
+    required: false
+
 runs:
   using: "composite"
   steps:
-    - name: clone dvc-bench
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
-        path: dvc-bench
-        repository: iterative/dvc-bench
-    - name: install dvc-bench requirements
-      working-directory: dvc-bench
-      shell: bash
-      run: pip install -r requirements.txt
-    - name: checkout base dvc version
-      uses: actions/checkout@v2
-      with:
-        path: dvc-bench/dvc
-        ref: ${{ github.event.pull_request.base.sha }}
+        path: pr
         fetch-depth: 0
-    - name: install base dvc version
+
+    - uses: actions/checkout@v3
+      with:
+        path: base
+        ref: "${{ github.event.pull_request.base.sha }}"
+        fetch-depth: 0
+
+    - uses: actions/setup-python@v4
+      with:
+          python-version: "${{ inputs.python-version }}"
+          update-environment: false
+          cache: pip
+          cache-dependency-path: |
+            ${{ github.action_path }}/requirements.txt
+            base/pyproject.toml
+
+    - run: pip install --upgrade pip wheel
       shell: bash
-      working-directory: dvc-bench/dvc
-      run: pip install '.[all,tests]'
-    - name: run benchmarks for base version
+
+    - name: install dvc-bench requirements
+      run: pip install -r ${{ github.action_path }}/requirements.txt
       shell: bash
-      working-directory: dvc-bench
+
+    - name: install dvc from base branch
+      working-directory: base
+      shell: bash
+      run: pip install . && dvc --version
+
+    - name: run benchmarks for base
+      shell: bash
+      working-directory: "${{ github.action_path }}"
       env:
         DVC_TEST: "true"
-      run: |
-        dvc --version
-        pytest --benchmark-autosave ${{ inputs.pytest_options }} tests/benchmarks
-    - name: checkout PR dvc version
-      uses: actions/checkout@v2
-      with:
-        path: dvc-bench/dvc
-        fetch-depth: 0
-    - name: install PR dvc version
+      run: pytest --benchmark-autosave ${{ inputs.pytest_options }} tests/benchmarks
+
+    - name: install dvc from pull request
+      working-directory: pr
       shell: bash
-      working-directory: dvc-bench/dvc
-      run: pip install '.[all,tests]'
+      run: pip install . && dvc --version
+
     - name: run benchmarks for PR
       shell: bash
-      working-directory: dvc-bench
+      working-directory: "${{ github.action_path }}"
       env:
         DVC_TEST: "true"
-      run: |
-        dvc --version
-        PY_COLORS=1 pytest --benchmark-compare --benchmark-compare-fail=median:5% --benchmark-group-by name ${{ inputs.pytest_options}} tests/benchmarks
+        PY_COLORS: "1"
+      run: >
+        pytest --benchmark-compare
+        --benchmark-compare-fail=median:5%
+        --benchmark-group-by name
+        ${{ inputs.pytest_options}} tests/benchmarks

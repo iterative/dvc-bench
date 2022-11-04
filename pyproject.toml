@@ -21,7 +21,7 @@ exclude = '''
 '''
 
 [tool.pytest.ini_options]
-addopts = "-ra"
+addopts = "-ra -p no:hydra_pytest"
 testpaths = [
     "tests",
 ]

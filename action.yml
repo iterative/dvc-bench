@@ -9,7 +9,7 @@ runs:
   using: "composite"
   steps:
     - name: clone dvc-bench
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         path: dvc-bench
         repository: iterative/dvc-bench
@@ -18,7 +18,7 @@ runs:
       shell: bash
       run: pip install -r requirements.txt
     - name: checkout base dvc version
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         path: dvc-bench/dvc
         ref: ${{ github.event.pull_request.base.sha }}
@@ -36,7 +36,7 @@ runs:
         dvc --version
         pytest --benchmark-autosave ${{ inputs.pytest_options }} tests/benchmarks
     - name: checkout PR dvc version
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         path: dvc-bench/dvc
         fetch-depth: 0

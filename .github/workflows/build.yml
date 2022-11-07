@@ -79,7 +79,7 @@ jobs:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
         run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs main,2.24.0,2.18.1,2.11.0,2.6.3 ${{ matrix.test.path }} --size ${DATASET}
       - name: upload raw results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: .benchmarks
           path: .benchmarks

@@ -1,4 +1,4 @@
-virtualenv==20.16.6
+virtualenv==20.17.0
 dvc[s3,tests]==2.33.2
 pre-commit==2.20.0
 pytest-benchmark[histogram]

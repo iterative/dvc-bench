@@ -61,8 +61,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-#        os: [windows-2019, macos-10.15, ubuntu-18.04]
-        os: [ubuntu-18.04]
+#        os: [windows-2019, macos-10.15, ubuntu-latest]
+        os: [ubuntu-latest]
         test: ${{fromJson(needs.gen.outputs.tests)}}
     steps:
       - uses: actions/setup-python@v4
@@ -86,7 +86,7 @@ jobs:
   publish:
     name: join results and publish
     needs: build
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-python@v4
         with:

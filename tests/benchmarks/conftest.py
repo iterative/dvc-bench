@@ -51,6 +51,8 @@ def dvc_bin(
         if not venv:
             venv = make_dvc_venv(dvc_rev)
             venv.run("pip install -U pip")
+            if dvc_rev in ["2.18.1", "2.11.0", "2.6.3"]:
+                venv.run("pip install fsspec==2022.11.0")
             venv.run(f"pip install git+file://{dvc_git_repo}@{dvc_rev}")
             dvc_venvs[dvc_rev] = venv
         dvc_bin = venv.virtualenv / "bin" / "dvc"

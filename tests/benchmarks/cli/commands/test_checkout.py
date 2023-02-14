@@ -20,7 +20,9 @@ def generate_test(*, link_type="copy"):
     def _test_checkout_func(bench_dvc, tmp_dir, dvc, make_dataset):
         dataset = make_dataset(dvcfile=True, cache=True, files=False)
 
-        _skip_unsupported_link(dvc.odb.local.path, tmp_dir, link_type)
+        _skip_unsupported_link(
+            (tmp_dir / ".dvc" / "cache"), tmp_dir, link_type
+        )
 
         with dvc.config.edit() as conf:
             conf["cache"]["type"] = link_type

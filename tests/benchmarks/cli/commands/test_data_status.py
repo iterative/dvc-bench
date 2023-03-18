@@ -2,18 +2,16 @@ from shutil import rmtree
 
 import pytest
 
+pytestmark = pytest.mark.requires(minversion=(2, 15, 0), reason="new command")
+
 
 def test_data_status(
-    dvc_bin,
     bench_dvc,
     tmp_dir,
     scm,
     dvc,
     make_dataset,
 ):
-    if dvc_bin.version < (2, 15, 0):
-        pytest.skip()
-
     args = ("data", "status")
     dataset = make_dataset(cache=True, files=True, dvcfile=True, commit=False)
     rmtree(dvc.tmp_dir)
@@ -28,12 +26,7 @@ def test_data_status(
     bench_dvc(*args, name="changed-noop")
 
 
-def test_data_status_all_flags(
-    dvc_bin, bench_dvc, tmp_dir, scm, dvc, make_dataset
-):
-    if dvc_bin.version < (2, 15, 0):
-        pytest.skip()
-
+def test_data_status_all_flags(bench_dvc, tmp_dir, scm, dvc, make_dataset):
     args = (
         "data",
         "status",

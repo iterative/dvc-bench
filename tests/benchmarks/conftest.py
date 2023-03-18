@@ -8,6 +8,10 @@ from packaging import version
 from pytest_virtualenv import VirtualEnv
 
 
+def lt_version(version, min):
+    return version and version.parse(version) < version.parse(min)
+
+
 def pytest_generate_tests(metafunc):
     str_revs = metafunc.config.getoption("--dvc-revs")
     revs = str_revs.split(",") if str_revs else [None]
@@ -62,10 +66,29 @@ def dvc_bin(
     def _dvc_bin(*args):
         return check_output([dvc_bin, *args], text=True)
 
-    actual = version.parse(_dvc_bin("--version"))
-    _dvc_bin.version = (actual.major, actual.minor, actual.micro)
-
+    _dvc_bin.version = parse_tuple(_dvc_bin("--version"))
     return _dvc_bin
+
+
+def parse_tuple(version_string):
+    parsed = version.parse(version_string)
+    return (parsed.major, parsed.minor, parsed.micro)
+
+
+@pytest.fixture(autouse=True)
+def skip_if_dvc_version_lt_required(request, dvc_bin):
+    if marker := request.node.get_closest_marker("requires"):
+        minversion = marker.kwargs.get("minversion") or marker.args[0]
+        assert minversion is not None, (
+            "'minversion' needs to be specified as "
+            " a positional or a keyword argument"
+        )
+        reason = marker.kwargs.get("reason", "")
+        if isinstance(minversion, str):
+            minversion = parse_tuple(minversion)
+        if dvc_bin.version < minversion:
+            version_repr = ".".join(map(str, minversion))
+            pytest.skip(f"requires dvc>={version_repr}: {reason}")
 
 
 @pytest.fixture(scope="function")
@@ -103,13 +126,22 @@ def bench_dvc(dvc_bin, make_bench):
     return _bench_dvc
 
 
+def pull(repo, *args):
+    from dvc.exceptions import CheckoutError, DownloadError
+
+    while True:
+        try:
+            return repo.pull(*args)
+        except (CheckoutError, DownloadError):
+            pass
+
+
 @pytest.fixture
 def make_dataset(request, test_config, tmp_dir, pytestconfig):
     def _make_dataset(
         dvcfile=False, files=True, cache=False, commit=False, remote=False
     ):
         from dvc.repo import Repo
-        from dvc.exceptions import CheckoutError, DownloadError
 
         path = tmp_dir / "dataset"
         root = pytestconfig.rootpath
@@ -118,13 +150,7 @@ def make_dataset(request, test_config, tmp_dir, pytestconfig):
 
         dvc = Repo(root)
 
-        while True:
-            try:
-                dvc.pull([str(src_dvc)])
-                break
-            except (CheckoutError, DownloadError):
-                pass
-
+        pull(dvc, [str(src_dvc)])
         if files:
             shutil.copytree(src, path)
         if dvcfile:

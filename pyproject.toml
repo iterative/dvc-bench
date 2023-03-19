@@ -25,3 +25,4 @@ addopts = "-ra -p no:hydra_pytest"
 testpaths = [
     "tests",
 ]
+markers = ["requires: mark a test as requiring minimum dvc version"]

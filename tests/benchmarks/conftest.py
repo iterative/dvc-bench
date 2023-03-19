@@ -8,10 +8,6 @@ from packaging import version
 from pytest_virtualenv import VirtualEnv
 
 
-def lt_version(version, min):
-    return version and version.parse(version) < version.parse(min)
-
-
 def pytest_generate_tests(metafunc):
     str_revs = metafunc.config.getoption("--dvc-revs")
     revs = str_revs.split(",") if str_revs else [None]

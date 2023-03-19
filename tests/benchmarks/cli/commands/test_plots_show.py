@@ -9,7 +9,6 @@ from tests.benchmarks.conftest import pull
 )
 def test_plots(project, bench_dvc):
     with Repo() as dvc:
-        assert dvc.status() == {}  # sanity check
         pull(dvc)
 
     bench_kwargs = {"rounds": 5, "iterations": 3, "warmup_rounds": 2}

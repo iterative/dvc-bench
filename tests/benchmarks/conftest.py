@@ -4,6 +4,7 @@ from subprocess import check_output
 
 import pytest
 from dulwich.porcelain import clone
+from funcy import first
 from packaging import version
 from pytest_virtualenv import VirtualEnv
 
@@ -74,9 +75,9 @@ def parse_tuple(version_string):
 @pytest.fixture(autouse=True)
 def skip_if_dvc_version_lt_required(request, dvc_bin):
     if marker := request.node.get_closest_marker("requires"):
-        minversion = marker.kwargs.get("minversion") or marker.args[0]
-        assert minversion is not None, (
-            "'minversion' needs to be specified as "
+        minversion = marker.kwargs.get("minversion") or first(marker.args)
+        assert minversion, (
+            "'minversion' needs to be specified as"
             " a positional or a keyword argument"
         )
         reason = marker.kwargs.get("reason", "")

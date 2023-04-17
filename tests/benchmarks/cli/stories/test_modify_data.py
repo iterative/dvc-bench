@@ -1,3 +1,6 @@
+"""
+Tests for modifications to an existing dataset.
+"""
 import glob
 import os
 import random
@@ -23,3 +26,23 @@ def test_partial_add(bench_dvc, tmp_dir, dvc, dataset, remote):
     bench_dvc("push", name="partial-add")
     bench_dvc("gc", "-f", "-w", name="noop")
     bench_dvc("gc", "-f", "-w", "-c", name="cloud-noop")
+
+
+def test_partial_remove(bench_dvc, tmp_dir, dvc, dataset, remote):
+    # Add/push full dataset
+    dvc.add(str(dataset))
+    dvc.push()
+
+    # Remove some files
+    for f in glob.glob("*", root_dir=dataset, recursive=True):
+        if random.random() > 0.5:
+            if os.path.isfile(dataset / f):
+                os.remove(dataset / f)
+            elif os.path.isdir(dataset / f):
+                shutil.rmtree(dataset / f)
+
+    # Benchmark operations for removing files from dataset
+    bench_dvc("add", dataset)
+    bench_dvc("push")
+    bench_dvc("gc", "-f", "-w")
+    bench_dvc("gc", "-f", "-w", "-c", name="cloud")

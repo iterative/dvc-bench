@@ -4,7 +4,7 @@ import random
 import shutil
 
 
-def test_sharing(bench_dvc, tmp_dir, dvc, dataset, remote):
+def test_partial_add(bench_dvc, tmp_dir, dvc, dataset, remote):
     # Move some files to create a partial dataset
     os.makedirs("partial-copy")
     for f in glob.glob("*", root_dir=dataset, recursive=True):

@@ -1,3 +1,4 @@
+import importlib
 import os
 from contextlib import suppress
 
@@ -18,11 +19,11 @@ REMOTES = {
     "gdrive": False,
     "gs": False,
     "hdfs": False,
-    "http": True,
+    "http": False,
     "oss": False,
     "s3": False,
-    "ssh": True,
-    "webdav": True,
+    "ssh": False,
+    "webdav": False,
 }
 
 
@@ -216,3 +217,21 @@ def pytest_configure(config):
     config.dvc_config.dvc_git_repo = config.getoption("--dvc-git-repo")
     config.dvc_config.project_rev = config.getoption("--project-rev")
     config.dvc_config.project_git_repo = config.getoption("--project-git-repo")
+
+    remotes = set(enabled_remotes)
+    if config.dvc_config.remote != "local":
+        remotes.add(config.dvc_config.remote)
+
+    for remote in remotes:
+        try:
+            module = importlib.import_module(f"dvc_{remote}.tests.fixtures")
+            globals().update(
+                (k, v)
+                for k, v in module.__dict__.items()
+                if not k.startswith("_")
+            )
+        except ImportError:
+            try:
+                enabled_remotes.remove(remote)
+            except KeyError:
+                pass

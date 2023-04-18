@@ -73,11 +73,12 @@ jobs:
         run: |
             pip install -r requirements.txt
             pip install git+https://github.com/iterative/dvc
+            pip install git+https://github.com/iterative/dvc-s3#egg=dvc-s3[tests]
       - name: run benchmarks
         shell: bash
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
-        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs main,2.45.0,2.41.1,2.40.0,2.39.0,2.18.1,2.11.0,2.6.3 ${{ matrix.test.path }} --size ${DATASET}
+        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs main,2.45.0,2.41.1,2.40.0,2.39.0,2.18.1,2.11.0,2.6.3 ${{ matrix.test.path }} --size ${DATASET} --enable-s3
       - name: upload raw results
         uses: actions/upload-artifact@v3
         with:

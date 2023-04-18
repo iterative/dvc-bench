@@ -1,5 +1,6 @@
 import shutil
 
+
 def pytest_generate_tests(metafunc):
     if "remote" in metafunc.fixturenames:
         config = metafunc.config.dvc_config

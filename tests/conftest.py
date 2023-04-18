@@ -148,6 +148,7 @@ class DVCTestConfig:
         self.dvc_git_repo = DEFAULT_DVC_GIT_REPO
         self.project_rev = None
         self.project_git_repo = DEFAULT_PROJECT_GIT_REPO
+        self.extras = set()
 
     def requires(self, remote_name):
         if remote_name not in REMOTES or remote_name in self.enabled_remotes:
@@ -235,3 +236,15 @@ def pytest_configure(config):
                 enabled_remotes.remove(remote)
             except KeyError:
                 pass
+
+    all_extras = {
+        "azure",
+        "gdrive",
+        "gs",
+        "hdfs",
+        "s3",
+        "ssh",
+        "webdav",
+        "webhdfs",
+    }
+    config.dvc_config.extras = all_extras.intersection(remotes)

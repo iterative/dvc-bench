@@ -18,7 +18,7 @@ $ pytest
 
 ### Running one benchmark
 ```console
-$ pytest tests/benchmarks/cli/commands/test_add.py
+$ pytest dvc.testing.benchmarks.cli.commands.test_add
 ```
 
 ### CLI options
@@ -33,6 +33,8 @@ $ pytest -h
   --dvc-revs=DVC_REVS   Comma-separated list of DVC revisions to test (overrides `--dvc-bin`)
   --dvc-git-repo=DVC_GIT_REPO
                         Path or url to dvc git repo
+  --dvc-bench-git-repo=DVC_BENCH_GIT_REPO
+                        Path or url to dvc-bench git repo (for loading benchmark dataset)
   --project-rev=PROJECT_REV
                         Project revision to test
   --project-git-repo=PROJECT_GIT_REPO
@@ -53,10 +55,5 @@ $ dvc plots show
 ```
 
 ### Contributing
-tests/benchmarks structure:
-- cli: should be able to run these with any dvc (rpm, deb, pypi, snap, etc) (could be used in dvc-test repo too)
-  - commands: granular tests for individual commands. These should have a cached setup, so that we could use them during rapid development instead of our hand-written scripts. Every test could be run in a separate machine.
-  - stories: multistage start-to-end benchmarks, useful for testing workflows (e.g. in documentation, see test_sharing inspired by [sharing-data-and-models use-case](https://dvc.org/doc/use-cases/sharing-data-and-model-files). Every full story could be run in a separate machine.
-- api: for python api only.
-  - methods: granular tests for individual methods (e.g. `api.open/read`). Same reasoning as in `cli.commands`
-  - stories: same as `cli.stories` but for our api. E.g. imagine using our api with pandas or smth like that.
+
+Benchmark test definitions are now part of [dvc.testing](https://github.com/iterative/dvc/tree/main/dvc/testing).

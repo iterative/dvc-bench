@@ -29,7 +29,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
             python-version: "3.10"
@@ -45,12 +45,15 @@ jobs:
     outputs:
       tests: ${{ steps.tests.outputs.tests }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
             python-version: "3.10"
       - name: install reqs
-        run: pip install -r requirements.txt
+        run: |
+          pip install -U pip
+          pip install -r requirements.txt
+          pip install git+https://github.com/iterative/dvc#egg=dvc[testing]
       - id: tests
         run: echo "::set-output name=tests::$(./scripts/ci/list_tests.sh)"
   build:
@@ -68,7 +71,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
             python-version: "3.10"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: install requirements
         run: |
             pip install -r requirements.txt
@@ -91,9 +94,12 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: install requirements
-        run: pip install -r requirements.txt
+        run: |
+          pip install -U pip
+          pip install -r requirements.txt
+          pip install git+https://github.com/iterative/dvc#egg=dvc[testing]
       - name: download ubuntu results
         uses: actions/download-artifact@v3
       - name: compare results

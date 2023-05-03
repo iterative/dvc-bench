@@ -26,11 +26,6 @@ REMOTES = {
 }
 
 
-DEFAULT_DVC_BIN = "dvc"
-DEFAULT_DVC_GIT_REPO = "https://github.com/iterative/dvc"
-DEFAULT_PROJECT_GIT_REPO = "https://github.com/iterative/example-get-started"
-
-
 @pytest.fixture(autouse=True)
 def reset_loglevel(request, caplog):
     """
@@ -87,66 +82,17 @@ def pytest_addoption(parser):
             )
 
     parser.addoption(
-        "--size",
-        choices=["tiny", "small", "large", "mnist"],
-        default="small",
-        help="Size of the dataset/datafile to use in tests",
-    )
-
-    parser.addoption(
         "--remote",
         choices=list(REMOTES.keys()),
         default="local",
         help="Remote type to use in tests",
     )
 
-    parser.addoption(
-        "--dvc-bin",
-        type=str,
-        default=DEFAULT_DVC_BIN,
-        help="Path to dvc binary",
-    )
-
-    parser.addoption(
-        "--dvc-revs",
-        type=str,
-        help=(
-            "Comma-separated list of DVC revisions to test "
-            "(overrides `--dvc-bin`)"
-        ),
-    )
-
-    parser.addoption(
-        "--dvc-git-repo",
-        type=str,
-        default=DEFAULT_DVC_GIT_REPO,
-        help="Path or url to dvc git repo",
-    )
-
-    parser.addoption(
-        "--project-rev",
-        type=str,
-        help="Project revision to test",
-    )
-
-    parser.addoption(
-        "--project-git-repo",
-        type=str,
-        default=DEFAULT_PROJECT_GIT_REPO,
-        help="Path or url to dvc project",
-    )
-
 
 class DVCTestConfig:
     def __init__(self):
         self.enabled_remotes = set()
-        self.size = "small"
         self.remote = "local"
-        self.dvc_bin = DEFAULT_DVC_BIN
-        self.dvc_revs = None
-        self.dvc_git_repo = DEFAULT_DVC_GIT_REPO
-        self.project_rev = None
-        self.project_git_repo = DEFAULT_PROJECT_GIT_REPO
 
     def requires(self, remote_name):
         if remote_name not in REMOTES or remote_name in self.enabled_remotes:
@@ -209,10 +155,4 @@ def pytest_configure(config):
         if enabled:
             enabled_remotes.add(remote_name)
 
-    config.dvc_config.size = config.getoption("--size")
     config.dvc_config.remote = config.getoption("--remote")
-    config.dvc_config.dvc_bin = config.getoption("--dvc-bin")
-    config.dvc_config.dvc_revs = config.getoption("--dvc-revs")
-    config.dvc_config.dvc_git_repo = config.getoption("--dvc-git-repo")
-    config.dvc_config.project_rev = config.getoption("--project-rev")
-    config.dvc_config.project_git_repo = config.getoption("--project-git-repo")

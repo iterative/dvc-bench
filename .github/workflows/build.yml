@@ -72,7 +72,7 @@ jobs:
       - name: install requirements
         run: |
             pip install -r requirements.txt
-            pip install git+https://github.com/iterative/dvc
+            pip install git+https://github.com/iterative/dvc#egg=dvc[testing]
       - name: run benchmarks
         shell: bash
         env:

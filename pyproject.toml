@@ -21,7 +21,7 @@ exclude = '''
 '''
 
 [tool.pytest.ini_options]
-addopts = "-ra -p no:hydra_pytest"
+addopts = "-ra -p no:hydra_pytest --pyargs dvc.testing.benchmarks"
 testpaths = [
     "tests",
 ]

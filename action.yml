@@ -34,7 +34,7 @@ runs:
         DVC_TEST: "true"
       run: |
         dvc --version
-        pytest --benchmark-autosave ${{ inputs.pytest_options }} tests/benchmarks
+        pytest --benchmark-autosave ${{ inputs.pytest_options }}
     - name: checkout PR dvc version
       uses: actions/checkout@v3
       with:
@@ -51,4 +51,4 @@ runs:
         DVC_TEST: "true"
       run: |
         dvc --version
-        PY_COLORS=1 pytest --benchmark-compare --benchmark-compare-fail=median:5% --benchmark-group-by name ${{ inputs.pytest_options}} tests/benchmarks
+        PY_COLORS=1 pytest --benchmark-compare --benchmark-compare-fail=median:5% --benchmark-group-by name ${{ inputs.pytest_options}}

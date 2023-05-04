@@ -51,4 +51,4 @@ runs:
         DVC_TEST: "true"
       run: |
         dvc --version
-        PY_COLORS=1 pytest --benchmark-compare --benchmark-compare-fail=median:5% --benchmark-group-by name ${{ inputs.pytest_options}}
+        PY_COLORS=1 pytest --pyargs dvc.testing.benchmarks --benchmark-compare --benchmark-compare-fail=median:5% --benchmark-group-by name ${{ inputs.pytest_options}}

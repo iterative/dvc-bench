@@ -13,12 +13,12 @@ $ dvc pull # optional, otherwise will pull datasets dynamically
 
 ### Running all benchmarks
 ```console
-$ pytest
+$ pytest --pyargs dvc.testing.benchmarks
 ```
 
 ### Running one benchmark
 ```console
-$ pytest dvc.testing.benchmarks.cli.commands.test_add
+$ pytest --pyargs dvc.testing.benchmarks.cli.commands.test_add
 ```
 
 ### CLI options

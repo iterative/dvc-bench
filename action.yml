@@ -34,7 +34,7 @@ runs:
         DVC_TEST: "true"
       run: |
         dvc --version
-        pytest --benchmark-autosave ${{ inputs.pytest_options }}
+        pytest --pyargs dvc.testing.benchmarks --benchmark-autosave ${{ inputs.pytest_options }}
     - name: checkout PR dvc version
       uses: actions/checkout@v3
       with:

@@ -21,8 +21,7 @@ exclude = '''
 '''
 
 [tool.pytest.ini_options]
-addopts = "-ra -p no:hydra_pytest --pyargs dvc.testing.benchmarks"
+addopts = "-ra -p no:hydra_pytest"
 testpaths = [
     "tests",
 ]
-markers = ["requires: mark a test as requiring minimum dvc version"]

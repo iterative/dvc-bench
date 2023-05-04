@@ -4,7 +4,7 @@ set -e
 set -x
 
 tree .benchmarks
-rm -rf html
+rm -rf html report.md
 mkdir html
 echo bench.dvc.org > html/CNAME
 echo > raw
@@ -12,6 +12,9 @@ echo "$(date)" >> raw
 echo "dataset: ${DATASET}" >> raw
 echo "project: example-get-started" >> raw
 cat raw | ansi2html -W > html/index.html
+
+echo '```' > report.md
+cat raw >> report.md
 
 for file in $(find .benchmarks -type f);
 do
@@ -21,4 +24,7 @@ do
   dvc plots show -o tmp_html
   cat tmp_html/index.html >> html/index.html
   cat raw | ansi2html -W >> html/index.html
+  cat raw | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" >> report.md
 done
+
+echo '```' >> report.md

@@ -68,7 +68,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-#        os: [windows-2019, macos-10.15, ubuntu-latest]
         os: [ubuntu-latest]
         test: ${{fromJson(needs.gen.outputs.tests)}}
     steps:
@@ -84,15 +83,54 @@ jobs:
         shell: bash
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
-        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs main,2.45.0,2.41.1,2.40.0,2.39.0,2.18.1,2.11.0,2.6.3 --pyargs ${{ matrix.test.path }} --size ${DATASET}
+        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs main,2.45.0,2.41.1,2.40.0,2.39.0,2.18.1,2.11.0 --pyargs ${{ matrix.test.path }} --size ${DATASET}
       - name: upload raw results
         uses: actions/upload-artifact@v3
         with:
           name: .benchmarks
           path: .benchmarks
+
+  build_s3:
+    strategy:
+      fail-fast: false
+    name: run S3 benchmarks
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    permissions:
+      id-token: write
+    steps:
+      - name: configure AWS credentials
+        if: ${{ github.event_name == 'schedule' }}
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::342840881361:role/dvc-bench-gha
+          aws-region: us-east-1
+      - uses: actions/setup-python@v4
+        with:
+            python-version: "3.10"
+      - uses: actions/checkout@v3
+      - name: install requirements
+        run: |
+            pip install -r requirements.txt
+            pip install git+https://github.com/iterative/dvc#egg=dvc[testing]
+            pip install git+https://github.com/iterative/dvc-s3#egg=dvc-s3[tests]
+      - name: configure real S3 DVC env
+        if: ${{ github.event_name == 'schedule' }}
+        run: |
+          echo "DVC_TEST_AWS_REPO_BUCKET=dvc-bench-ci" >> "$GITHUB_ENV"
+      - name: run benchmarks
+        shell: bash
+        # NOTE: 2.6.3 is not benchmarked for S3, real-S3 fixtures are incompatible with old aiobotocore version
+        run: pytest --benchmark-save test_sharing_s3 --benchmark-group-by func --dvc-revs main,2.45.0,2.41.1,2.40.0,2.39.0,2.18.1,2.11.0 --dvc-install-deps s3 --pyargs dvc_s3.tests.benchmarks --size ${DATASET}
+      - name: upload raw results
+        uses: actions/upload-artifact@v3
+        with:
+          name: .benchmarks
+          path: .benchmarks
+
   publish:
     name: join results and publish
-    needs: build
+    needs: [build, build_s3]
     runs-on: ubuntu-latest
     steps:
       - uses: iterative/setup-cml@v1

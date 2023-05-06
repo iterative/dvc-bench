@@ -103,6 +103,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::342840881361:role/dvc-bench-gha
+          role-duration-seconds: 14400
           aws-region: us-east-1
       - uses: actions/setup-python@v4
         with:

@@ -135,6 +135,7 @@ jobs:
     permissions:
       pages: write
       pull-requests: write
+      contents: write
     steps:
       - uses: iterative/setup-cml@v1
       - uses: actions/setup-python@v4

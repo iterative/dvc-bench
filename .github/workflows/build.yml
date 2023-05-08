@@ -94,7 +94,7 @@ jobs:
       fail-fast: false
     name: run S3 benchmarks
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 240
     permissions:
       id-token: write
     steps:

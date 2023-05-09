@@ -56,9 +56,9 @@ jobs:
         run: |
           pip install -U pip
           pip install -r requirements.txt
-          pip install git+https://github.com/iterative/dvc#egg=dvc[testing]
+          pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
       - id: tests
-        run: echo "::set-output name=tests::$(./scripts/ci/list_tests.sh)"
+        run: echo "tests=$(./scripts/ci/list_tests.sh)" >> $GITHUB_OUTPUT
   build:
     needs: [gen]
     timeout-minutes: 180
@@ -77,7 +77,7 @@ jobs:
       - name: install requirements
         run: |
             pip install -r requirements.txt
-            pip install git+https://github.com/iterative/dvc#egg=dvc[testing]
+            pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
       - name: run benchmarks
         shell: bash
         env:
@@ -102,8 +102,8 @@ jobs:
         run: |
           pip install -U pip
           pip install -r requirements.txt
-          pip install dvc[testing] @ git+https://github.com/iterative/dvc
-          pip install dvc_s3[tests] @ git+https://github.com/iterative/dvc-s3
+          pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+          pip install "dvc_s3[tests] @ git+https://github.com/iterative/dvc-s3"
       - id: tests
         run: echo "tests=$(./scripts/ci/list_tests_s3.sh)" >> $GITHUB_OUTPUT
 
@@ -133,8 +133,8 @@ jobs:
       - name: install requirements
         run: |
             pip install -r requirements.txt
-            pip install git+https://github.com/iterative/dvc#egg=dvc[testing]
-            pip install git+https://github.com/iterative/dvc-s3#egg=dvc-s3[tests]
+            pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+            pip install "dvc-s3[tests] @ git+https://github.com/iterative/dvc-s3"
       - name: configure real S3 DVC env
         if: ${{ github.event_name == 'schedule' }}
         run: |
@@ -168,7 +168,7 @@ jobs:
         run: |
           pip install -U pip
           pip install -r requirements.txt
-          pip install git+https://github.com/iterative/dvc#egg=dvc[testing]
+          pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
       - name: download ubuntu results
         uses: actions/download-artifact@v3
 

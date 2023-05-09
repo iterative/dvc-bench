@@ -89,11 +89,32 @@ jobs:
           name: .benchmarks
           path: .benchmarks
 
+  gen_s3:
+    runs-on: ubuntu-latest
+    outputs:
+      tests: ${{ steps.tests.outputs.tests }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+            python-version: "3.10"
+      - name: install reqs
+        run: |
+          pip install -U pip
+          pip install -r requirements.txt
+          pip install dvc[testing] @ git+https://github.com/iterative/dvc
+          pip install dvc_s3[tests] @ git+https://github.com/iterative/dvc-s3
+      - id: tests
+        run: echo "tests=$(./scripts/ci/list_tests_s3.sh)" >> $GITHUB_OUTPUT
+
   build_s3:
+    needs: [gen_s3]
     strategy:
       fail-fast: false
-    name: run S3 benchmarks
+      matrix:
+          test: ${{fromJson(needs.gen_s3.outputs.tests)}}
     runs-on: ubuntu-latest
+    name: run ${{ matrix.test.name }}
     timeout-minutes: 240
     permissions:
       id-token: write
@@ -121,7 +142,7 @@ jobs:
       - name: run benchmarks
         shell: bash
         # NOTE: 2.6.3 is not benchmarked for S3, real-S3 fixtures are incompatible with old aiobotocore version
-        run: pytest --benchmark-save test_sharing_s3 --benchmark-group-by func --dvc-revs main,2.45.0,2.41.1,2.40.0,2.39.0,2.18.1,2.11.0 --dvc-install-deps s3 --pyargs dvc_s3.tests.benchmarks --size ${DATASET}
+        run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs main,2.45.0,2.41.1,2.40.0,2.39.0,2.18.1,2.11.0 --dvc-install-deps s3 --pyargs ${{ matrix.test.path }} dvc_s3.tests.benchmarks --size ${DATASET}
       - name: upload raw results
         uses: actions/upload-artifact@v3
         with:

@@ -57,7 +57,7 @@ jobs:
         run: |
           pip install -U pip
           pip install -r requirements.txt
-          pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+          pip install "dvc[testing] @ git+https://github.com/iterative/dvc@add-celeba"
       - id: tests
         run: echo "tests=$(./scripts/ci/list_tests.sh)" >> $GITHUB_OUTPUT
   build:
@@ -78,7 +78,7 @@ jobs:
       - name: install requirements
         run: |
             pip install -r requirements.txt
-            pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+            pip install "dvc[testing] @ git+https://github.com/iterative/dvc@add-celeba"
       - name: run benchmarks
         shell: bash
         env:

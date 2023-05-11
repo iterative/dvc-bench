@@ -15,6 +15,7 @@ on:
         default: "small"
         type: choice
         options:
+          - celeba
           - tiny
           - small
           - large
@@ -82,7 +83,7 @@ jobs:
         shell: bash
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
-        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs main,2.45.0,2.41.1,2.40.0,2.39.0,2.18.1,2.11.0 --pyargs ${{ matrix.test.path }} --size ${DATASET}
+        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs main,2.56.0 --pyargs ${{ matrix.test.path }} --size ${DATASET}
       - name: upload raw results
         uses: actions/upload-artifact@v3
         with:

@@ -115,7 +115,7 @@ jobs:
           test: ${{fromJson(needs.gen_s3.outputs.tests)}}
     runs-on: ubuntu-latest
     name: run ${{ matrix.test.name }}
-    timeout-minutes: 240
+    timeout-minutes: 480
     permissions:
       id-token: write
     steps:
@@ -124,7 +124,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::342840881361:role/dvc-bench-gha
-          role-duration-seconds: 14400
+          role-duration-seconds: 28800
           aws-region: us-east-1
       - uses: actions/setup-python@v4
         with:

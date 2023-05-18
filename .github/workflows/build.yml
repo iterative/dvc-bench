@@ -24,6 +24,8 @@ env:
   DVC_TEST: "true"
   FORCE_COLOR: "1"
   DATASET: ${{ github.event.inputs.dataset || ( github.event_name == 'schedule' && 'mnist' || 'small' ) }}
+  DVC_REVS: main,2.45.0,2.41.1,2.40.0,2.39.0,2.18.1,2.11.0
+  CLOUD_REVS: main,2.41.1,2.40.0,2.39.0,2.11.0
 
 permissions:
   contents: read
@@ -82,7 +84,7 @@ jobs:
         shell: bash
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
-        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs main,2.45.0,2.41.1,2.40.0,2.39.0,2.18.1,2.11.0 --pyargs ${{ matrix.test.path }} --size ${DATASET}
+        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs ${DVC_REVS} --pyargs ${{ matrix.test.path }} --size ${DATASET}
       - name: upload raw results
         uses: actions/upload-artifact@v3
         with:
@@ -105,7 +107,7 @@ jobs:
           pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
           pip install "dvc_s3[tests] @ git+https://github.com/iterative/dvc-s3"
       - id: tests
-        run: echo "tests=$(./scripts/ci/list_tests_s3.sh)" >> $GITHUB_OUTPUT
+        run: echo "tests=$(./scripts/ci/list_tests_cloud.sh s3)" >> $GITHUB_OUTPUT
 
   build_s3:
     needs: [gen_s3]
@@ -149,9 +151,88 @@ jobs:
           name: .benchmarks
           path: .benchmarks
 
+  azure_login:
+    if: ${{ github.event_name == 'schedule' }}
+    runs-on: ubuntu-latest
+    outputs:
+      connection_string: ${{ steps.set-conn-str.outputs.connection_string }}
+    environment: github-actions
+    permissions:
+      id-token: write
+    steps:
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: 'Set connection string'
+        id: set-conn-str
+        run: |
+          connection_string=$(az storage account show-connection-string -g dvc-bench-ci -n dvcbenchci | jq -c '.connectionString')
+          echo "::add-mask::$connection_string"
+          echo "connection_string=$connection_string" >> $GITHUB_OUTPUT
+
+  gen_azure:
+    if: ${{ github.event_name == 'schedule' }}
+    runs-on: ubuntu-latest
+    outputs:
+      tests: ${{ steps.tests.outputs.tests }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+            python-version: "3.10"
+      - name: install reqs
+        run: |
+          pip install -U pip
+          pip install -r requirements.txt
+          pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+          pip install "dvc-azure[tests] @ git+https://github.com/iterative/dvc-azure"
+      - id: tests
+        run: echo "tests=$(./scripts/ci/list_tests_cloud.sh azure)" >> $GITHUB_OUTPUT
+
+  build_azure:
+    needs: [gen_azure, azure_login]
+    strategy:
+      fail-fast: false
+      matrix:
+          test: ${{fromJson(needs.gen_azure.outputs.tests)}}
+    runs-on: ubuntu-latest
+    name: run ${{ matrix.test.name }}
+    timeout-minutes: 480
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/setup-python@v4
+        with:
+            python-version: "3.10"
+      - uses: actions/checkout@v3
+      - name: install requirements
+        run: |
+            pip install -r requirements.txt
+            pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+            pip install "dvc-azure[tests] @ git+https://github.com/iterative/dvc-azure"
+      - name: setup env
+        if: ${{ github.event_name == 'schedule' }}
+        run: |
+          echo "::add-mask::${{ needs.azure_login.outputs.connection_string }}"
+          echo "DVC_TEST_AZURE_CONNECTION_STRING=${{ needs.azure_login.outputs.connection_string }}" >> $GITHUB_ENV
+          echo "DVC_TEST_AZURE_PATH=az://dvc-bench-ci" >> $GITHUB_ENV
+      - name: run benchmarks
+        shell: bash
+        run: |
+          echo "::add-mask::$DVC_TEST_AZURE_CONNECTION_STRING"
+          pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs main,2.45.0,2.41.1,2.40.0,2.39.0,2.18.1,2.11.0 --dvc-install-deps azure --pyargs ${{ matrix.test.path }} dvc_azure.tests.benchmarks --size ${DATASET}
+      - name: upload raw results
+        uses: actions/upload-artifact@v3
+        with:
+          name: .benchmarks
+          path: .benchmarks
+
   publish:
     name: join results and publish
-    needs: [build, build_s3]
+    needs: [build, build_s3, build_azure]
     runs-on: ubuntu-latest
     permissions:
       pages: write

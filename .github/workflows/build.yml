@@ -143,8 +143,7 @@ jobs:
           echo "DVC_TEST_AWS_REPO_BUCKET=dvc-bench-ci" >> "$GITHUB_ENV"
       - name: run benchmarks
         shell: bash
-        # NOTE: 2.6.3 is not benchmarked for S3, real-S3 fixtures are incompatible with old aiobotocore version
-        run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs main,2.45.0,2.41.1,2.40.0,2.39.0,2.18.1,2.11.0 --dvc-install-deps s3 --pyargs ${{ matrix.test.path }} dvc_s3.tests.benchmarks --size ${DATASET}
+        run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${CLOUD_REVS} --dvc-install-deps s3 --pyargs ${{ matrix.test.path }} dvc_s3.tests.benchmarks --size ${DATASET}
       - name: upload raw results
         uses: actions/upload-artifact@v3
         with:
@@ -223,7 +222,7 @@ jobs:
         shell: bash
         run: |
           echo "::add-mask::$DVC_TEST_AZURE_CONNECTION_STRING"
-          pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs main,2.45.0,2.41.1,2.40.0,2.39.0,2.18.1,2.11.0 --dvc-install-deps azure --pyargs ${{ matrix.test.path }} dvc_azure.tests.benchmarks --size ${DATASET}
+          pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${CLOUD_REVS} --dvc-install-deps azure --pyargs ${{ matrix.test.path }} dvc_azure.tests.benchmarks --size ${DATASET}
       - name: upload raw results
         uses: actions/upload-artifact@v3
         with:

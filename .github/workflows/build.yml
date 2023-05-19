@@ -229,9 +229,69 @@ jobs:
           name: .benchmarks
           path: .benchmarks
 
+  gen_gs:
+    runs-on: ubuntu-latest
+    outputs:
+      tests: ${{ steps.tests.outputs.tests }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+            python-version: "3.10"
+      - name: install reqs
+        run: |
+          pip install -U pip
+          pip install -r requirements.txt
+          pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+          pip install "dvc-gs[tests] @ git+https://github.com/iterative/dvc-gs"
+      - id: tests
+        run: echo "tests=$(./scripts/ci/list_tests_cloud.sh gs)" >> $GITHUB_OUTPUT
+
+  build_gs:
+    needs: [gen_gs]
+    strategy:
+      fail-fast: false
+      matrix:
+          test: ${{fromJson(needs.gen_gs.outputs.tests)}}
+    runs-on: ubuntu-latest
+    name: run ${{ matrix.test.name }}
+    timeout-minutes: 480
+    permissions:
+      id-token: write
+    steps:
+      - id: 'auth'
+        if: ${{ github.event_name == 'schedule' }}
+        name: 'Authenticate to GCP'
+        uses: 'google-github-actions/auth@v1.1.1'
+        with:
+          create_credentials_file: true
+          workload_identity_provider: 'projects/385088528371/locations/global/workloadIdentityPools/iterative-sandbox/providers/github'
+          service_account: 'dvc-bench@iterative-sandbox.iam.gserviceaccount.com'
+      - uses: actions/setup-python@v4
+        with:
+            python-version: "3.10"
+      - uses: actions/checkout@v3
+      - name: install requirements
+        run: |
+            pip install -r requirements.txt
+            pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+            pip install "dvc-gs[tests] @ git+https://github.com/iterative/dvc-gs"
+      - name: configure real GS DVC env
+        if: ${{ github.event_name == 'schedule' }}
+        run: |
+          echo "DVC_TEST_GS_BUCKET=dvc-bench" >> "$GITHUB_ENV"
+      - name: run benchmarks
+        shell: bash
+        run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${CLOUD_REVS} --dvc-install-deps gs --pyargs ${{ matrix.test.path }} dvc_gs.tests.benchmarks --size ${DATASET}
+      - name: upload raw results
+        uses: actions/upload-artifact@v3
+        with:
+          name: .benchmarks
+          path: .benchmarks
+
   publish:
     name: join results and publish
-    needs: [build, build_s3, build_azure]
+    needs: [build, build_s3, build_azure, build_gs]
     runs-on: ubuntu-latest
     permissions:
       pages: write

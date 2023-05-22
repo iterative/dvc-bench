@@ -150,30 +150,7 @@ jobs:
           name: .benchmarks
           path: .benchmarks
 
-  azure_login:
-    if: ${{ github.event_name == 'schedule' }}
-    runs-on: ubuntu-latest
-    outputs:
-      connection_string: ${{ steps.set-conn-str.outputs.connection_string }}
-    environment: github-actions
-    permissions:
-      id-token: write
-    steps:
-      - name: 'Az CLI login'
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      - name: 'Set connection string'
-        id: set-conn-str
-        run: |
-          connection_string=$(az storage account show-connection-string -g dvc-bench-ci -n dvcbenchci | jq -c '.connectionString')
-          echo "::add-mask::$connection_string"
-          echo "connection_string=$connection_string" >> $GITHUB_OUTPUT
-
   gen_azure:
-    if: ${{ github.event_name == 'schedule' }}
     runs-on: ubuntu-latest
     outputs:
       tests: ${{ steps.tests.outputs.tests }}
@@ -192,7 +169,7 @@ jobs:
         run: echo "tests=$(./scripts/ci/list_tests_cloud.sh azure)" >> $GITHUB_OUTPUT
 
   build_azure:
-    needs: [gen_azure, azure_login]
+    needs: [gen_azure]
     strategy:
       fail-fast: false
       matrix:
@@ -202,11 +179,26 @@ jobs:
     timeout-minutes: 480
     permissions:
       id-token: write
+    environment: ${{ github.event_name == 'schedule' && 'github-actions' || ''}}
     steps:
       - uses: actions/setup-python@v4
         with:
             python-version: "3.10"
       - uses: actions/checkout@v3
+      - name: 'Az CLI login'
+        if: ${{ github.event_name == 'schedule' }}
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: 'Set connection string'
+        if: ${{ github.event_name == 'schedule' }}
+        id: set-conn-str
+        run: |
+          connection_string=$(az storage account show-connection-string -g dvc-bench-ci -n dvcbenchci | jq -c '.connectionString')
+          echo "::add-mask::$connection_string"
+          echo "DVC_TEST_AZURE_CONNECTION_STRING=$connection_string" >> $GITHUB_ENV
       - name: install requirements
         run: |
             pip install -r requirements.txt
@@ -215,13 +207,10 @@ jobs:
       - name: setup env
         if: ${{ github.event_name == 'schedule' }}
         run: |
-          echo "::add-mask::${{ needs.azure_login.outputs.connection_string }}"
-          echo "DVC_TEST_AZURE_CONNECTION_STRING=${{ needs.azure_login.outputs.connection_string }}" >> $GITHUB_ENV
           echo "DVC_TEST_AZURE_PATH=az://dvc-bench-ci" >> $GITHUB_ENV
       - name: run benchmarks
         shell: bash
         run: |
-          echo "::add-mask::$DVC_TEST_AZURE_CONNECTION_STRING"
           pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${CLOUD_REVS} --dvc-install-deps azure --pyargs ${{ matrix.test.path }} dvc_azure.tests.benchmarks --size ${DATASET}
       - name: upload raw results
         uses: actions/upload-artifact@v3

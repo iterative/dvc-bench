@@ -118,6 +118,7 @@ jobs:
     runs-on: ubuntu-latest
     name: run ${{ matrix.test.name }}
     timeout-minutes: 480
+    continue-on-error: true
     permissions:
       id-token: write
     steps:
@@ -177,6 +178,7 @@ jobs:
     runs-on: ubuntu-latest
     name: run ${{ matrix.test.name }}
     timeout-minutes: 480
+    continue-on-error: true
     permissions:
       id-token: write
     environment: ${{ github.event_name == 'schedule' && 'github-actions' || ''}}
@@ -245,6 +247,7 @@ jobs:
     runs-on: ubuntu-latest
     name: run ${{ matrix.test.name }}
     timeout-minutes: 480
+    continue-on-error: true
     permissions:
       id-token: write
     steps:

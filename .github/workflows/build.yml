@@ -24,8 +24,8 @@ env:
   DVC_TEST: "true"
   FORCE_COLOR: "1"
   DATASET: ${{ github.event.inputs.dataset || ( github.event_name == 'schedule' && 'mnist' || 'small' ) }}
-  DVC_REVS: main,2.45.0,2.41.1,2.40.0,2.39.0,2.18.1,2.11.0
-  CLOUD_REVS: main,2.41.1,2.40.0,2.39.0,2.11.0
+  DVC_REVS: main,3.0.0,2.58.2,2.40.0,2.11.0
+  CLOUD_REVS: main,3.0.0,2.58.2,2.40.0,2.11.0
 
 permissions:
   contents: read

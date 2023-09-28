@@ -291,7 +291,7 @@ jobs:
       contents: write
       id-token: write
     steps:
-      - uses: iterative/setup-cml@v1
+      - uses: iterative/setup-cml@v2
       - uses: actions/setup-python@v4
         with:
           python-version: "3.10"

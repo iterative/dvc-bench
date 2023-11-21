@@ -2,6 +2,8 @@ virtualenv
 dvc[s3,tests]>=2.43.1
 pre-commit==2.21.0
 pytest-benchmark[histogram]
+pygal>=3.0.3
+importlib_metadata
 pytest-virtualenv
 ansi2html
 csv2md

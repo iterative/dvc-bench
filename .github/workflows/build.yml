@@ -19,11 +19,16 @@ on:
           - small
           - large
           - mnist
+      publish:
+        description: "Publish results to bench.dvc.org (implies dataset size = 'mnist')"
+        required: false
+        default: false
+        type: boolean
 
 env:
   DVC_TEST: "true"
   FORCE_COLOR: "1"
-  DATASET: ${{ github.event.inputs.dataset || ( github.event_name == 'schedule' && 'mnist' || 'small' ) }}
+  DATASET: ${{ ((github.event_name == 'schedule' || github.event.inputs.publish) && 'mnist') || github.event.inputs.dataset || 'small' }}
   DVC_REVS: main,3.20.0,3.10.0,3.0.0,2.58.2
   CLOUD_REVS: main,3.20.0,3.10.0,3.0.0,2.58.2
 
@@ -316,7 +321,7 @@ jobs:
           cml comment update --watermark-title='dvc-bench report' report.md
 
       - name: deploy new benchmarks to github pages
-        if: ${{ github.event_name == 'schedule' }}
+        if: ${{ github.event_name == 'schedule' || github.event.inputs.publish }}
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

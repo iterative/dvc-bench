@@ -12,6 +12,8 @@ os.environ["DVC_IGNORE_ISATTY"] = "true"
 # Disable system git config
 os.environ["GIT_CONFIG_NOSYSTEM"] = "1"
 
+pytest_plugins = ["dvc.testing.plugin"]
+
 REMOTES = {
     # remote: enabled_by_default?
     "azure": False,

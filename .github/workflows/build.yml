@@ -20,6 +20,11 @@ on:
           - large
           - mnist
           - openorca
+      revs:
+        description: "Comma-separated list of DVC revisions"
+        required: false
+        default: ""
+        type: string
       publish:
         description: "Publish results to bench.dvc.org (implies dataset size = 'mnist')"
         required: false
@@ -30,8 +35,7 @@ env:
   DVC_TEST: "true"
   FORCE_COLOR: "1"
   DATASET: ${{ ((github.event_name == 'schedule' || github.event.inputs.publish) && 'mnist') || github.event.inputs.dataset || 'small' }}
-  DVC_REVS: main,3.20.0,3.10.0,3.0.0,2.58.2
-  CLOUD_REVS: main,3.20.0,3.10.0,3.0.0,2.58.2
+  REVS: ${{ github.event.inputs.revs || 'main,3.20.0,3.10.0,3.0.0,2.58.2' }}
 
 permissions:
   contents: read
@@ -90,7 +94,7 @@ jobs:
         shell: bash
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
-        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs ${DVC_REVS} --pyargs ${{ matrix.test.path }} --size ${DATASET}
+        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs ${REVS} --pyargs ${{ matrix.test.path }} --size ${DATASET}
       - name: upload raw results
         uses: actions/upload-artifact@v3
         with:
@@ -150,7 +154,7 @@ jobs:
           echo "DVC_TEST_AWS_REPO_BUCKET=dvc-bench-ci" >> "$GITHUB_ENV"
       - name: run benchmarks
         shell: bash
-        run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${CLOUD_REVS} --dvc-install-deps s3 --pyargs ${{ matrix.test.path }} dvc_s3.tests.benchmarks --size ${DATASET}
+        run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${REVS} --dvc-install-deps s3 --pyargs ${{ matrix.test.path }} dvc_s3.tests.benchmarks --size ${DATASET}
       - name: upload raw results
         uses: actions/upload-artifact@v3
         with:
@@ -219,7 +223,7 @@ jobs:
       - name: run benchmarks
         shell: bash
         run: |
-          pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${CLOUD_REVS} --dvc-install-deps azure --pyargs ${{ matrix.test.path }} dvc_azure.tests.benchmarks --size ${DATASET}
+          pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${REVS} --dvc-install-deps azure --pyargs ${{ matrix.test.path }} dvc_azure.tests.benchmarks --size ${DATASET}
       - name: upload raw results
         uses: actions/upload-artifact@v3
         with:
@@ -280,7 +284,7 @@ jobs:
           echo "DVC_TEST_GS_BUCKET=dvc-bench" >> "$GITHUB_ENV"
       - name: run benchmarks
         shell: bash
-        run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${CLOUD_REVS} --dvc-install-deps gs --pyargs ${{ matrix.test.path }} dvc_gs.tests.benchmarks --size ${DATASET}
+        run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${REVS} --dvc-install-deps gs --pyargs ${{ matrix.test.path }} dvc_gs.tests.benchmarks --size ${DATASET}
       - name: upload raw results
         uses: actions/upload-artifact@v3
         with:

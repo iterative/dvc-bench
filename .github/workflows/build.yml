@@ -26,6 +26,8 @@ on:
         default: ""
         type: string
       publish:
+        # NOTE: the value will be a string,
+        # see https://github.com/actions/runner/issues/1483
         description: "Publish results to bench.dvc.org (implies dataset size = 'mnist')"
         required: false
         default: false
@@ -34,8 +36,7 @@ on:
 env:
   DVC_TEST: "true"
   FORCE_COLOR: "1"
-  _PUBLISH: ${{ (github.event_name == 'schedule' || github.event.inputs.publish) && 'mnist' }}
-  DATASET: ${{ ((github.event_name == 'schedule' || github.event.inputs.publish) && 'mnist') || github.event.inputs.dataset || 'small' }}
+  DATASET: ${{ ((github.event_name == 'schedule' || github.event.inputs.publish == 'true') && 'mnist') || github.event.inputs.dataset || 'small' }}
   REVS: ${{ github.event.inputs.revs || 'main,3.20.0,3.10.0,3.0.0,2.58.2' }}
 
 permissions:

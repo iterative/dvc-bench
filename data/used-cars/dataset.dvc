@@ -1,0 +1,7 @@
+outs:
+- md5: 5eedb5fdef900284633ef5dcab82044a.dir
+  size: 1447955215
+  nfiles: 1
+  hash: md5
+  path: dataset
+  desc: https://www.kaggle.com/datasets/austinreese/craigslist-carstrucks-data

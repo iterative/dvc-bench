@@ -1,0 +1,7 @@
+outs:
+- md5: c7033290c553660d1d9f042760babeb8.dir
+  size: 12269748224
+  nfiles: 1
+  hash: md5
+  path: dataset
+  desc: https://www.kaggle.com/datasets/dhruvildave/wikibooks-dataset

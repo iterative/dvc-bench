@@ -1,0 +1,6 @@
+outs:
+- md5: f6e9a0d9fede58e694d3513f1328fa0f.dir
+  size: 4114025113
+  nfiles: 22
+  path: dataset
+  desc: https://www.kaggle.com/datasets/rsrishav/youtube-trending-video-dataset

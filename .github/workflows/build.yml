@@ -34,6 +34,7 @@ on:
 env:
   DVC_TEST: "true"
   FORCE_COLOR: "1"
+  _PUBLISH: ${{ github.event_name == 'schedule' || github.event.inputs.publish }}
   DATASET: ${{ ((github.event_name == 'schedule' || github.event.inputs.publish) && 'mnist') || github.event.inputs.dataset || 'small' }}
   REVS: ${{ github.event.inputs.revs || 'main,3.20.0,3.10.0,3.0.0,2.58.2' }}
 

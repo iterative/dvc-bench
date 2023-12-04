@@ -19,6 +19,7 @@ on:
           - small
           - large
           - mnist
+          - openorca
       publish:
         description: "Publish results to bench.dvc.org (implies dataset size = 'mnist')"
         required: false

@@ -21,6 +21,7 @@ on:
           - mnist
           - openorca
           - used-cars
+          - youtube-trending
       revs:
         description: "Comma-separated list of DVC revisions"
         required: false

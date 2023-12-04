@@ -20,6 +20,7 @@ on:
           - large
           - mnist
           - openorca
+          - used-cars
       revs:
         description: "Comma-separated list of DVC revisions"
         required: false

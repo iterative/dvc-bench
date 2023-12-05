@@ -25,8 +25,8 @@ $ pytest --pyargs dvc.testing.benchmarks.cli.commands.test_add
 ```
 $ pytest -h
 ...
-  --size={tiny,small,large,mnist}
-                        Size of the dataset/datafile to use in tests
+  --dataset=DATASET
+                        Dataset name to use in tests (e.g. tiny/small/large/mnist/etc)
   --remote={azure,gdrive,gs,hdfs,http,oss,s3,ssh,webdav}
                         Remote type to use in tests
   --dvc-bin=DVC_BIN     Path to dvc binary

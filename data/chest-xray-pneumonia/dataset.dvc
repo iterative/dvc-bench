@@ -1,0 +1,6 @@
+outs:
+- md5: 5e95cbf05923c6f7a093e84fbdba9463.dir
+  size: 1236482806
+  nfiles: 5856
+  path: dataset
+  desc: https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia

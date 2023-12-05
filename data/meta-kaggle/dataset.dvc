@@ -1,0 +1,6 @@
+outs:
+- md5: 6e907878c0d8cefdae990e5212d1fb60.dir
+  size: 28978005569
+  nfiles: 32
+  path: dataset
+  desc: https://www.kaggle.com/datasets/kaggle/meta-kaggle

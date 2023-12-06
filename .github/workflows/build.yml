@@ -104,7 +104,6 @@ jobs:
           path: .benchmarks
 
   gen_s3:
-    if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
     runs-on: ubuntu-latest
     outputs:
       tests: ${{ steps.tests.outputs.tests }}
@@ -123,6 +122,7 @@ jobs:
         run: echo "tests=$(./scripts/ci/list_tests_cloud.sh s3)" >> $GITHUB_OUTPUT
 
   build_s3:
+    if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
     needs: [gen_s3]
     strategy:
       fail-fast: false
@@ -165,7 +165,6 @@ jobs:
           path: .benchmarks
 
   gen_azure:
-    if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
     runs-on: ubuntu-latest
     outputs:
       tests: ${{ steps.tests.outputs.tests }}
@@ -184,6 +183,7 @@ jobs:
         run: echo "tests=$(./scripts/ci/list_tests_cloud.sh azure)" >> $GITHUB_OUTPUT
 
   build_azure:
+    if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
     needs: [gen_azure]
     strategy:
       fail-fast: false
@@ -235,7 +235,6 @@ jobs:
           path: .benchmarks
 
   gen_gs:
-    if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
     runs-on: ubuntu-latest
     outputs:
       tests: ${{ steps.tests.outputs.tests }}
@@ -254,6 +253,7 @@ jobs:
         run: echo "tests=$(./scripts/ci/list_tests_cloud.sh gs)" >> $GITHUB_OUTPUT
 
   build_gs:
+    if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
     needs: [gen_gs]
     strategy:
       fail-fast: false

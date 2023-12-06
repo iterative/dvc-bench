@@ -294,7 +294,20 @@ jobs:
         with:
           name: .benchmarks
           path: .benchmarks
-
+  notify:
+    if: github.ref == 'refs/heads/main' && failure()
+    needs: [build, build_s3, build_azure, build_gs]
+    needs: [tests]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2.2.1
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_COLOR: ${{ job.status }}
+        SLACK_MESSAGE: 'Benchmarks failed on main :confused_dog:'
+        SLACK_TITLE: ":dvc:"
+        SLACK_USERNAME: dvc-bench
   publish:
     name: join results and publish
     needs: [build, build_s3, build_azure, build_gs]

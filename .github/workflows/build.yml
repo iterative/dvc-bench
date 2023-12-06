@@ -27,6 +27,11 @@ on:
         required: false
         default: ""
         type: string
+      clouds:
+        description: "Run s3/gs/azure benchmarks"
+        required: false
+        default: false
+        type: boolean
 
 env:
   DVC_TEST: "true"
@@ -99,6 +104,7 @@ jobs:
           path: .benchmarks
 
   gen_s3:
+    if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
     runs-on: ubuntu-latest
     outputs:
       tests: ${{ steps.tests.outputs.tests }}
@@ -159,6 +165,7 @@ jobs:
           path: .benchmarks
 
   gen_azure:
+    if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
     runs-on: ubuntu-latest
     outputs:
       tests: ${{ steps.tests.outputs.tests }}
@@ -228,6 +235,7 @@ jobs:
           path: .benchmarks
 
   gen_gs:
+    if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
     runs-on: ubuntu-latest
     outputs:
       tests: ${{ steps.tests.outputs.tests }}

@@ -335,12 +335,11 @@ jobs:
         shell: bash
         run: |
           ./scripts/ci/gen_html.sh
-          mkdir -p html/run_id/${{ github.run_id }}
-          mv html/index.html html/run_id/${{ github.run_id }}
+          mv html/index.html html/run_${{ github.run_id }}.html
 
       - name: copy to the frontpage
         if: ${{ github.event_name == 'schedule' }}
-        run: cp html/run_id/${{ github.run_id }}/index.html html/index.html
+        run: cp html/run_${{ github.run_id }}.html html/index.html
 
       - name: post comment
         env:

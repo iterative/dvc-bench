@@ -313,6 +313,7 @@ jobs:
   publish:
     name: join results and publish
     needs: [build, build_s3, build_azure, build_gs]
+    if: always() && !contains(needs.*.result, 'failure')
     runs-on: ubuntu-latest
     permissions:
       pages: write

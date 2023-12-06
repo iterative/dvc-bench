@@ -159,7 +159,7 @@ jobs:
           echo "DVC_TEST_AWS_REPO_BUCKET=dvc-bench-ci" >> "$GITHUB_ENV"
       - name: run benchmarks
         shell: bash
-        run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${REVS} --dvc-install-deps s3 --pyargs ${{ matrix.test.path }} dvc_s3.tests.benchmarks --dataset ${DATASET}
+        run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${REVS} --dvc-install-deps s3 --pyargs ${{ matrix.test.path }} --dataset ${DATASET}
       - name: upload raw results
         uses: actions/upload-artifact@v3
         with:
@@ -229,7 +229,7 @@ jobs:
       - name: run benchmarks
         shell: bash
         run: |
-          pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${REVS} --dvc-install-deps azure --pyargs ${{ matrix.test.path }} dvc_azure.tests.benchmarks --dataset ${DATASET}
+          pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${REVS} --dvc-install-deps azure --pyargs ${{ matrix.test.path }} --dataset ${DATASET}
       - name: upload raw results
         uses: actions/upload-artifact@v3
         with:
@@ -291,7 +291,7 @@ jobs:
           echo "DVC_TEST_GS_BUCKET=dvc-bench" >> "$GITHUB_ENV"
       - name: run benchmarks
         shell: bash
-        run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${REVS} --dvc-install-deps gs --pyargs ${{ matrix.test.path }} dvc_gs.tests.benchmarks --dataset ${DATASET}
+        run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${REVS} --dvc-install-deps gs --pyargs ${{ matrix.test.path }} --dataset ${DATASET}
       - name: upload raw results
         uses: actions/upload-artifact@v3
         with:

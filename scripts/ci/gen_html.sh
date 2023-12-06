@@ -16,7 +16,7 @@ cat raw | ansi2html -W > html/index.html
 echo '```' > report.md
 cat raw >> report.md
 
-for file in $(find .benchmarks -type f);
+for file in $(find .benchmarks -type f | sort);
 do
   rm -rf tmp_html results.csv raw
   PY_COLORS=1 py.test-benchmark compare $file --histogram histograms/ --group-by func --csv results.csv --sort name >> raw

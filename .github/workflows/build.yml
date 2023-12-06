@@ -22,6 +22,8 @@ on:
           - openorca
           - used-cars
           - youtube-trending
+          - meta-kaggle
+          - chest-xray-pneumonia
       revs:
         description: "Comma-separated list of DVC revisions"
         required: false

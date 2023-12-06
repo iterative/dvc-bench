@@ -342,7 +342,7 @@ jobs:
 
       - name: copy to the frontpage
         if: ${{ github.event_name == 'schedule' }}
-        run: cp html/run_${{ github.run_id }}_${{ github.run_attempt }}.html html/index.html
+        run: ln -s html/run_${{ github.run_id }}_${{ github.run_attempt }}.html html/index.html
 
       - name: post comment
         env:

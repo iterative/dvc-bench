@@ -5,6 +5,10 @@ Benchmarking [dvc](https://github.com/iterative/dvc) with pytest-benchmark.
 
 Visit [bench.dvc.org](http://bench.dvc.org/)
 
+### Dispatch workflow
+
+Trigger a [dispatch workflow](https://github.com/iterative/dvc-bench/actions/workflows/build.yml) with desired dataset and revisions and see results in [bench.dvc.org/run_ID_ATTEMPT.html](http://bench.dvc.org), where `ID` is `github.run_id` and `ATTEMPT` is `github.run_attempt`. For example, for https://github.com/iterative/dvc-bench/actions/runs/7119039172/attempts/2 it would be http://bench.dvc.org/run_7119039172_2.html
+
 ### Setting up
 ```
 $ pip install -r requirements.txt

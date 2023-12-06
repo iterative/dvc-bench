@@ -333,7 +333,14 @@ jobs:
 
       - name: compare results
         shell: bash
-        run: ./scripts/ci/gen_html.sh
+        run: |
+          ./scripts/ci/gen_html.sh
+          mkdir -p html/run_id/${{ github.run_id }}
+          mv html/index.html html/run_id/${{ github.run_id }}
+
+      - name: copy to the frontpage
+        if: ${{ github.event_name == 'schedule' }}
+        run: cp html/run_id/${{ github.run_id }}/index.html html/index.html
 
       - name: post comment
         env:
@@ -343,8 +350,9 @@ jobs:
           cml comment update --watermark-title='dvc-bench report' report.md
 
       - name: deploy new benchmarks to github pages
-        if: ${{ github.event_name == 'schedule' || github.event.inputs.publish }}
+        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: html
+          keep_files: true

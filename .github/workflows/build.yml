@@ -344,7 +344,7 @@ jobs:
 
       - name: copy to the frontpage
         if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch'  && github.event.inputs.dataset == 'mnist' && ! github.event.inputs.revs) }}
-        run: ln -s html/run_${{ github.run_id }}_${{ github.run_attempt }}.html html/index.html
+        run: cp html/${{ github.event_name }}/${{ github.run_id }}_${{ github.run_attempt }}.html html/index.html
 
       - name: post comment
         env:

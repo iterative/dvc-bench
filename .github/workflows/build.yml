@@ -315,6 +315,7 @@ jobs:
     needs: [build, build_s3, build_azure, build_gs]
     if: always() && !contains(needs.*.result, 'failure')
     runs-on: ubuntu-latest
+    environment: aws
     permissions:
       pages: write
       pull-requests: write

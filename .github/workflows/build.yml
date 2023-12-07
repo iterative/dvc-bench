@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
             python-version: "3.10"
       - name: install requirements
@@ -65,7 +65,7 @@ jobs:
       tests: ${{ steps.tests.outputs.tests }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
             python-version: "3.10"
       - name: install reqs
@@ -86,7 +86,7 @@ jobs:
         os: [ubuntu-latest]
         test: ${{fromJson(needs.gen.outputs.tests)}}
     steps:
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
             python-version: "3.10"
       - uses: actions/checkout@v4
@@ -111,7 +111,7 @@ jobs:
       tests: ${{ steps.tests.outputs.tests }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
             python-version: "3.10"
       - name: install reqs
@@ -144,7 +144,7 @@ jobs:
           role-to-assume: arn:aws:iam::342840881361:role/dvc-bench-gha
           role-duration-seconds: 28800
           aws-region: us-east-1
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
             python-version: "3.10"
       - uses: actions/checkout@v4
@@ -172,7 +172,7 @@ jobs:
       tests: ${{ steps.tests.outputs.tests }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
             python-version: "3.10"
       - name: install reqs
@@ -199,7 +199,7 @@ jobs:
       id-token: write
     environment: ${{ github.event_name == 'schedule' && 'github-actions' || ''}}
     steps:
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
             python-version: "3.10"
       - uses: actions/checkout@v4
@@ -242,7 +242,7 @@ jobs:
       tests: ${{ steps.tests.outputs.tests }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
             python-version: "3.10"
       - name: install reqs
@@ -268,7 +268,7 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
             python-version: "3.10"
       - uses: actions/checkout@v4
@@ -322,7 +322,7 @@ jobs:
       id-token: write
     steps:
       - uses: iterative/setup-cml@v2
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
       - uses: actions/checkout@v4

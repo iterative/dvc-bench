@@ -310,7 +310,8 @@ jobs:
         SLACK_MESSAGE: 'Benchmarks failed on main :confused_dog:'
         SLACK_TITLE: ":dvc:"
         SLACK_USERNAME: dvc-bench
-  publish:
+
+  compare:
     name: join results and publish
     needs: [build, build_s3, build_azure, build_gs]
     if: always() && !contains(needs.*.result, 'failure')
@@ -348,9 +349,7 @@ jobs:
 
       - name: upload to s3
         if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-        run: |
-          aws s3 ls s3://dvc-bench/
-          aws s3 cp html/index.html s3://dvc-bench/pages/${{ github.event_name }}/${{ github.run_id }}_${{ github.run_attempt }}.html
+        run: aws s3 cp html/index.html s3://dvc-bench/pages/${{ github.event_name }}/${{ github.run_id }}_${{ github.run_attempt }}.html
 
       - name: post comment
         env:
@@ -358,3 +357,23 @@ jobs:
         if: ${{ github.event_name == 'pull_request' && ! github.event.pull_request.head.repo.fork }}
         run: |
           cml comment update --watermark-title='dvc-bench report' report.md
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: ./html
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: compare
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2

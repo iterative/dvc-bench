@@ -298,7 +298,7 @@ jobs:
           name: .benchmarks
           path: .benchmarks
   notify:
-    if: github.ref == 'refs/heads/main' && failure()
+    if: github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/main' && failure()
     needs: [build, build_s3, build_azure, build_gs]
     runs-on: ubuntu-latest
     steps:

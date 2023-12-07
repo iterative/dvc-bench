@@ -336,15 +336,21 @@ jobs:
 
       - name: compare results
         shell: bash
-        run: |
-          ./scripts/ci/gen_html.sh
-          mkdir -p html/${{ github.event_name }}
-          cp html/index.html html/${{ github.event_name }}/latest.html
-          mv html/index.html html/${{ github.event_name }}/${{ github.run_id }}_${{ github.run_attempt }}.html
+        run: ./scripts/ci/gen_html.sh
 
-      - name: copy to the frontpage
-        if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch'  && github.event.inputs.dataset == 'mnist' && ! github.event.inputs.revs) }}
-        run: cp html/${{ github.event_name }}/${{ github.run_id }}_${{ github.run_attempt }}.html html/index.html
+      - name: configure AWS credentials
+        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::260760892802:role/dvc-bench
+          role-duration-seconds: 28800
+          aws-region: us-east-2
+
+      - name: upload to s3
+        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+        run: |
+          aws s3 ls s3://dvc-bench/
+          aws s3 cp html/index.html s3://dvc-bench/pages/${{ github.event_name }}/${{ github.run_id }}_${{ github.run_attempt }}.html
 
       - name: post comment
         env:
@@ -352,11 +358,3 @@ jobs:
         if: ${{ github.event_name == 'pull_request' && ! github.event.pull_request.head.repo.fork }}
         run: |
           cml comment update --watermark-title='dvc-bench report' report.md
-
-      - name: deploy new benchmarks to github pages
-        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: html
-          keep_files: true

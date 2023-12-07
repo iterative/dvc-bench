@@ -339,6 +339,7 @@ jobs:
         run: |
           ./scripts/ci/gen_html.sh
           mv html/index.html html/run_${{ github.run_id }}_${{ github.run_attempt }}.html
+          ln -s html/run_${{ github.run_id }}_${{ github.run_attempt }}.html html/latest.html
 
       - name: copy to the frontpage
         if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch'  && github.event.inputs.dataset == 'mnist' && ! github.event.inputs.revs) }}

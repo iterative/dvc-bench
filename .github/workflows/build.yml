@@ -39,7 +39,7 @@ env:
   DVC_TEST: "true"
   FORCE_COLOR: "1"
   DATASET: ${{ (github.event_name == 'schedule' && 'mnist') || github.event.inputs.dataset || 'small' }}
-  REVS: ${{ github.event.inputs.revs || 'main,2.58.2' }}
+  REVS: ${{ github.event.inputs.revs || 'main,3.30.1,2.58.2' }}
 
 permissions:
   contents: read
@@ -376,7 +376,7 @@ jobs:
       id-token: write
     runs-on: ubuntu-latest
     needs: compare
-    if: always() && !contains(needs.*.result, 'failure')
+    if: always() && !contains(needs.*.result, 'failure') && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

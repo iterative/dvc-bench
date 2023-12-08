@@ -358,8 +358,8 @@ jobs:
           mkdir html/workflow_dispatch html/schedule
           LATEST_SCHEDULE=$(aws s3 ls s3://dvc-bench/pages/schedule/ --recursive | sort -r | head -n 10 | awk '{print $4}')
           LATEST_DISPATCH=$(aws s3 ls s3://dvc-bench/pages/workflow_dispatch/ --recursive | sort -r | head -n 10 | awk '{print $4}')
-          echo $LATEST_SCHEDULE | xargs -I '{}' aws s3 cp s3://dvc-bench/'{}' html/schedule
-          echo $LATEST_DISPATCH | xargs -I '{}' aws s3 cp s3://dvc-bench/'{}' html/workflow_dispatch
+          echo $LATEST_SCHEDULE | xargs -d '\n' -I '{}' aws s3 cp s3://dvc-bench/'{}' html/schedule
+          echo $LATEST_DISPATCH | xargs -d '\n' -I '{}' aws s3 cp s3://dvc-bench/'{}' html/workflow_dispatch
           cp html/schedule/$(echo $LATEST_SCHEDULE | head -1 | xargs basename) html/schedule/latest.html
           cp html/workflow_dispatch/$(echo $LATEST_DISPATCH | head -1 | xargs basename) html/workflow_dispatch/latest.html
 

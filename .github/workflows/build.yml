@@ -357,10 +357,10 @@ jobs:
           mkdir html/workflow_dispatch html/schedule
           LATEST_SCHEDULE=$(aws s3api list-objects-v2 --bucket dvc-bench --prefix pages/schedule --query 'sort_by(Contents, &LastModified)[-1].Key' --output=text --max-items 10)
           LATEST_DISPATCH=$(aws s3api list-objects-v2 --bucket dvc-bench --prefix pages/workflow_dispatch --query 'sort_by(Contents, &LastModified)[-1].Key' --output=text --max-items 10)
-          aws s3 cp $LATEST_SCHEDULE html/schedule
-          aws s3 cp $LATEST_DISPATCH html/workflow_dispatch
-          cp html/schedule/$(echo $LATEST_SCHEDULE | awk '{print $1;}') html/schedule/index.html
-          cp html/workflow_dispatch/$(echo $LATEST_DISPATCH | awk '{print $1;}') html/workflow_dispatch/index.html
+          echo $LATEST_SCHEDULE | xargs -I FILE 'aws s3 cp FILE html/schedule'
+          echo $LATEST_DISPATCH | xargs -I FILE 'aws s3 cp FILE html/workflow_dispatch'
+          cp html/schedule/$(echo $LATEST_SCHEDULE | head -1) html/schedule/index.html
+          cp html/workflow_dispatch/$(echo $LATEST_DISPATCH | head -1) html/workflow_dispatch/index.html
 
       - name: post comment
         env:

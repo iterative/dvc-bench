@@ -354,13 +354,19 @@ jobs:
       - name: generate pages
         if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         run: |
+          mv html/index.html html/latest.html
           mkdir html/workflow_dispatch html/schedule
           LATEST_SCHEDULE=$(aws s3api list-objects-v2 --bucket dvc-bench --prefix pages/schedule --query 'sort_by(Contents, &LastModified)[-1].Key' --output=text --max-items 10)
           LATEST_DISPATCH=$(aws s3api list-objects-v2 --bucket dvc-bench --prefix pages/workflow_dispatch --query 'sort_by(Contents, &LastModified)[-1].Key' --output=text --max-items 10)
           echo $LATEST_SCHEDULE | xargs -I '{}' aws s3 cp s3://dvc-bench/'{}' html/schedule
           echo $LATEST_DISPATCH | xargs -I '{}' aws s3 cp s3://dvc-bench/'{}' html/workflow_dispatch
-          cp html/schedule/$(echo $LATEST_SCHEDULE | head -1 | xargs basename) html/schedule/index.html
-          cp html/workflow_dispatch/$(echo $LATEST_DISPATCH | head -1 | xargs basename) html/workflow_dispatch/index.html
+          cp html/schedule/$(echo $LATEST_SCHEDULE | head -1 | xargs basename) html/schedule/latest.html
+          cp html/workflow_dispatch/$(echo $LATEST_DISPATCH | head -1 | xargs basename) html/workflow_dispatch/latest.html
+
+      - name: generate listings
+        uses: jayanta525/github-pages-directory-listing@v4.0.0
+        with:
+          FOLDER: html
 
       - name: post comment
         env:

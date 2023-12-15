@@ -100,7 +100,7 @@ jobs:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
         run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs ${REVS} --pyargs ${{ matrix.test.path }} --dataset ${DATASET}
       - name: upload raw results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: .benchmarks
           path: .benchmarks
@@ -161,7 +161,7 @@ jobs:
         shell: bash
         run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${REVS} --dvc-install-deps s3 --pyargs ${{ matrix.test.path }} --dataset ${DATASET}
       - name: upload raw results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: .benchmarks
           path: .benchmarks
@@ -231,7 +231,7 @@ jobs:
         run: |
           pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${REVS} --dvc-install-deps azure --pyargs ${{ matrix.test.path }} --dataset ${DATASET}
       - name: upload raw results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: .benchmarks
           path: .benchmarks
@@ -293,7 +293,7 @@ jobs:
         shell: bash
         run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${REVS} --dvc-install-deps gs --pyargs ${{ matrix.test.path }} --dataset ${DATASET}
       - name: upload raw results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: .benchmarks
           path: .benchmarks

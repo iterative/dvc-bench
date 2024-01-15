@@ -178,12 +178,12 @@ jobs:
           pip install -U pip
           pip install -r requirements.txt
           pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
-          pip install "dvc-azure[tests] @ git+https://github.com/iterative/dvc-azure"
+          pip install "dvc-azure[tests] @ git+https://github.com/iterative/dvc-azure@test-bench-ci"
       - id: tests
         run: echo "tests=$(./scripts/ci/list_tests_cloud.sh azure)" >> $GITHUB_OUTPUT
 
   build_azure:
-    if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
+    # if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
     needs: [gen_azure]
     strategy:
       fail-fast: false
@@ -195,21 +195,20 @@ jobs:
     continue-on-error: true
     permissions:
       id-token: write
-    environment: ${{ github.event_name == 'schedule' && 'github-actions' || ''}}
     steps:
       - uses: actions/setup-python@v5
         with:
             python-version: "3.10"
       - uses: actions/checkout@v4
       - name: 'Az CLI login'
-        if: ${{ github.event_name == 'schedule' }}
+        # if: ${{ github.event_name == 'schedule' }}
         uses: azure/login@v1
         with:
           client-id: ${{ vars.AZURE_CLIENT_ID }}
           tenant-id: ${{ vars.AZURE_TENANT_ID }}
           subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
       - name: 'Set connection string'
-        if: ${{ github.event_name == 'schedule' }}
+        # if: ${{ github.event_name == 'schedule' }}
         id: set-conn-str
         run: |
           connection_string=$(az storage account show-connection-string -g dvc-bench-ci -n dvcbenchci | jq -c '.connectionString')
@@ -219,9 +218,9 @@ jobs:
         run: |
             pip install -r requirements.txt
             pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
-            pip install "dvc-azure[tests] @ git+https://github.com/iterative/dvc-azure"
+            pip install "dvc-azure[tests] @ git+https://github.com/iterative/dvc-azure@test-bench-ci"
       - name: setup env
-        if: ${{ github.event_name == 'schedule' }}
+        # if: ${{ github.event_name == 'schedule' }}
         run: |
           echo "DVC_TEST_AZURE_PATH=az://dvc-bench-ci" >> $GITHUB_ENV
       - name: run benchmarks

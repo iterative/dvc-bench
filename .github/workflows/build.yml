@@ -273,7 +273,7 @@ jobs:
       - id: 'auth'
         if: ${{ github.event_name == 'schedule' }}
         name: 'Authenticate to GCP'
-        uses: 'google-github-actions/auth@v2.0.0'
+        uses: 'google-github-actions/auth@v2.1.1'
         with:
           create_credentials_file: true
           workload_identity_provider: 'projects/385088528371/locations/global/workloadIdentityPools/iterative-sandbox/providers/github'

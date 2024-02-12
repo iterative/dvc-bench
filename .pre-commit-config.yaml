@@ -6,16 +6,16 @@ repos:
     files: '.*\.py'
     language_version: python3
   repo: https://github.com/psf/black
-  rev: 22.3.0
+  rev: 24.2.0
 -   repo: https://github.com/asottile/seed-isort-config
-    rev: v2.1.1
+    rev: v2.2.0
     hooks:
     -   id: seed-isort-config
 - hooks:
   - id: isort
     language_version: python3
   repo: https://github.com/timothycrosley/isort
-  rev: 4.3.21
+  rev: 5.13.2
 - hooks:
   - id: flake8
     exclude: '^env/'
@@ -23,7 +23,7 @@ repos:
     files: '.*\.py'
     language_version: python3
   repo: https://github.com/pycqa/flake8
-  rev: 6.0.0
+  rev: 7.0.0
 - hooks:
     - args:
         - -i
@@ -31,5 +31,5 @@ repos:
       id: beautysh
       language_version: python3
   repo: https://github.com/lovesegfault/beautysh
-  rev: v6.1.0
+  rev: v6.2.1
 

@@ -7,4 +7,3 @@ ansi2html
 csv2md
 funcy
 pandas
-pytest==8.0

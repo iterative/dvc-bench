@@ -1,5 +1,5 @@
 virtualenv
-dvc[s3,tests]>=3.33.3
+dvc[s3,tests]>=3.48.2
 pytest-benchmark[histogram]
 pygal>=3.0.3
 importlib_metadata

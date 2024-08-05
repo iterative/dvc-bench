@@ -39,7 +39,7 @@ env:
   DVC_TEST: "true"
   FORCE_COLOR: "1"
   DATASET: ${{ (github.event_name == 'schedule' && 'mnist') || github.event.inputs.dataset || 'small' }}
-  REVS: ${{ github.event.inputs.revs || 'main,3.10.0,2.58.2' }}
+  REVS: ${{ github.event.inputs.revs || 'main,batching-state' }}
 
 permissions:
   contents: read
@@ -70,7 +70,7 @@ jobs:
         run: |
           pip install -U pip
           pip install -r requirements.txt
-          pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+          pip install "dvc[testing] @ git+https://github.com/iterative/dvc@batching-state"
       - id: tests
         run: echo "tests=$(./scripts/ci/list_tests.sh)" >> $GITHUB_OUTPUT
   build:
@@ -91,7 +91,7 @@ jobs:
       - name: install requirements
         run: |
             pip install -r requirements.txt
-            pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+            pip install "dvc[testing] @ git+https://github.com/iterative/dvc@batching-state"
       - name: run benchmarks
         shell: bash
         env:
@@ -116,7 +116,7 @@ jobs:
         run: |
           pip install -U pip
           pip install -r requirements.txt
-          pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+          pip install "dvc[testing] @ git+https://github.com/iterative/dvc@batching-state"
           pip install "dvc_s3[tests] @ git+https://github.com/iterative/dvc-s3"
       - id: tests
         run: echo "tests=$(./scripts/ci/list_tests_cloud.sh s3)" >> $GITHUB_OUTPUT
@@ -149,7 +149,7 @@ jobs:
       - name: install requirements
         run: |
             pip install -r requirements.txt
-            pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+            pip install "dvc[testing] @ git+https://github.com/iterative/dvc@batching-state"
             pip install "dvc-s3[tests] @ git+https://github.com/iterative/dvc-s3"
       - name: configure real S3 DVC env
         if: ${{ github.event_name == 'schedule' }}
@@ -177,7 +177,7 @@ jobs:
         run: |
           pip install -U pip
           pip install -r requirements.txt
-          pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+          pip install "dvc[testing] @ git+https://github.com/iterative/dvc@batching-state"
           pip install "dvc-azure[tests] @ git+https://github.com/iterative/dvc-azure"
       - id: tests
         run: echo "tests=$(./scripts/ci/list_tests_cloud.sh azure)" >> $GITHUB_OUTPUT
@@ -218,7 +218,7 @@ jobs:
       - name: install requirements
         run: |
             pip install -r requirements.txt
-            pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+            pip install "dvc[testing] @ git+https://github.com/iterative/dvc@batching-state"
             pip install "dvc-azure[tests] @ git+https://github.com/iterative/dvc-azure"
       - name: setup env
         if: ${{ github.event_name == 'schedule' }}
@@ -247,7 +247,7 @@ jobs:
         run: |
           pip install -U pip
           pip install -r requirements.txt
-          pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+          pip install "dvc[testing] @ git+https://github.com/iterative/dvc@batching-state"
           pip install "dvc-gs[tests] @ git+https://github.com/iterative/dvc-gs"
       - id: tests
         run: echo "tests=$(./scripts/ci/list_tests_cloud.sh gs)" >> $GITHUB_OUTPUT
@@ -281,7 +281,7 @@ jobs:
       - name: install requirements
         run: |
             pip install -r requirements.txt
-            pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+            pip install "dvc[testing] @ git+https://github.com/iterative/dvc@batching-state"
             pip install "dvc-gs[tests] @ git+https://github.com/iterative/dvc-gs"
       - name: configure real GS DVC env
         if: ${{ github.event_name == 'schedule' }}
@@ -330,7 +330,7 @@ jobs:
         run: |
           pip install -U pip
           pip install -r requirements.txt
-          pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+          pip install "dvc[testing] @ git+https://github.com/iterative/dvc@batching-state"
       - name: download ubuntu results
         uses: actions/download-artifact@v3
 

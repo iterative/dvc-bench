@@ -71,8 +71,18 @@ jobs:
           pip install -U pip
           pip install -r requirements.txt
           pip install "dvc[testing] @ git+https://github.com/iterative/dvc@batching-state"
-      - id: tests
-        run: echo "tests=$(./scripts/ci/list_tests.sh)" >> $GITHUB_OUTPUT
+
+      - run: pip install tensorflow-cpu Pillow
+      - run: python script.py
+      - run: dvc add mnist/ --cprofile-dump add.prof
+      - run: dvc add mnist/ --cprofile-dump add2.prof
+      - run: rm -rf .dvc/cache /var/tmp/dvc .dvc/tmp mnist.dvc
+      - run: /bin/time -v dvc add mnist
+      - run: /bin/time -v dvc add mnist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cprofile
+          path: add*.prof
   build:
     needs: [gen]
     timeout-minutes: 180

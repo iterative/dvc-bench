@@ -13,10 +13,11 @@ runs:
       with:
         path: dvc-bench
         repository: iterative/dvc-bench
+    - uses: hynek/setup-cached-uv@v2
     - name: install dvc-bench requirements
       working-directory: dvc-bench
       shell: bash
-      run: pip install -r requirements.txt
+      run: uv pip install -r requirements.txt --system
     - name: checkout base dvc version
       uses: actions/checkout@v4
       with:
@@ -26,7 +27,7 @@ runs:
     - name: install base dvc version
       shell: bash
       working-directory: dvc-bench/dvc
-      run: pip install '.[all,tests]'
+      run: uv pip install '.[all,tests]' --system
     - name: run benchmarks for base version
       shell: bash
       working-directory: dvc-bench
@@ -43,7 +44,7 @@ runs:
     - name: install PR dvc version
       shell: bash
       working-directory: dvc-bench/dvc
-      run: pip install '.[all,tests]'
+      run: uv pip install '.[all,tests]' --system
     - name: run benchmarks for PR
       shell: bash
       working-directory: dvc-bench

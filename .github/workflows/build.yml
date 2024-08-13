@@ -44,7 +44,7 @@ env:
   DVC_REF: main
   DVC_AZURE_REPOSITORY: iterative/dvc-azure
   DVC_AZURE_REF: main
-  DVC_GS_REPOSITORY: iterative/dvc-azure
+  DVC_GS_REPOSITORY: iterative/dvc-gs
   DVC_GS_REF: main
   DVC_S3_REPOSITORY: iterative/dvc-s3
   DVC_S3_REF: main

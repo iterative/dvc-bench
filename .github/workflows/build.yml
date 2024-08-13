@@ -40,6 +40,15 @@ env:
   FORCE_COLOR: "1"
   DATASET: ${{ (github.event_name == 'schedule' && 'mnist') || github.event.inputs.dataset || 'small' }}
   REVS: ${{ github.event.inputs.revs || 'main,3.10.0,2.58.2' }}
+  DVC_REPOSITORY: iterative/dvc
+  DVC_REF: main
+  DVC_AZURE_REPOSITORY: iterative/dvc-azure
+  DVC_AZURE_REF: main
+  DVC_GS_REPOSITORY: iterative/dvc-azure
+  DVC_GS_REF: main
+  DVC_S3_REPOSITORY: iterative/dvc-s3
+  DVC_S3_REF: main
+  UV_SYSTEM_PYTHON: true
 
 permissions:
   contents: read
@@ -51,12 +60,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-            python-version: "3.10"
+            python-version: "3.12"
+      - uses: hynek/setup-cached-uv@v2
+        with:
+          cache-dependency-path: requirements.txt
       - name: install requirements
-        run: |
-          pip install -U pip
-          pip install wheel
-          pip install -r requirements.txt
+        run: uv pip install -r requirements.txt
+
   gen:
     runs-on: ubuntu-latest
     outputs:
@@ -65,12 +75,20 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-            python-version: "3.10"
+            python-version: "3.12"
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DVC_REPOSITORY }}
+          ref: ${{ env.DVC_REF }}
+          path: dvc
+          fetch-depth: 0
+      - uses: hynek/setup-cached-uv@v2
+        with:
+          cache-dependency-path: |
+            requirements.txt
+            dvc/pyproject.toml
       - name: install reqs
-        run: |
-          pip install -U pip
-          pip install -r requirements.txt
-          pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+        run: uv pip install -r requirements.txt "./dvc[testing]"
       - id: tests
         run: echo "tests=$(./scripts/ci/list_tests.sh)" >> $GITHUB_OUTPUT
   build:
@@ -86,12 +104,21 @@ jobs:
     steps:
       - uses: actions/setup-python@v5
         with:
-            python-version: "3.10"
+            python-version: "3.12"
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DVC_REPOSITORY }}
+          ref: ${{ env.DVC_REF }}
+          path: dvc
+          fetch-depth: 0
+      - uses: hynek/setup-cached-uv@v2
+        with:
+          cache-dependency-path: |
+            requirements.txt
+            dvc/pyproject.toml
       - name: install requirements
-        run: |
-            pip install -r requirements.txt
-            pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+        run: uv pip install -r requirements.txt "./dvc[testing]"
       - name: run benchmarks
         shell: bash
         env:
@@ -111,13 +138,27 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-            python-version: "3.10"
+            python-version: "3.12"
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DVC_REPOSITORY }}
+          ref: ${{ env.DVC_REF }}
+          path: dvc
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DVC_S3_REPOSITORY }}
+          ref: ${{ env.DVC_S3_REF }}
+          path: dvc-s3
+          fetch-depth: 0
+      - uses: hynek/setup-cached-uv@v2
+        with:
+          cache-dependency-path: |
+            requirements.txt
+            dvc/pyproject.toml
+            dvc-s3/pyproject.toml
       - name: install reqs
-        run: |
-          pip install -U pip
-          pip install -r requirements.txt
-          pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
-          pip install "dvc_s3[tests] @ git+https://github.com/iterative/dvc-s3"
+        run: uv pip install -r requirements.txt "./dvc[testing]" "./dvc-s3[tests]"
       - id: tests
         run: echo "tests=$(./scripts/ci/list_tests_cloud.sh s3)" >> $GITHUB_OUTPUT
 
@@ -144,13 +185,28 @@ jobs:
           aws-region: us-east-1
       - uses: actions/setup-python@v5
         with:
-            python-version: "3.10"
+            python-version: "3.12"
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DVC_REPOSITORY }}
+          ref: ${{ env.DVC_REF }}
+          path: dvc
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DVC_S3_REPOSITORY }}
+          ref: ${{ env.DVC_S3_REF }}
+          path: dvc-s3
+          fetch-depth: 0
+      - uses: hynek/setup-cached-uv@v2
+        with:
+          cache-dependency-path: |
+            requirements.txt
+            dvc/pyproject.toml
+            dvc-s3/pyproject.toml
       - name: install requirements
-        run: |
-            pip install -r requirements.txt
-            pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
-            pip install "dvc-s3[tests] @ git+https://github.com/iterative/dvc-s3"
+        run: uv pip install -r requirements.txt "./dvc[testing]" "./dvc-s3[tests]"
       - name: configure real S3 DVC env
         if: ${{ github.event_name == 'schedule' }}
         run: |
@@ -169,16 +225,30 @@ jobs:
     outputs:
       tests: ${{ steps.tests.outputs.tests }}
     steps:
-      - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-            python-version: "3.10"
-      - name: install reqs
-        run: |
-          pip install -U pip
-          pip install -r requirements.txt
-          pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
-          pip install "dvc-azure[tests] @ git+https://github.com/iterative/dvc-azure"
+            python-version: "3.12"
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DVC_REPOSITORY }}
+          ref: ${{ env.DVC_REF }}
+          path: dvc
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DVC_AZURE_REPOSITORY }}
+          ref: ${{ env.DVC_AZURE_REF }}
+          path: dvc-azure
+          fetch-depth: 0
+      - uses: hynek/setup-cached-uv@v2
+        with:
+          cache-dependency-path: |
+            requirements.txt
+            dvc/pyproject.toml
+            dvc-azure/pyproject.toml
+      - name: install requirements
+        run: uv pip install -r requirements.txt "./dvc[testing]" "./dvc-azure[tests]"
       - id: tests
         run: echo "tests=$(./scripts/ci/list_tests_cloud.sh azure)" >> $GITHUB_OUTPUT
 
@@ -199,8 +269,26 @@ jobs:
     steps:
       - uses: actions/setup-python@v5
         with:
-            python-version: "3.10"
+            python-version: "3.12"
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DVC_REPOSITORY }}
+          ref: ${{ env.DVC_REF }}
+          path: dvc
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DVC_AZURE_REPOSITORY }}
+          ref: ${{ env.DVC_AZURE_REF }}
+          path: dvc-azure
+          fetch-depth: 0
+      - uses: hynek/setup-cached-uv@v2
+        with:
+          cache-dependency-path: |
+            requirements.txt
+            dvc/pyproject.toml
+            dvc-azure/pyproject.toml
       - name: 'Az CLI login'
         if: ${{ github.event_name == 'schedule' }}
         uses: azure/login@v2
@@ -216,10 +304,7 @@ jobs:
           echo "::add-mask::$connection_string"
           echo "DVC_TEST_AZURE_CONNECTION_STRING=$connection_string" >> $GITHUB_ENV
       - name: install requirements
-        run: |
-            pip install -r requirements.txt
-            pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
-            pip install "dvc-azure[tests] @ git+https://github.com/iterative/dvc-azure"
+        run: uv pip install -r requirements.txt "./dvc[testing]" "./dvc-azure[tests]"
       - name: setup env
         if: ${{ github.event_name == 'schedule' }}
         run: |
@@ -239,16 +324,30 @@ jobs:
     outputs:
       tests: ${{ steps.tests.outputs.tests }}
     steps:
-      - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-            python-version: "3.10"
+            python-version: "3.12"
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DVC_REPOSITORY }}
+          ref: ${{ env.DVC_REF }}
+          path: dvc
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DVC_GS_REPOSITORY }}
+          ref: ${{ env.DVC_GS_REF }}
+          path: dvc-gs
+          fetch-depth: 0
+      - uses: hynek/setup-cached-uv@v2
+        with:
+          cache-dependency-path: |
+            requirements.txt
+            dvc/pyproject.toml
+            dvc-gs/pyproject.toml
       - name: install reqs
-        run: |
-          pip install -U pip
-          pip install -r requirements.txt
-          pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
-          pip install "dvc-gs[tests] @ git+https://github.com/iterative/dvc-gs"
+        run: uv pip install -r requirements.txt "./dvc[testing]" "./dvc-gs[tests]"
       - id: tests
         run: echo "tests=$(./scripts/ci/list_tests_cloud.sh gs)" >> $GITHUB_OUTPUT
 
@@ -268,8 +367,28 @@ jobs:
     steps:
       - uses: actions/setup-python@v5
         with:
-            python-version: "3.10"
+            python-version: "3.12"
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DVC_REPOSITORY }}
+          ref: ${{ env.DVC_REF }}
+          path: dvc
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DVC_GS_REPOSITORY }}
+          ref: ${{ env.DVC_GS_REF }}
+          path: dvc-gs
+          fetch-depth: 0
+      - uses: hynek/setup-cached-uv@v2
+        with:
+          cache-dependency-path: |
+            requirements.txt
+            dvc/pyproject.toml
+            dvc-gs/pyproject.toml
+      - name: install reqs
+        run: uv pip install -r requirements.txt "./dvc[testing]" "./dvc-gs[tests]"
       - id: 'auth'
         if: ${{ github.event_name == 'schedule' }}
         name: 'Authenticate to GCP'
@@ -278,11 +397,6 @@ jobs:
           create_credentials_file: true
           workload_identity_provider: 'projects/385088528371/locations/global/workloadIdentityPools/iterative-sandbox/providers/github'
           service_account: 'dvc-bench@iterative-sandbox.iam.gserviceaccount.com'
-      - name: install requirements
-        run: |
-            pip install -r requirements.txt
-            pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
-            pip install "dvc-gs[tests] @ git+https://github.com/iterative/dvc-gs"
       - name: configure real GS DVC env
         if: ${{ github.event_name == 'schedule' }}
         run: |
@@ -324,13 +438,21 @@ jobs:
       - uses: iterative/setup-cml@v3
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+            python-version: "3.12"
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DVC_REPOSITORY }}
+          ref: ${{ env.DVC_REF }}
+          path: dvc
+          fetch-depth: 0
+      - uses: hynek/setup-cached-uv@v2
+        with:
+          cache-dependency-path: |
+            requirements.txt
+            dvc/pyproject.toml
       - name: install requirements
-        run: |
-          pip install -U pip
-          pip install -r requirements.txt
-          pip install "dvc[testing] @ git+https://github.com/iterative/dvc"
+        run: uv pip install -r requirements.txt "./dvc[testing]"
       - name: download ubuntu results
         uses: actions/download-artifact@v3
 

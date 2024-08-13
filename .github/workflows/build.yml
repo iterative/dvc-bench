@@ -119,7 +119,7 @@ jobs:
             dvc/pyproject.toml
       - name: install requirements
         run: uv pip install -r requirements.txt "./dvc[testing]"
-      - uses: actions/cache/restore@v3
+      - uses: actions/cache/restore@v4
         id: restore-cache
         with:
           path: .dvc/cache
@@ -130,7 +130,7 @@ jobs:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
         run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs ${REVS} --pyargs ${{ matrix.test.path }} --dataset ${DATASET} --dvc-bench-git-repo $(pwd)
       - if: ${{ steps.restore-cache.outputs.cache-hit != 'true' && matrix.test.name == 'test_add_copy' }}
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         with:
           path: .dvc/cache
           key: ${{ steps.restore-cache.outputs.cache-primary-key }}

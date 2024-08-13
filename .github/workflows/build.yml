@@ -119,11 +119,15 @@ jobs:
             dvc/pyproject.toml
       - name: install requirements
         run: uv pip install -r requirements.txt "./dvc[testing]"
+      - uses: actions/cache@v4
+        with:
+          path: .dvc/cache
+          key: ${{ env.DATASET }}
       - name: run benchmarks
         shell: bash
         env:
           DVC_BENCH_AZURE_CONN_STR: ${{ secrets.DVC_BENCH_AZURE_CONN_STR }}
-        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs ${REVS} --pyargs ${{ matrix.test.path }} --dataset ${DATASET}
+        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs ${REVS} --pyargs ${{ matrix.test.path }} --dataset ${DATASET} --dvc-bench-git-repo $(pwd)
       - name: upload raw results
         uses: actions/upload-artifact@v3
         with:

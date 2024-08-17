@@ -135,9 +135,9 @@ jobs:
           path: .dvc/cache
           key: ${{ steps.restore-cache.outputs.cache-primary-key }}
       - name: upload raw results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: .benchmarks
+          name: .benchmarks-${{ matrix.test.name }}
           path: .benchmarks
 
   gen_s3:
@@ -229,9 +229,9 @@ jobs:
         shell: bash
         run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${REVS} --dvc-install-deps s3 --pyargs ${{ matrix.test.path }} --dataset ${DATASET} --dvc-bench-git-repo $(pwd)
       - name: upload raw results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: .benchmarks
+          name: .benchmarks-${{ matrix.test.name }}
           path: .benchmarks
 
   gen_azure:
@@ -332,9 +332,9 @@ jobs:
         run: |
           pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${REVS} --dvc-install-deps azure --pyargs ${{ matrix.test.path }} --dataset ${DATASET} --dvc-bench-git-repo $(pwd)
       - name: upload raw results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: .benchmarks
+          name: .benchmarks-${{ matrix.test.name }}
           path: .benchmarks
 
   gen_gs:
@@ -427,9 +427,9 @@ jobs:
         shell: bash
         run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${REVS} --dvc-install-deps gs --pyargs ${{ matrix.test.path }} --dataset ${DATASET} --dvc-bench-git-repo $(pwd)
       - name: upload raw results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: .benchmarks
+          name: .benchmarks-${{ matrix.test.name }}
           path: .benchmarks
   notify:
     if: github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/main' && failure()
@@ -476,8 +476,11 @@ jobs:
       - name: install requirements
         run: uv pip install -r requirements.txt "./dvc[testing]"
       - name: download ubuntu results
-        uses: actions/download-artifact@v3
-
+        uses: actions/download-artifact@v4
+        with:
+          pattern: .benchmarks-*
+          merge-multiple: true
+          path: .benchmarks
       - name: compare results
         shell: bash
         run: ./scripts/ci/gen_html.sh

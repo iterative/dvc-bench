@@ -2,5 +2,4 @@ pytest-benchmark[histogram]
 pygal>=3.0.3
 ansi2html
 csv2md
-funcy
 pandas

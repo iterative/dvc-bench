@@ -1,7 +1,7 @@
 import os
 
 import pandas as pd
-from distutils.version import StrictVersion
+from packaging.version import Version
 
 df = pd.read_csv("results.csv")
 df["test"] = df["name"].str.extract(r"::(.*)\[")
@@ -9,9 +9,9 @@ df["test"] = df["name"].str.extract(r"::(.*)\[")
 
 def version(x):
     try:
-        return StrictVersion(x)
+        return Version(x)
     except ValueError:
-        return StrictVersion("99.99.99")
+        return Version("99.99.99")
 
 
 os.makedirs("plots", exist_ok=True)

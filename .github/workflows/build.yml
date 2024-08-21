@@ -43,7 +43,7 @@ env:
   # run on small set of revisions for clouds
   CLOUD_REVS: ${{ github.event.inputs.revs || 'main,3.53.2' }}
   DVC_REPOSITORY: iterative/dvc
-  DVC_REF: simplify-benchmarks
+  DVC_REF: main
   DVC_AZURE_REPOSITORY: iterative/dvc-azure
   DVC_AZURE_REF: main
   DVC_GS_REPOSITORY: iterative/dvc-gs
@@ -68,6 +68,7 @@ jobs:
           cache-dependency-path: requirements.txt
       - name: install requirements
         run: uv pip install -r requirements.txt
+      - uses: pre-commit/action@v3.0.1
 
   gen:
     runs-on: ubuntu-latest

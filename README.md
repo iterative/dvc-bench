@@ -31,24 +31,24 @@ $ pytest -h
 ...
   --dataset=DATASET
                         Dataset name to use in tests (e.g. tiny/small/large/mnist/etc)
-  --remote={azure,gdrive,gs,hdfs,http,oss,s3,ssh,webdav}
-                        Remote type to use in tests
   --dvc-bin=DVC_BIN     Path to dvc binary
   --dvc-revs=DVC_REVS   Comma-separated list of DVC revisions to test (overrides `--dvc-bin`)
-  --dvc-git-repo=DVC_GIT_REPO
+  --dvc-repo=DVC_GIT_REPO
                         Path or url to dvc git repo
-  --dvc-bench-git-repo=DVC_BENCH_GIT_REPO
+  --dvc-bench-repo=DVC_BENCH_GIT_REPO
                         Path or url to dvc-bench git repo (for loading benchmark dataset)
+  --dvc-install-deps=DVC_INSTALL_DEPS
+                        Comma-separated list of DVC installation packages
   --project-rev=PROJECT_REV
                         Project revision to test
-  --project-git-repo=PROJECT_GIT_REPO
+  --project-repo=PROJECT_GIT_REPO
                         Path or url to dvc project
 ...
 ```
 
 ### Comparing results
 ```
-$ py.test-benchmark compare --histogram histograms/ --group-by name --sort name --csv results.csv
+$ pytest-benchmark compare --histogram histograms/ --group-by name --sort name --csv results.csv
 ```
 
 and if you want beautiful plots:

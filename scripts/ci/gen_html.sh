@@ -19,7 +19,7 @@ cat raw >> report.md
 for file in $(find .benchmarks -type f | sort);
 do
   rm -rf tmp_html results.csv raw
-  PY_COLORS=1 py.test-benchmark compare $file --histogram histograms/ --group-by func --csv results.csv --sort name >> raw
+  PY_COLORS=1 pytest-benchmark compare $file --histogram histograms/ --group-by func --csv results.csv --sort name >> raw
   dvc repro --no-run-cache
   dvc plots show -o tmp_html
   cat tmp_html/index.html >> html/index.html

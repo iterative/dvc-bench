@@ -151,6 +151,8 @@ jobs:
           ref: ${{ env.DVC_REF }}
           path: dvc
           fetch-depth: 0
+      - run: ../dvc-bench/scripts/ci/fetch-all-revs.sh "${REVS}"
+        working-directory: dvc
       - uses: hynek/setup-cached-uv@v2
         with:
           cache-dependency-path: dvc/pyproject.toml
@@ -159,7 +161,7 @@ jobs:
       - uses: actions/cache/restore@v4
         id: restore-cache
         with:
-          path: .dvc/cache
+          path: dvc-bench/.dvc/cache
           key: ${{ env.DATASET }}
       - name: run benchmarks
         shell: bash
@@ -174,7 +176,7 @@ jobs:
       - if: ${{ steps.restore-cache.outputs.cache-hit != 'true' && matrix.test.name == 'test_add_copy' }}
         uses: actions/cache/save@v4
         with:
-          path: .dvc/cache
+          path: dvc-bench/.dvc/cache
           key: ${{ steps.restore-cache.outputs.cache-primary-key }}
       - name: upload raw results
         uses: actions/upload-artifact@v4
@@ -215,6 +217,8 @@ jobs:
           ref: ${{ env.DVC_REF }}
           path: dvc
           fetch-depth: 0
+      - run: ../dvc-bench/scripts/ci/fetch-all-revs.sh "${REVS}"
+        working-directory: dvc
       - uses: actions/checkout@v4
         with:
           repository: ${{ env.DVC_S3_REPOSITORY }}
@@ -230,7 +234,7 @@ jobs:
         run: uv pip install "./dvc[tests]" "./dvc-s3[tests]"
       - uses: actions/cache/restore@v4
         with:
-          path: .dvc/cache
+          path: dvc-bench/.dvc/cache
           key: ${{ env.DATASET }}
       - name: configure real S3 DVC env
         if: ${{ github.event_name == 'schedule' }}
@@ -280,6 +284,8 @@ jobs:
           ref: ${{ env.DVC_REF }}
           path: dvc
           fetch-depth: 0
+      - run: ../dvc-bench/scripts/ci/fetch-all-revs.sh "${REVS}"
+        working-directory: dvc
       - uses: actions/checkout@v4
         with:
           repository: ${{ env.DVC_AZURE_REPOSITORY }}
@@ -309,7 +315,7 @@ jobs:
         run: uv pip install "./dvc[tests]" "./dvc-azure[tests]"
       - uses: actions/cache/restore@v4
         with:
-          path: .dvc/cache
+          path: dvc-bench/.dvc/cache
           key: ${{ env.DATASET }}
       - name: setup env
         if: ${{ github.event_name == 'schedule' }}
@@ -358,6 +364,8 @@ jobs:
           ref: ${{ env.DVC_REF }}
           path: dvc
           fetch-depth: 0
+      - run: ../dvc-bench/scripts/ci/fetch-all-revs.sh "${REVS}"
+        working-directory: dvc
       - uses: actions/checkout@v4
         with:
           repository: ${{ env.DVC_GS_REPOSITORY }}
@@ -373,7 +381,7 @@ jobs:
         run: uv pip install "./dvc[tests]" "./dvc-gs[tests]"
       - uses: actions/cache/restore@v4
         with:
-          path: .dvc/cache
+          path: dvc-bench/.dvc/cache
           key: ${{ env.DATASET }}
       - id: 'auth'
         if: ${{ github.event_name == 'schedule' }}

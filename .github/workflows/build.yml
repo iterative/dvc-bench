@@ -43,7 +43,7 @@ env:
   # run on small set of revisions for clouds
   CLOUD_REVS: ${{ github.event.inputs.revs || 'main,3.53.2' }}
   DVC_REPOSITORY: iterative/dvc
-  DVC_REF: main
+  DVC_REF: simplify-benchmarks
   DVC_AZURE_REPOSITORY: iterative/dvc-azure
   DVC_AZURE_REF: main
   DVC_GS_REPOSITORY: iterative/dvc-gs
@@ -73,26 +73,60 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tests: ${{ steps.tests.outputs.tests }}
+      azure-tests: ${{ steps.azure-tests.outputs.azure-tests }}
+      gs-tests: ${{ steps.gs-tests.outputs.gs-tests }}
+      s3-tests: ${{ steps.s3-tests.outputs.s3-tests }}
     steps:
-      - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
             python-version: "3.12"
+      - uses: actions/checkout@v4
       - uses: actions/checkout@v4
         with:
           repository: ${{ env.DVC_REPOSITORY }}
           ref: ${{ env.DVC_REF }}
           path: dvc
           fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DVC_AZURE_REPOSITORY }}
+          ref: ${{ env.DVC_AZURE_REF }}
+          path: dvc-azure
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DVC_GS_REPOSITORY }}
+          ref: ${{ env.DVC_GS_REF }}
+          path: dvc-gs
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.DVC_S3_REPOSITORY }}
+          ref: ${{ env.DVC_S3_REF }}
+          path: dvc-s3
+          fetch-depth: 0
       - uses: hynek/setup-cached-uv@v2
         with:
           cache-dependency-path: |
-            requirements.txt
             dvc/pyproject.toml
+            dvc-azure/pyproject.toml
+            dvc-gs/pyproject.toml
+            dvc-s3/pyproject.toml
       - name: install reqs
-        run: uv pip install -r requirements.txt "./dvc[testing]"
+        run: uv pip install "./dvc[tests]" "./dvc-azure[tests]" "./dvc-gs[tests]" "./dvc-s3[tests]"
       - id: tests
-        run: echo "tests=$(./scripts/ci/list_tests.sh)" >> $GITHUB_OUTPUT
+        working-directory: dvc/
+        run: echo "tests=$(../scripts/ci/list_tests.sh dvc/testing/benchmarks)" >> $GITHUB_OUTPUT
+      - id: azure-tests
+        working-directory: dvc-azure/
+        run: echo "azure-tests=$(../scripts/ci/list_tests.sh dvc_azure/tests/benchmarks.py)" >> $GITHUB_OUTPUT
+      - id: gs-tests
+        working-directory: dvc-gs/
+        run: echo "gs-tests=$(../scripts/ci/list_tests.sh dvc_gs/tests/benchmarks.py)" >> $GITHUB_OUTPUT
+      - id: s3-tests
+        working-directory: dvc-s3/
+        run: echo "s3-tests=$(../scripts/ci/list_tests.sh dvc_s3/tests/benchmarks.py)" >> $GITHUB_OUTPUT
+
   build:
     needs: [gen]
     timeout-minutes: 180
@@ -108,6 +142,8 @@ jobs:
         with:
             python-version: "3.12"
       - uses: actions/checkout@v4
+        with:
+          path: dvc-bench
       - uses: actions/checkout@v4
         with:
           repository: ${{ env.DVC_REPOSITORY }}
@@ -116,11 +152,9 @@ jobs:
           fetch-depth: 0
       - uses: hynek/setup-cached-uv@v2
         with:
-          cache-dependency-path: |
-            requirements.txt
-            dvc/pyproject.toml
+          cache-dependency-path: dvc/pyproject.toml
       - name: install requirements
-        run: uv pip install -r requirements.txt "./dvc[testing]"
+        run: uv pip install "./dvc[tests]"
       - uses: actions/cache/restore@v4
         id: restore-cache
         with:
@@ -128,7 +162,14 @@ jobs:
           key: ${{ env.DATASET }}
       - name: run benchmarks
         shell: bash
-        run: pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func --dvc-revs ${REVS} --pyargs ${{ matrix.test.path }} --dataset ${DATASET} --dvc-bench-git-repo $(pwd)
+        working-directory: dvc/
+        run: >
+          pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func
+          ${{ matrix.test.path }}
+          --dvc-revs ${REVS}
+          --dataset ${DATASET}
+          --dvc-bench-repo ../dvc-bench --dvc-repo $(pwd)
+          -W ignore
       - if: ${{ steps.restore-cache.outputs.cache-hit != 'true' && matrix.test.name == 'test_add_copy' }}
         uses: actions/cache/save@v4
         with:
@@ -138,47 +179,15 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: .benchmarks-${{ matrix.test.name }}
-          path: .benchmarks
-
-  gen_s3:
-    runs-on: ubuntu-latest
-    outputs:
-      tests: ${{ steps.tests.outputs.tests }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-            python-version: "3.12"
-      - uses: actions/checkout@v4
-        with:
-          repository: ${{ env.DVC_REPOSITORY }}
-          ref: ${{ env.DVC_REF }}
-          path: dvc
-          fetch-depth: 0
-      - uses: actions/checkout@v4
-        with:
-          repository: ${{ env.DVC_S3_REPOSITORY }}
-          ref: ${{ env.DVC_S3_REF }}
-          path: dvc-s3
-          fetch-depth: 0
-      - uses: hynek/setup-cached-uv@v2
-        with:
-          cache-dependency-path: |
-            requirements.txt
-            dvc/pyproject.toml
-            dvc-s3/pyproject.toml
-      - name: install reqs
-        run: uv pip install -r requirements.txt "./dvc[testing]" "./dvc-s3[tests]"
-      - id: tests
-        run: echo "tests=$(./scripts/ci/list_tests_cloud.sh s3)" >> $GITHUB_OUTPUT
+          path: dvc/.benchmarks
 
   build_s3:
     if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
-    needs: [gen_s3]
+    needs: [gen]
     strategy:
       fail-fast: false
       matrix:
-          test: ${{fromJson(needs.gen_s3.outputs.tests)}}
+          test: ${{fromJson(needs.gen.outputs.s3-tests)}}
     runs-on: ubuntu-latest
     name: run ${{ matrix.test.name }}
     timeout-minutes: 480
@@ -197,6 +206,8 @@ jobs:
         with:
             python-version: "3.12"
       - uses: actions/checkout@v4
+        with:
+          path: dvc-bench
       - uses: actions/checkout@v4
         with:
           repository: ${{ env.DVC_REPOSITORY }}
@@ -212,11 +223,10 @@ jobs:
       - uses: hynek/setup-cached-uv@v2
         with:
           cache-dependency-path: |
-            requirements.txt
             dvc/pyproject.toml
             dvc-s3/pyproject.toml
       - name: install requirements
-        run: uv pip install -r requirements.txt "./dvc[testing]" "./dvc-s3[tests]"
+        run: uv pip install "./dvc[tests]" "./dvc-s3[tests]"
       - uses: actions/cache/restore@v4
         with:
           path: .dvc/cache
@@ -227,52 +237,28 @@ jobs:
           echo "DVC_TEST_AWS_REPO_BUCKET=dvc-bench-ci" >> "$GITHUB_ENV"
       - name: run benchmarks
         shell: bash
-        run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${CLOUD_REVS} --dvc-install-deps s3 --pyargs ${{ matrix.test.path }} --dataset ${DATASET} --dvc-bench-git-repo $(pwd)
+        working-directory: dvc-s3/
+        run: >
+          pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func
+          ${{ matrix.test.path }}
+          --dvc-revs ${CLOUD_REVS}
+          --dataset ${DATASET}
+          --dvc-install-deps s3
+          --dvc-bench-repo ../dvc-bench --dvc-repo ../dvc
+          -W ignore
       - name: upload raw results
         uses: actions/upload-artifact@v4
         with:
           name: .benchmarks-${{ matrix.test.name }}
-          path: .benchmarks
-
-  gen_azure:
-    runs-on: ubuntu-latest
-    outputs:
-      tests: ${{ steps.tests.outputs.tests }}
-    steps:
-      - uses: actions/setup-python@v5
-        with:
-            python-version: "3.12"
-      - uses: actions/checkout@v4
-      - uses: actions/checkout@v4
-        with:
-          repository: ${{ env.DVC_REPOSITORY }}
-          ref: ${{ env.DVC_REF }}
-          path: dvc
-          fetch-depth: 0
-      - uses: actions/checkout@v4
-        with:
-          repository: ${{ env.DVC_AZURE_REPOSITORY }}
-          ref: ${{ env.DVC_AZURE_REF }}
-          path: dvc-azure
-          fetch-depth: 0
-      - uses: hynek/setup-cached-uv@v2
-        with:
-          cache-dependency-path: |
-            requirements.txt
-            dvc/pyproject.toml
-            dvc-azure/pyproject.toml
-      - name: install requirements
-        run: uv pip install -r requirements.txt "./dvc[testing]" "./dvc-azure[tests]"
-      - id: tests
-        run: echo "tests=$(./scripts/ci/list_tests_cloud.sh azure)" >> $GITHUB_OUTPUT
+          path: dvc-s3/.benchmarks
 
   build_azure:
     if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
-    needs: [gen_azure]
+    needs: [gen]
     strategy:
       fail-fast: false
       matrix:
-          test: ${{fromJson(needs.gen_azure.outputs.tests)}}
+          test: ${{fromJson(needs.gen.outputs.azure-tests)}}
     runs-on: ubuntu-latest
     name: run ${{ matrix.test.name }}
     timeout-minutes: 480
@@ -285,6 +271,8 @@ jobs:
         with:
             python-version: "3.12"
       - uses: actions/checkout@v4
+        with:
+          path: dvc-bench
       - uses: actions/checkout@v4
         with:
           repository: ${{ env.DVC_REPOSITORY }}
@@ -300,7 +288,6 @@ jobs:
       - uses: hynek/setup-cached-uv@v2
         with:
           cache-dependency-path: |
-            requirements.txt
             dvc/pyproject.toml
             dvc-azure/pyproject.toml
       - name: 'Az CLI login'
@@ -318,7 +305,7 @@ jobs:
           echo "::add-mask::$connection_string"
           echo "DVC_TEST_AZURE_CONNECTION_STRING=$connection_string" >> $GITHUB_ENV
       - name: install requirements
-        run: uv pip install -r requirements.txt "./dvc[testing]" "./dvc-azure[tests]"
+        run: uv pip install "./dvc[tests]" "./dvc-azure[tests]"
       - uses: actions/cache/restore@v4
         with:
           path: .dvc/cache
@@ -329,53 +316,28 @@ jobs:
           echo "DVC_TEST_AZURE_PATH=az://dvc-bench-ci" >> $GITHUB_ENV
       - name: run benchmarks
         shell: bash
-        run: |
-          pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${CLOUD_REVS} --dvc-install-deps azure --pyargs ${{ matrix.test.path }} --dataset ${DATASET} --dvc-bench-git-repo $(pwd)
+        working-directory: dvc-azure/
+        run: >
+          pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func
+          ${{ matrix.test.path }}
+          --dvc-revs ${CLOUD_REVS}
+          --dataset ${DATASET}
+          --dvc-install-deps azure
+          --dvc-bench-repo ../dvc-bench --dvc-repo ../dvc
+          -W ignore
       - name: upload raw results
         uses: actions/upload-artifact@v4
         with:
           name: .benchmarks-${{ matrix.test.name }}
-          path: .benchmarks
-
-  gen_gs:
-    runs-on: ubuntu-latest
-    outputs:
-      tests: ${{ steps.tests.outputs.tests }}
-    steps:
-      - uses: actions/setup-python@v5
-        with:
-            python-version: "3.12"
-      - uses: actions/checkout@v4
-      - uses: actions/checkout@v4
-        with:
-          repository: ${{ env.DVC_REPOSITORY }}
-          ref: ${{ env.DVC_REF }}
-          path: dvc
-          fetch-depth: 0
-      - uses: actions/checkout@v4
-        with:
-          repository: ${{ env.DVC_GS_REPOSITORY }}
-          ref: ${{ env.DVC_GS_REF }}
-          path: dvc-gs
-          fetch-depth: 0
-      - uses: hynek/setup-cached-uv@v2
-        with:
-          cache-dependency-path: |
-            requirements.txt
-            dvc/pyproject.toml
-            dvc-gs/pyproject.toml
-      - name: install reqs
-        run: uv pip install -r requirements.txt "./dvc[testing]" "./dvc-gs[tests]"
-      - id: tests
-        run: echo "tests=$(./scripts/ci/list_tests_cloud.sh gs)" >> $GITHUB_OUTPUT
+          path: dvc-azure/.benchmarks
 
   build_gs:
     if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
-    needs: [gen_gs]
+    needs: [gen]
     strategy:
       fail-fast: false
       matrix:
-          test: ${{fromJson(needs.gen_gs.outputs.tests)}}
+          test: ${{fromJson(needs.gen.outputs.gs-tests)}}
     runs-on: ubuntu-latest
     name: run ${{ matrix.test.name }}
     timeout-minutes: 480
@@ -387,6 +349,8 @@ jobs:
         with:
             python-version: "3.12"
       - uses: actions/checkout@v4
+        with:
+          path: dvc-bench
       - uses: actions/checkout@v4
         with:
           repository: ${{ env.DVC_REPOSITORY }}
@@ -402,11 +366,10 @@ jobs:
       - uses: hynek/setup-cached-uv@v2
         with:
           cache-dependency-path: |
-            requirements.txt
             dvc/pyproject.toml
             dvc-gs/pyproject.toml
       - name: install reqs
-        run: uv pip install -r requirements.txt "./dvc[testing]" "./dvc-gs[tests]"
+        run: uv pip install "./dvc[tests]" "./dvc-gs[tests]"
       - uses: actions/cache/restore@v4
         with:
           path: .dvc/cache
@@ -425,12 +388,21 @@ jobs:
           echo "DVC_TEST_GS_BUCKET=dvc-bench" >> "$GITHUB_ENV"
       - name: run benchmarks
         shell: bash
-        run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${CLOUD_REVS} --dvc-install-deps gs --pyargs ${{ matrix.test.path }} --dataset ${DATASET} --dvc-bench-git-repo $(pwd)
+        working-directory: dvc-gs/
+        run: >
+          pytest --benchmark-save ${{ matrix.test.name }} --benchmark-group-by func
+          ${{ matrix.test.path }}
+          --dvc-revs ${CLOUD_REVS}
+          --dataset ${DATASET}
+          --dvc-install-deps gs
+          --dvc-bench-repo ../dvc-bench --dvc-repo ../dvc
+          -W ignore
+          ${{ matrix.test.path }}
       - name: upload raw results
         uses: actions/upload-artifact@v4
         with:
           name: .benchmarks-${{ matrix.test.name }}
-          path: .benchmarks
+          path: dvc-gs/.benchmarks
   notify:
     if: github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/main' && failure()
     needs: [build, build_s3, build_azure, build_gs]

@@ -40,6 +40,8 @@ env:
   FORCE_COLOR: "1"
   DATASET: ${{ (github.event_name == 'schedule' && 'mnist') || github.event.inputs.dataset || 'small' }}
   REVS: ${{ github.event.inputs.revs || 'main,3.53.2,3.10.0,2.58.2' }}
+  # run on small set of revisions for clouds
+  CLOUD_REVS: ${{ github.event.inputs.revs || 'main,3.53.2' }}
   DVC_REPOSITORY: iterative/dvc
   DVC_REF: main
   DVC_AZURE_REPOSITORY: iterative/dvc-azure
@@ -225,7 +227,7 @@ jobs:
           echo "DVC_TEST_AWS_REPO_BUCKET=dvc-bench-ci" >> "$GITHUB_ENV"
       - name: run benchmarks
         shell: bash
-        run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${REVS} --dvc-install-deps s3 --pyargs ${{ matrix.test.path }} --dataset ${DATASET} --dvc-bench-git-repo $(pwd)
+        run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${CLOUD_REVS} --dvc-install-deps s3 --pyargs ${{ matrix.test.path }} --dataset ${DATASET} --dvc-bench-git-repo $(pwd)
       - name: upload raw results
         uses: actions/upload-artifact@v4
         with:
@@ -328,7 +330,7 @@ jobs:
       - name: run benchmarks
         shell: bash
         run: |
-          pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${REVS} --dvc-install-deps azure --pyargs ${{ matrix.test.path }} --dataset ${DATASET} --dvc-bench-git-repo $(pwd)
+          pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${CLOUD_REVS} --dvc-install-deps azure --pyargs ${{ matrix.test.path }} --dataset ${DATASET} --dvc-bench-git-repo $(pwd)
       - name: upload raw results
         uses: actions/upload-artifact@v4
         with:
@@ -423,7 +425,7 @@ jobs:
           echo "DVC_TEST_GS_BUCKET=dvc-bench" >> "$GITHUB_ENV"
       - name: run benchmarks
         shell: bash
-        run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${REVS} --dvc-install-deps gs --pyargs ${{ matrix.test.path }} --dataset ${DATASET} --dvc-bench-git-repo $(pwd)
+        run: pytest --benchmark-save ${{ matrix.test.name}} --benchmark-group-by func --dvc-revs ${CLOUD_REVS} --dvc-install-deps gs --pyargs ${{ matrix.test.path }} --dataset ${DATASET} --dvc-bench-git-repo $(pwd)
       - name: upload raw results
         uses: actions/upload-artifact@v4
         with:

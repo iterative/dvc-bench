@@ -34,6 +34,11 @@ on:
         required: false
         default: false
         type: boolean
+      host_dvc_rev:
+        description: "DVC revision to use for running the tests"
+        required: false
+        default: "main"
+        type: string
 
 env:
   DVC_TEST: "true"
@@ -43,7 +48,7 @@ env:
   # run on small set of revisions for clouds
   CLOUD_REVS: ${{ github.event.inputs.revs || 'main,3.53.2' }}
   DVC_REPOSITORY: iterative/dvc
-  DVC_REF: main
+  DVC_REF: ${{ github.event.inputs.host_dvc_rev || 'main' }}
   DVC_AZURE_REPOSITORY: iterative/dvc-azure
   DVC_AZURE_REF: main
   DVC_GS_REPOSITORY: iterative/dvc-gs

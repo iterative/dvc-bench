@@ -177,12 +177,17 @@ jobs:
           --dvc-revs ${REVS}
           --dataset ${DATASET}
           --dvc-bench-repo ../dvc-bench --dvc-repo $(pwd)
+          --benchmark-cprofile-dump
           -W ignore
       - if: ${{ steps.restore-cache.outputs.cache-hit != 'true' && matrix.test.name == 'test_add_copy' }}
         uses: actions/cache/save@v4
         with:
           path: dvc-bench/.dvc/cache
           key: ${{ steps.restore-cache.outputs.cache-primary-key }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prof-${{ matrix.test.name }}
+          path: .dvc/prof
       - name: upload raw results
         uses: actions/upload-artifact@v4
         with:

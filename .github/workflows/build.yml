@@ -39,6 +39,16 @@ on:
         required: false
         default: "main"
         type: string
+      tests_to_run:
+        description: "Comma-separated list of names of tests to run. If left empty (default), it will run all the tests"
+        required: false
+        default: ""
+        type: string
+      cprofile:
+        description: "Enable cprofile"
+        required: false
+        default: false
+        type: boolean
 
 env:
   DVC_TEST: "true"
@@ -56,6 +66,8 @@ env:
   DVC_S3_REPOSITORY: iterative/dvc-s3
   DVC_S3_REF: main
   UV_SYSTEM_PYTHON: true
+  TESTS_TO_RUN: ${{ github.event.inputs.tests_to_run || '' }}
+  CPROFILE_ARGS: ${{ github.event.inputs.cprofile && '--benchmark-cprofile-dump' || '' }}
 
 permissions:
   contents: read
@@ -122,16 +134,16 @@ jobs:
         run: uv pip install "./dvc[tests]" "./dvc-azure[tests]" "./dvc-gs[tests]" "./dvc-s3[tests]"
       - id: tests
         working-directory: dvc/
-        run: echo "tests=$(../scripts/ci/list_tests.sh dvc/testing/benchmarks)" >> $GITHUB_OUTPUT
+        run: echo "tests=$(../scripts/ci/list_tests.sh dvc/testing/benchmarks '${{ env.TESTS_TO_RUN }}')" >> $GITHUB_OUTPUT
       - id: azure-tests
         working-directory: dvc-azure/
-        run: echo "azure-tests=$(../scripts/ci/list_tests.sh dvc_azure/tests/benchmarks.py)" >> $GITHUB_OUTPUT
+        run: echo "azure-tests=$(../scripts/ci/list_tests.sh dvc_azure/tests/benchmarks.py '${{ env.TESTS_TO_RUN }}')" >> $GITHUB_OUTPUT
       - id: gs-tests
         working-directory: dvc-gs/
-        run: echo "gs-tests=$(../scripts/ci/list_tests.sh dvc_gs/tests/benchmarks.py)" >> $GITHUB_OUTPUT
+        run: echo "gs-tests=$(../scripts/ci/list_tests.sh dvc_gs/tests/benchmarks.py '${{ env.TESTS_TO_RUN }}')" >> $GITHUB_OUTPUT
       - id: s3-tests
         working-directory: dvc-s3/
-        run: echo "s3-tests=$(../scripts/ci/list_tests.sh dvc_s3/tests/benchmarks.py)" >> $GITHUB_OUTPUT
+        run: echo "s3-tests=$(../scripts/ci/list_tests.sh dvc_s3/tests/benchmarks.py '${{ env.TESTS_TO_RUN }}')" >> $GITHUB_OUTPUT
 
   build:
     needs: [gen]
@@ -178,6 +190,7 @@ jobs:
           --dataset ${DATASET}
           --dvc-bench-repo ../dvc-bench --dvc-repo $(pwd)
           -W ignore
+          ${{ env.CPROFILE_ARGS }}
       - if: ${{ steps.restore-cache.outputs.cache-hit != 'true' && matrix.test.name == 'test_add_copy' }}
         uses: actions/cache/save@v4
         with:
@@ -188,6 +201,12 @@ jobs:
         with:
           name: .benchmarks-${{ matrix.test.name }}
           path: dvc/.benchmarks
+      - if: ${{ env.CPROFILE_ARGS }}
+        name: upload profiling results
+        uses: actions/upload-artifact@v4
+        with:
+          name: prof-${{ matrix.test.name }}
+          path: dvc/prof
 
   build_s3:
     if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
@@ -256,11 +275,18 @@ jobs:
           --dvc-install-deps s3
           --dvc-bench-repo ../dvc-bench --dvc-repo ../dvc
           -W ignore
+          ${{ env.CPROFILE_ARGS }}
       - name: upload raw results
         uses: actions/upload-artifact@v4
         with:
           name: .benchmarks-${{ matrix.test.name }}
           path: dvc-s3/.benchmarks
+      - if: ${{ env.CPROFILE_ARGS }}
+        name: upload profiling results
+        uses: actions/upload-artifact@v4
+        with:
+          name: prof-${{ matrix.test.name }}
+          path: dvc-s3/prof
 
   build_azure:
     if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
@@ -337,11 +363,18 @@ jobs:
           --dvc-install-deps azure
           --dvc-bench-repo ../dvc-bench --dvc-repo ../dvc
           -W ignore
+          ${{ env.CPROFILE_ARGS }}
       - name: upload raw results
         uses: actions/upload-artifact@v4
         with:
           name: .benchmarks-${{ matrix.test.name }}
           path: dvc-azure/.benchmarks
+      - if: ${{ env.CPROFILE_ARGS }}
+        name: upload profiling results
+        uses: actions/upload-artifact@v4
+        with:
+          name: prof-${{ matrix.test.name }}
+          path: dvc-azure/prof
 
   build_gs:
     if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
@@ -412,11 +445,18 @@ jobs:
           --dvc-bench-repo ../dvc-bench --dvc-repo ../dvc
           -W ignore
           ${{ matrix.test.path }}
+          ${{ env.CPROFILE_ARGS }}
       - name: upload raw results
         uses: actions/upload-artifact@v4
         with:
           name: .benchmarks-${{ matrix.test.name }}
           path: dvc-gs/.benchmarks
+      - if: ${{ env.CPROFILE_ARGS }}
+        name: upload profiling results
+        uses: actions/upload-artifact@v4
+        with:
+          name: prof-${{ matrix.test.name }}
+          path: dvc-gs/prof
   notify:
     if: github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/main' && failure()
     needs: [build, build_s3, build_azure, build_gs]
@@ -443,6 +483,17 @@ jobs:
       contents: write
       id-token: write
     steps:
+      - uses: actions/upload-artifact/merge@v4
+        with:
+           name: all-prof
+           pattern: prof-*
+           delete-merged: true
+      - uses: actions/upload-artifact/merge@v4
+        with:
+           name: all-benchmarks
+           pattern: .benchmarks-*
+           delete-merged: true
+
       - uses: iterative/setup-cml@v3
       - uses: actions/setup-python@v5
         with:
@@ -464,8 +515,7 @@ jobs:
       - name: download ubuntu results
         uses: actions/download-artifact@v4
         with:
-          pattern: .benchmarks-*
-          merge-multiple: true
+          pattern: all-benchmarks
           path: .benchmarks
       - name: compare results
         shell: bash

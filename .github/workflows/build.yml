@@ -483,7 +483,8 @@ jobs:
       contents: write
       id-token: write
     steps:
-      - uses: actions/upload-artifact/merge@v4
+      - if: ${{ env.CPROFILE_ARGS }}
+        uses: actions/upload-artifact/merge@v4
         with:
            name: all-prof
            pattern: prof-*

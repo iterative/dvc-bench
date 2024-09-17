@@ -199,6 +199,7 @@ jobs:
       - name: upload raw results
         uses: actions/upload-artifact@v4
         with:
+          include-hidden-files: true
           name: .benchmarks-${{ matrix.test.name }}
           path: dvc/.benchmarks
       - if: ${{ env.CPROFILE_ARGS }}
@@ -279,6 +280,7 @@ jobs:
       - name: upload raw results
         uses: actions/upload-artifact@v4
         with:
+          include-hidden-files: true
           name: .benchmarks-${{ matrix.test.name }}
           path: dvc-s3/.benchmarks
       - if: ${{ env.CPROFILE_ARGS }}
@@ -367,6 +369,7 @@ jobs:
       - name: upload raw results
         uses: actions/upload-artifact@v4
         with:
+          include-hidden-files: true
           name: .benchmarks-${{ matrix.test.name }}
           path: dvc-azure/.benchmarks
       - if: ${{ env.CPROFILE_ARGS }}
@@ -449,6 +452,7 @@ jobs:
       - name: upload raw results
         uses: actions/upload-artifact@v4
         with:
+          include-hidden-files: true
           name: .benchmarks-${{ matrix.test.name }}
           path: dvc-gs/.benchmarks
       - if: ${{ env.CPROFILE_ARGS }}
@@ -491,6 +495,7 @@ jobs:
            delete-merged: true
       - uses: actions/upload-artifact/merge@v4
         with:
+           include-hidden-files: true
            name: all-benchmarks
            pattern: .benchmarks-*
            delete-merged: true

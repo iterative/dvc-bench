@@ -80,9 +80,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
             python-version: "3.12"
-      - uses: hynek/setup-cached-uv@v2
+      - uses: astral-sh/setup-uv@v3
         with:
-          cache-dependency-path: requirements.txt
+          enable-cache: true
+          cache-dependency-glob: requirements.txt
       - name: install requirements
         run: uv pip install -r requirements.txt
       - uses: pre-commit/action@v3.0.1
@@ -123,9 +124,10 @@ jobs:
           ref: ${{ env.DVC_S3_REF }}
           path: dvc-s3
           fetch-depth: 0
-      - uses: hynek/setup-cached-uv@v2
+      - uses: astral-sh/setup-uv@v3
         with:
-          cache-dependency-path: |
+          enable-cache: true
+          cache-dependency-glob: |
             dvc/pyproject.toml
             dvc-azure/pyproject.toml
             dvc-gs/pyproject.toml
@@ -170,9 +172,10 @@ jobs:
           fetch-depth: 0
       - run: ../dvc-bench/scripts/ci/fetch-all-revs.sh "${REVS}"
         working-directory: dvc
-      - uses: hynek/setup-cached-uv@v2
+      - uses: astral-sh/setup-uv@v3
         with:
-          cache-dependency-path: dvc/pyproject.toml
+          enable-cache: true
+          cache-dependency-glob: dvc/pyproject.toml
       - name: install requirements
         run: uv pip install "./dvc[tests]"
       - uses: actions/cache/restore@v4
@@ -250,9 +253,10 @@ jobs:
           ref: ${{ env.DVC_S3_REF }}
           path: dvc-s3
           fetch-depth: 0
-      - uses: hynek/setup-cached-uv@v2
+      - uses: astral-sh/setup-uv@v3
         with:
-          cache-dependency-path: |
+          enable-cache: true
+          cache-dependency-glob: |
             dvc/pyproject.toml
             dvc-s3/pyproject.toml
       - name: install requirements
@@ -325,9 +329,10 @@ jobs:
           ref: ${{ env.DVC_AZURE_REF }}
           path: dvc-azure
           fetch-depth: 0
-      - uses: hynek/setup-cached-uv@v2
+      - uses: astral-sh/setup-uv@v3
         with:
-          cache-dependency-path: |
+          enable-cache: true
+          cache-dependency-glob: |
             dvc/pyproject.toml
             dvc-azure/pyproject.toml
       - name: 'Az CLI login'
@@ -413,9 +418,10 @@ jobs:
           ref: ${{ env.DVC_GS_REF }}
           path: dvc-gs
           fetch-depth: 0
-      - uses: hynek/setup-cached-uv@v2
+      - uses: astral-sh/setup-uv@v3
         with:
-          cache-dependency-path: |
+          enable-cache: true
+          cache-dependency-glob: |
             dvc/pyproject.toml
             dvc-gs/pyproject.toml
       - name: install reqs
@@ -511,9 +517,10 @@ jobs:
           ref: ${{ env.DVC_REF }}
           path: dvc
           fetch-depth: 0
-      - uses: hynek/setup-cached-uv@v2
+      - uses: astral-sh/setup-uv@v3
         with:
-          cache-dependency-path: |
+          enable-cache: true
+          cache-dependency-glob: |
             requirements.txt
             dvc/pyproject.toml
       - name: install requirements

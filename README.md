@@ -11,7 +11,7 @@ Trigger a [dispatch workflow](https://github.com/iterative/dvc-bench/actions/wor
 
 ### Setting up
 ```
-$ pip install -r requirements.txt
+$ uv pip install -r requirements.txt
 $ dvc pull # optional, otherwise will pull datasets dynamically
 ```
 

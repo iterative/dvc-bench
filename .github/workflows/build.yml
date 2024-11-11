@@ -67,7 +67,7 @@ env:
   DVC_S3_REF: main
   UV_SYSTEM_PYTHON: true
   TESTS_TO_RUN: ${{ github.event.inputs.tests_to_run || '' }}
-  CPROFILE_ARGS: ${{ github.event.inputs.cprofile == 'true' && '--benchmark-cprofile-dump' || '' }}
+  CPROFILE_ARGS: ${{ github.event.inputs.cprofile == 'true' && '--dvc-benchmark-cprofile-dump' || '' }}
 
 permissions:
   contents: read

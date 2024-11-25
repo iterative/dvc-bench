@@ -80,7 +80,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
             python-version: "3.12"
-      - uses: astral-sh/setup-uv@v3
+      - uses: astral-sh/setup-uv@v4
         with:
           enable-cache: true
           cache-dependency-glob: requirements.txt
@@ -124,7 +124,7 @@ jobs:
           ref: ${{ env.DVC_S3_REF }}
           path: dvc-s3
           fetch-depth: 0
-      - uses: astral-sh/setup-uv@v3
+      - uses: astral-sh/setup-uv@v4
         with:
           enable-cache: true
           cache-dependency-glob: |
@@ -172,7 +172,7 @@ jobs:
           fetch-depth: 0
       - run: ../dvc-bench/scripts/ci/fetch-all-revs.sh "${REVS}"
         working-directory: dvc
-      - uses: astral-sh/setup-uv@v3
+      - uses: astral-sh/setup-uv@v4
         with:
           enable-cache: true
           cache-dependency-glob: dvc/pyproject.toml
@@ -253,7 +253,7 @@ jobs:
           ref: ${{ env.DVC_S3_REF }}
           path: dvc-s3
           fetch-depth: 0
-      - uses: astral-sh/setup-uv@v3
+      - uses: astral-sh/setup-uv@v4
         with:
           enable-cache: true
           cache-dependency-glob: |
@@ -329,7 +329,7 @@ jobs:
           ref: ${{ env.DVC_AZURE_REF }}
           path: dvc-azure
           fetch-depth: 0
-      - uses: astral-sh/setup-uv@v3
+      - uses: astral-sh/setup-uv@v4
         with:
           enable-cache: true
           cache-dependency-glob: |
@@ -419,7 +419,7 @@ jobs:
           ref: ${{ env.DVC_GS_REF }}
           path: dvc-gs
           fetch-depth: 0
-      - uses: astral-sh/setup-uv@v3
+      - uses: astral-sh/setup-uv@v4
         with:
           enable-cache: true
           cache-dependency-glob: |
@@ -517,7 +517,7 @@ jobs:
           ref: ${{ env.DVC_REF }}
           path: dvc
           fetch-depth: 0
-      - uses: astral-sh/setup-uv@v3
+      - uses: astral-sh/setup-uv@v4
         with:
           enable-cache: true
           cache-dependency-glob: |

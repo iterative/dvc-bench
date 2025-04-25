@@ -434,7 +434,7 @@ jobs:
       - id: 'auth'
         if: ${{ github.event_name == 'schedule' }}
         name: 'Authenticate to GCP'
-        uses: 'google-github-actions/auth@v2.1.7'
+        uses: 'google-github-actions/auth@v2.1.9'
         with:
           workload_identity_provider: 'projects/385088528371/locations/global/workloadIdentityPools/github/providers/github'
           service_account: 'dvc-bench@iterative-sandbox.iam.gserviceaccount.com'

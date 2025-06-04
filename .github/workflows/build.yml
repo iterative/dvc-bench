@@ -73,13 +73,30 @@ permissions:
   contents: read
 
 jobs:
+  build-wheels:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: actions/checkout@v4
+      - run: ./scripts/ci/install-libgit2.sh 1.7.2
+      - run: sudo ldconfig
+      - run: pip wheel pygit2==1.14.1 --no-deps
+      - run: pip install auditwheel
+      - run: auditwheel repair *.whl
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheels
+          path: wheelhouse
+
   lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-            python-version: "3.12"
+            python-version: "3.13"
       - uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
@@ -98,7 +115,7 @@ jobs:
     steps:
       - uses: actions/setup-python@v5
         with:
-            python-version: "3.12"
+            python-version: "3.13"
       - uses: actions/checkout@v4
       - uses: actions/checkout@v4
         with:
@@ -148,7 +165,7 @@ jobs:
         run: echo "s3-tests=$(../scripts/ci/list_tests.sh dvc_s3/tests/benchmarks.py '${{ env.TESTS_TO_RUN }}')" >> $GITHUB_OUTPUT
 
   build:
-    needs: [gen]
+    needs: [gen, build-wheels]
     timeout-minutes: 180
     name: run ${{ matrix.test.name }}
     runs-on: ${{ matrix.os }}
@@ -160,7 +177,7 @@ jobs:
     steps:
       - uses: actions/setup-python@v5
         with:
-            python-version: "3.12"
+            python-version: "3.13"
       - uses: actions/checkout@v4
         with:
           path: dvc-bench
@@ -183,6 +200,13 @@ jobs:
         with:
           path: dvc-bench/.dvc/cache
           key: ${{ env.DATASET }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: wheels
+          path: wheelhouse
+      - run: |
+          echo "UV_FIND_LINKS=$(realpath wheelhouse)" >> $GITHUB_ENV
+          echo "PIP_FIND_LINKS=$(realpath wheelhouse)" >> $GITHUB_ENV
       - name: run benchmarks
         shell: bash
         working-directory: dvc/
@@ -214,7 +238,7 @@ jobs:
 
   build_s3:
     if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
-    needs: [gen]
+    needs: [gen, build-wheels]
     strategy:
       fail-fast: false
       matrix:
@@ -235,7 +259,7 @@ jobs:
           aws-region: us-east-1
       - uses: actions/setup-python@v5
         with:
-            python-version: "3.12"
+            python-version: "3.13"
       - uses: actions/checkout@v4
         with:
           path: dvc-bench
@@ -269,6 +293,11 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: |
           echo "DVC_TEST_AWS_REPO_BUCKET=dvc-bench-ci" >> "$GITHUB_ENV"
+      - uses: actions/download-artifact@v4
+        with:
+          name: wheels
+          path: wheelhouse
+      - run: echo "UV_FIND_LINKS=$(realpath wheelhouse) PIP_FIND_LINKS=$(realpath wheelhouse)" >> $GITHUB_ENV
       - name: run benchmarks
         shell: bash
         working-directory: dvc-s3/
@@ -296,7 +325,7 @@ jobs:
 
   build_azure:
     if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
-    needs: [gen]
+    needs: [gen, build-wheels]
     strategy:
       fail-fast: false
       matrix:
@@ -311,7 +340,7 @@ jobs:
     steps:
       - uses: actions/setup-python@v5
         with:
-            python-version: "3.12"
+            python-version: "3.13"
       - uses: actions/checkout@v4
         with:
           path: dvc-bench
@@ -359,6 +388,11 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: |
           echo "DVC_TEST_AZURE_PATH=az://dvc-bench-ci" >> $GITHUB_ENV
+      - uses: actions/download-artifact@v4
+        with:
+          name: wheels
+          path: wheelhouse
+      - run: echo "UV_FIND_LINKS=$(realpath wheelhouse) PIP_FIND_LINKS=$(realpath wheelhouse)" >> $GITHUB_ENV
       - name: run benchmarks
         shell: bash
         working-directory: dvc-azure/
@@ -386,7 +420,7 @@ jobs:
 
   build_gs:
     if: ${{ github.event_name == 'schedule' || github.event.inputs.clouds == 'true' }}
-    needs: [gen]
+    needs: [gen, build-wheels]
     strategy:
       fail-fast: false
       matrix:
@@ -401,7 +435,7 @@ jobs:
     steps:
       - uses: actions/setup-python@v5
         with:
-            python-version: "3.12"
+            python-version: "3.13"
       - uses: actions/checkout@v4
         with:
           path: dvc-bench
@@ -442,6 +476,11 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: |
           echo "DVC_TEST_GS_BUCKET=dvc-bench" >> "$GITHUB_ENV"
+      - uses: actions/download-artifact@v4
+        with:
+          name: wheels
+          path: wheelhouse
+      - run: echo "UV_FIND_LINKS=$(realpath wheelhouse) PIP_FIND_LINKS=$(realpath wheelhouse)" >> $GITHUB_ENV
       - name: run benchmarks
         shell: bash
         working-directory: dvc-gs/
@@ -509,7 +548,7 @@ jobs:
       - uses: iterative/setup-cml@v3
       - uses: actions/setup-python@v5
         with:
-            python-version: "3.12"
+            python-version: "3.13"
       - uses: actions/checkout@v4
       - uses: actions/checkout@v4
         with:

@@ -89,7 +89,7 @@ jobs:
       - if: steps.cache-wheels.outputs.cache-hit != 'true'
         run: |
           ./scripts/ci/install-libgit2.sh 1.7.2
-          sudo config
+          sudo ldconfig
           pip wheel pygit2==1.14.1 --no-deps
           pip install auditwheel
           auditwheel repair *.whl

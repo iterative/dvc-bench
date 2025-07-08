@@ -57,6 +57,13 @@ env:
   REVS: ${{ github.event.inputs.revs || 'main,3.60.1,3.53.2,3.10.0,2.58.2' }}
   # run on small set of revisions for clouds
   CLOUD_REVS: ${{ github.event.inputs.revs || 'main,3.53.2' }}
+  # 953fd669d8f0a86581651b2984b95a55dc79220f => 1.11.16
+  PER_TEST_ADDITIONAL_DEFAULT_REVS: |
+    {
+      "test_add_copy": "1.11.16-3.13-support",
+      "test_add_symlink": "1.11.16-3.13-support",
+      "test_add_hardlink": "1.11.16-3.13-support"
+    }
   DVC_REPOSITORY: iterative/dvc
   DVC_REF: ${{ github.event.inputs.host_dvc_rev || 'main' }}
   DVC_AZURE_REPOSITORY: iterative/dvc-azure
@@ -191,6 +198,13 @@ jobs:
           ref: ${{ env.DVC_REF }}
           path: dvc
           fetch-depth: 0
+      - name: Compute REVS
+        run: |
+          INPUT_REVS="${{ github.event.inputs.revs }}"
+          ADDITIONAL_REVS="${{ fromJson(env.PER_TEST_ADDITIONAL_DEFAULT_REVS)[matrix.test.name] }}"
+          if [ -z "$INPUT_REVS" ] && [ -n "$ADDITIONAL_REVS" ]; then
+            echo "REVS=$REVS,$ADDITIONAL_REVS" >> "$GITHUB_ENV"
+          fi
       - run: ../dvc-bench/scripts/ci/fetch-all-revs.sh "${REVS}"
         working-directory: dvc
       - uses: astral-sh/setup-uv@v6

@@ -303,7 +303,9 @@ jobs:
           path: wheelhouse
           key: ${{ runner.os }}-wheels-v1
           fail-on-cache-miss: true
-      - run: echo "UV_FIND_LINKS=$(realpath wheelhouse) PIP_FIND_LINKS=$(realpath wheelhouse)" >> $GITHUB_ENV
+      - run: |
+          echo "UV_FIND_LINKS=$(realpath wheelhouse)" >> $GITHUB_ENV
+          echo "PIP_FIND_LINKS=$(realpath wheelhouse)" >> $GITHUB_ENV
       - name: run benchmarks
         shell: bash
         working-directory: dvc-s3/
@@ -399,7 +401,9 @@ jobs:
           path: wheelhouse
           key: ${{ runner.os }}-wheels-v1
           fail-on-cache-miss: true
-      - run: echo "UV_FIND_LINKS=$(realpath wheelhouse) PIP_FIND_LINKS=$(realpath wheelhouse)" >> $GITHUB_ENV
+      - run: |
+          echo "UV_FIND_LINKS=$(realpath wheelhouse)" >> $GITHUB_ENV
+          echo "PIP_FIND_LINKS=$(realpath wheelhouse)" >> $GITHUB_ENV
       - name: run benchmarks
         shell: bash
         working-directory: dvc-azure/
@@ -488,7 +492,9 @@ jobs:
           path: wheelhouse
           key: ${{ runner.os }}-wheels-v1
           fail-on-cache-miss: true
-      - run: echo "UV_FIND_LINKS=$(realpath wheelhouse) PIP_FIND_LINKS=$(realpath wheelhouse)" >> $GITHUB_ENV
+      - run: |
+          echo "UV_FIND_LINKS=$(realpath wheelhouse)" >> $GITHUB_ENV
+          echo "PIP_FIND_LINKS=$(realpath wheelhouse)" >> $GITHUB_ENV
       - name: run benchmarks
         shell: bash
         working-directory: dvc-gs/

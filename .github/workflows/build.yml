@@ -257,7 +257,7 @@ jobs:
     steps:
       - name: configure AWS credentials
         if: ${{ github.event_name == 'schedule' }}
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: arn:aws:iam::342840881361:role/dvc-bench-gha
           role-duration-seconds: 28800
@@ -587,7 +587,7 @@ jobs:
 
       - name: configure AWS credentials
         if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: arn:aws:iam::260760892802:role/dvc-bench
           aws-region: us-east-2

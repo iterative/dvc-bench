@@ -542,7 +542,6 @@ jobs:
     environment: aws
     permissions:
       pages: write
-      pull-requests: write
       contents: write
       id-token: write
     steps:
@@ -559,7 +558,6 @@ jobs:
            pattern: .benchmarks-*
            delete-merged: true
 
-      - uses: iterative/setup-cml@v3
       - uses: actions/setup-python@v5
         with:
             python-version: "3.13"
@@ -614,13 +612,6 @@ jobs:
         uses: jayanta525/github-pages-directory-listing@v4.0.0
         with:
           FOLDER: html
-
-      - name: post comment
-        env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: ${{ github.event_name == 'pull_request' && ! github.event.pull_request.head.repo.fork }}
-        run: |
-          cml comment update --watermark-title='dvc-bench report' report.md
 
       - name: Setup Pages
         id: pages

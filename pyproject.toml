@@ -1,4 +1,5 @@
 [tool.ruff]
+target-version = "py314"
 output-format = "full"
 show-fixes = true
 

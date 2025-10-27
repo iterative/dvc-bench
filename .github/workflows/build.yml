@@ -229,14 +229,14 @@ jobs:
           path: dvc-bench/.dvc/cache
           key: ${{ steps.restore-cache.outputs.cache-primary-key }}
       - name: upload raw results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           include-hidden-files: true
           name: .benchmarks-${{ matrix.test.name }}
           path: dvc/.benchmarks
       - if: ${{ env.CPROFILE_ARGS }}
         name: upload profiling results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: prof-${{ matrix.test.name }}
           path: dvc/prof
@@ -319,14 +319,14 @@ jobs:
           -W ignore
           ${{ env.CPROFILE_ARGS }}
       - name: upload raw results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           include-hidden-files: true
           name: .benchmarks-${{ matrix.test.name }}
           path: dvc-s3/.benchmarks
       - if: ${{ env.CPROFILE_ARGS }}
         name: upload profiling results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: prof-${{ matrix.test.name }}
           path: dvc-s3/prof
@@ -417,14 +417,14 @@ jobs:
           -W ignore
           ${{ env.CPROFILE_ARGS }}
       - name: upload raw results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           include-hidden-files: true
           name: .benchmarks-${{ matrix.test.name }}
           path: dvc-azure/.benchmarks
       - if: ${{ env.CPROFILE_ARGS }}
         name: upload profiling results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: prof-${{ matrix.test.name }}
           path: dvc-azure/prof
@@ -509,14 +509,14 @@ jobs:
           ${{ matrix.test.path }}
           ${{ env.CPROFILE_ARGS }}
       - name: upload raw results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           include-hidden-files: true
           name: .benchmarks-${{ matrix.test.name }}
           path: dvc-gs/.benchmarks
       - if: ${{ env.CPROFILE_ARGS }}
         name: upload profiling results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: prof-${{ matrix.test.name }}
           path: dvc-gs/prof
@@ -546,12 +546,12 @@ jobs:
       id-token: write
     steps:
       - if: ${{ env.CPROFILE_ARGS }}
-        uses: actions/upload-artifact/merge@v4
+        uses: actions/upload-artifact/merge@v5
         with:
            name: all-prof
            pattern: prof-*
            delete-merged: true
-      - uses: actions/upload-artifact/merge@v4
+      - uses: actions/upload-artifact/merge@v5
         with:
            include-hidden-files: true
            name: all-benchmarks
